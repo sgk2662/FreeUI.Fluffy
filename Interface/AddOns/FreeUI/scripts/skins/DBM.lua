@@ -18,8 +18,6 @@ local function InitStyle()
 
 			tbar:SetHeight(6)
 
-			text:SetFont(unpack(DBMBarFont))
-
 			text:SetPoint("CENTER", 0, 10)
 			text:SetPoint("LEFT", 2, 10)
 
@@ -35,6 +33,9 @@ local function InitStyle()
 				texture.SetTexture = F.dummy
 
 				F.SetFS(text)
+				if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+					text:SetFont(unpack(DBMBarFont))
+				end
 				text.SetFont = F.dummy
 
 				timer:SetPoint("CENTER", 0, 10)

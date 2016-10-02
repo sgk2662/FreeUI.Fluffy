@@ -165,6 +165,12 @@ function addon:UpdateGroupLoot()
 			frame.text:SetPoint("LEFT")
 			frame.text:SetPoint("RIGHT", frame.need, "LEFT")
 
+			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+				frame.text:SetFont(C.media.font.normal, 12, "OUTLINE")
+			end
+
+			frame.text:SetWordWrap(false)
+
 			local iconFrame = CreateFrame("Frame", nil, frame)
 			iconFrame:SetHeight(iconsize)
 			iconFrame:SetWidth(iconsize)

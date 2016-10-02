@@ -37,6 +37,5 @@
 	<Script file="tweaks\stats.lua"/>
 	<Script file="tweaks\tekkrush.lua"/>
 	<Script file="tweaks\threatmeter.lua"/>
-	<Script file="tweaks\UIScaler.lua"/>
 	<Script file="tweaks\worldstateframe.lua"/>
 </Ui>

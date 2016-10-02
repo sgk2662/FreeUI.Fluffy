@@ -179,6 +179,7 @@ C["quests"] = {
 	["questRewardHighlight"] = true,				-- highlights the quest reward with highest vendor price
 	["rememberObjectiveTrackerState"] = true,		-- saves objective tracker expanded/collapsed state per character
  		["alwaysCollapseObjectiveTracker"] = false,	-- always collapses objective tracker on login
+ 	["position"] = {"TOPRIGHT", UIParent, "TOPRIGHT", -20, -260}
 }
 
 C["unitframes"] = {
@@ -261,6 +262,10 @@ C["unitframes"] = {
 	["num_focus_debuffs"] = 4,
 
 	["UnitframesNameFont_Pixel"] = false,
+}
+
+C["buff"] = {
+	["position"] = {"TOPRIGHT", UIParent, "TOPRIGHT", -290, -36}
 }
 
 C["classmod"] = {

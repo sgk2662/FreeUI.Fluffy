@@ -133,7 +133,7 @@ end)
 
 -- TemporaryEnchantFrame ...
 TempEnchant1:ClearAllPoints()
-TempEnchant1:SetPoint('TOPRIGHT', Minimap, 'TOPLEFT', -12, -36)
+TempEnchant1:SetPoint(unpack(C.buff.position))
 -- TempEnchant1.SetPoint = function() end
 
 TempEnchant2:ClearAllPoints()

@@ -10,9 +10,9 @@ local BlocksFrame = ot.BlocksFrame
 
 -- [[ Positioning ]]
 local frame = CreateFrame("Frame", "ObjectiveTrackerAnchor", UIParent)
-frame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 0, 0)
+frame:SetPoint(unpack(C.quests.position))
 frame:SetHeight(150)
-frame:SetWidth(224)
+frame:SetWidth(260)
 
 ObjectiveTrackerFrame:ClearAllPoints()
 ObjectiveTrackerFrame:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, 0)

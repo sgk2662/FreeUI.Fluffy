@@ -164,7 +164,7 @@ SetFont("ZoneTextFont",                    HEADER, 40, nil, nil, {0, 0, 0}, 1, -
 SetFont("SubZoneTextFont",                 HEADER, 40, nil, nil, {0, 0, 0}, 1, -1)
 SetFont("WorldMapTextFont",                HEADER, 40, nil, nil, {0, 0, 0}, 1, -1)
 
-SetFont("GameFontNormalSmall",                      NORMAL, 12)
+SetFont("GameFontNormalSmall",                      NORMAL, 11)
 
 
 if C.appearance.colorFont then

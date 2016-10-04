@@ -211,8 +211,8 @@ C["unitframes"] = {
 	["targettarget"] = {"LEFT", "oUF_FreeTarget", "RIGHT", 5, 0},							-- target target unitframe position
 	["focus"] = {"LEFT", 'oUF_FreePlayer', "RIGHT", 26, -40},					-- focus unitframe position
 	["focustarget"] = {"LEFT", "oUF_FreeFocus", "RIGHT", 5, 0},							-- focus target unitframe position
-	["party"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -110, 50},			-- party unitframe position
-	["raid"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -110, 80},			-- raid unitframe position		
+	["party"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -20, 20},			-- party unitframe position
+	["raid"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -20, 20},			-- raid unitframe position		
 	["boss"] = {a='LEFT', b='oUF_FreeTarget', c="RIGHT", x=10, y=80},			-- boss unitframe position
 	["arena"] = {a='LEFT', b='UIParent', c="LEFT", x=20, y=100},				-- arena unitframe position		
 
@@ -249,10 +249,10 @@ C["unitframes"] = {
 	["boss_height"] = 16,
 	["arena_width"] = 229,
 	["arena_height"] = 12,
-	["party_width"] = 86,
-	["party_height"] = 32,
-	["raid_width"] = 66,
-	["raid_height"] = 26,
+	["party_width"] = 70,
+	["party_height"] = 30,
+	["raid_width"] = 70,
+	["raid_height"] = 30,
 
 	["num_player_debuffs"] = 8,
 	["num_target_debuffs"] = 16,

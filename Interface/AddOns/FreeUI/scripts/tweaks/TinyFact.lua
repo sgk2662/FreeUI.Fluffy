@@ -41,9 +41,9 @@ TinyFactPerk:SetScript("OnEvent", function(self, event, ...)
       if event == "ARTIFACT_XP_UPDATE" then
          if ArtifactFrame and ArtifactFrame.PerksTab.TitleContainer:IsShown() then
             local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI.GetArtifactInfo()
-            local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
+            --local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
             
-            ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")
+            --ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")
          end
       end
       if event == "ADDON_LOADED" then

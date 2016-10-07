@@ -1,5 +1,5 @@
 ## Interface: 70000
-## Title: cargBags_Nivaya: |cffF5FFFAFreeUI|r.|cffFF34B3Fluffy|r
+## Title: |cffF5FFFAFreeUI|r.|cffFF34B3Fluffy|r |cffAFFF87cargBags_Nivaya|r
 ## Author: Luzzifus (Modified by Dostoyevsky@烈焰峰)
 ## Version: 70000.11
 ## RequiredDeps: FreeUI
@@ -9,6 +9,7 @@
 
 config.lua
 
+libs\LibItemUpgradeInfo-1.0\LibItemUpgradeInfo-1.0.xml
 cargBags\embed.xml
 localization.lua
 filters.lua

@@ -1,5 +1,3 @@
-local F, C, L = unpack(FreeUI)
-
 local addon, ns = ...
 local cargBags = ns.cargBags
 
@@ -29,7 +27,8 @@ do	--Replacement for UIDropDownMenu
 		edgeFile = "Interface\\Buttons\\WHITE8x8", 
 		tile = true, tileSize = 16, edgeSize = 1, 
 		insets = { left = inset, right = inset, top = inset, bottom = inset }})
-	f:SetBackdropColor(0, 0, 0)
+	local colors = ns.options.colors.background
+	f:SetBackdropColor(unpack(colors))
 	f:SetBackdropBorderColor(0, 0, 0)
 
 	function f:CreateButton()
@@ -41,11 +40,22 @@ do	--Replacement for UIDropDownMenu
 		local fstr = button:CreateFontString()
 		fstr:SetJustifyH("LEFT")
 		fstr:SetJustifyV("MIDDLE")
-		F.SetFS(fstr)
 
-		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-			fstr:SetFont(C.media.font.normal, 12, "OUTLINE")
+		if FreeUI then
+			local C = FreeUI[2]
+			local menuFont
+
+			if C.unitframes.UnitframesNameFont_Pixel then
+				menuFont = C.UnitframesNameFont.pixel
+			else
+				menuFont = C.UnitframesNameFont.standard
+			end
+
+			fstr:SetFont(unpack(menuFont))
+		else
+			fstr:SetFont(unpack(ns.options.fonts.dropdown))
 		end
+
 		fstr:SetPoint("LEFT", button, "LEFT", 0, 0)
 		button.Text = fstr
 		
@@ -150,25 +160,26 @@ cB_CustomBags = {}
 
 -- Those are default values only, change them ingame via "/cbniv":
 local optDefaults = {
-	NewItems = true,
-	Restack = true,
-	TradeGoods = true,
-	Armor = true,
-	CoolStuff = false,
-	Junk = true,
-	ItemSets = true,
-	Consumables = true,
-	Quest = true,
-	BankBlack = true,
-	scale = 1,
-	FilterBank = true,
-	CompressEmpty = true,
-	Unlocked = true,
-	SortBags = true,
-	SortBank = true,
-	BankCustomBags = true,
-	SellJunk = true,
-}
+					NewItems = true,
+					Restack = true,
+					TradeGoods = true,
+					Armor = true,
+					Gem = true,
+					CoolStuff = false,
+					Junk = true,
+					ItemSets = true,
+					Consumables = true,
+					Quest = true,
+					BankBlack = true,
+					scale = 1,
+					FilterBank = true,
+					CompressEmpty = true,
+					Unlocked = true,
+					SortBags = true,
+					SortBank = true,
+					BankCustomBags = true,
+					SellJunk = true,
+					}
 
 -- Those are internal settings, don't touch them at all:
 local defaults = {}
@@ -213,6 +224,7 @@ function cargBags_Nivaya:ADDON_LOADED(event, addon)
 	--UIDropDownMenu_Initialize(cbNivCatDropDown, cbNivaya.CatDropDownInit, "MENU")
 	
 	cB_filterEnabled["Armor"] = cBnivCfg.Armor
+	cB_filterEnabled["Gem"] = cBnivCfg.Gem
 	cB_filterEnabled["TradeGoods"] = cBnivCfg.TradeGoods
 	cB_filterEnabled["Junk"] = cBnivCfg.Junk
 	cB_filterEnabled["ItemSets"] = cBnivCfg.ItemSets
@@ -237,6 +249,7 @@ function cargBags_Nivaya:ADDON_LOADED(event, addon)
 	end
 	
 	cB_Bags.bankArmor		= C:New("cBniv_BankArmor")
+	cB_Bags.bankGem			= C:New("cBniv_BankGem")
 	cB_Bags.bankConsumables	= C:New("cBniv_BankCons")
 	cB_Bags.bankBattlePet	= C:New("cBniv_BankPet")
 	cB_Bags.bankQuest		= C:New("cBniv_BankQuest")
@@ -246,6 +259,7 @@ function cargBags_Nivaya:ADDON_LOADED(event, addon)
 
 	cB_Bags.bankSets		:SetMultipleFilters(true, cB_Filters.fBank, cB_Filters.fBankFilter, cB_Filters.fItemSets)
 	cB_Bags.bankArmor		:SetExtendedFilter(cB_Filters.fItemClass, "BankArmor")
+	cB_Bags.bankGem			:SetExtendedFilter(cB_Filters.fItemClass, "BankGem")
 	cB_Bags.bankConsumables :SetExtendedFilter(cB_Filters.fItemClass, "BankConsumables")
 	cB_Bags.bankBattlePet	:SetExtendedFilter(cB_Filters.fItemClass, "BankBattlePet")
 	cB_Bags.bankQuest		:SetExtendedFilter(cB_Filters.fItemClass, "BankQuest")
@@ -280,6 +294,7 @@ function cargBags_Nivaya:ADDON_LOADED(event, addon)
 		end
 	end
 	cB_Bags.armor		= C:New("cBniv_Armor")
+	cB_Bags.gem			= C:New("cBniv_Gem")
 	cB_Bags.quest		= C:New("cBniv_Quest")
 	cB_Bags.consumables	= C:New("cBniv_Consumables")
 	cB_Bags.battlepet	= C:New("cBniv_BattlePet")
@@ -292,6 +307,7 @@ function cargBags_Nivaya:ADDON_LOADED(event, addon)
 	cB_Bags.bagJunk		:SetExtendedFilter(cB_Filters.fItemClass, "Junk")
 	cB_Bags.bagNew		:SetFilter(cB_Filters.fNewItems, true)
 	cB_Bags.armor		:SetExtendedFilter(cB_Filters.fItemClass, "Armor")
+	cB_Bags.gem			:SetExtendedFilter(cB_Filters.fItemClass, "Gem")
 	cB_Bags.quest		:SetExtendedFilter(cB_Filters.fItemClass, "Quest")
 	cB_Bags.consumables	:SetExtendedFilter(cB_Filters.fItemClass, "Consumables")
 	cB_Bags.battlepet	:SetExtendedFilter(cB_Filters.fItemClass, "BattlePet")
@@ -336,7 +352,8 @@ function cbNivaya:CreateAnchors()
 	-- Bank Anchors:
 	CreateAnchorInfo(cB_Bags.bank, cB_Bags.bankArmor, "Right")
 	CreateAnchorInfo(cB_Bags.bankArmor, cB_Bags.bankSets, "Bottom")
-	CreateAnchorInfo(cB_Bags.bankSets, cB_Bags.bankTrade, "Bottom")
+	CreateAnchorInfo(cB_Bags.bankSets, cB_Bags.bankGem, "Bottom")
+	CreateAnchorInfo(cB_Bags.bankGem, cB_Bags.bankTrade, "Bottom")
 	
 	CreateAnchorInfo(cB_Bags.bank, cB_Bags.bankReagent, "Bottom")
 	CreateAnchorInfo(cB_Bags.bankReagent, cB_Bags.bankConsumables, "Bottom")
@@ -361,7 +378,8 @@ function cbNivaya:CreateAnchors()
 
 	CreateAnchorInfo(cB_Bags.main, 			cB_Bags.bagItemSets, 	"Left")
 	CreateAnchorInfo(cB_Bags.bagItemSets, 	cB_Bags.armor, 			"Top")
-	CreateAnchorInfo(cB_Bags.armor, 		cB_Bags.battlepet, 		"Top")
+	CreateAnchorInfo(cB_Bags.armor, 		cB_Bags.gem, 			"Top")
+	CreateAnchorInfo(cB_Bags.gem, 			cB_Bags.battlepet, 		"Top")
 	CreateAnchorInfo(cB_Bags.battlepet, 	cB_Bags.bagStuff, 		"Top")
 
 	CreateAnchorInfo(cB_Bags.main, 			cB_Bags.tradegoods, 	"Top")
@@ -404,37 +422,29 @@ end
 
 function cbNivaya:OnOpen()
 	cB_Bags.main:Show()
-	cbNivaya:ShowBags(cB_Bags.armor, cB_Bags.bagNew, cB_Bags.bagItemSets, cB_Bags.quest, cB_Bags.consumables, cB_Bags.battlepet, 
+	cbNivaya:ShowBags(cB_Bags.armor, cB_Bags.bagNew, cB_Bags.bagItemSets, cB_Bags.gem, cB_Bags.quest, cB_Bags.consumables, cB_Bags.battlepet, 
 					  cB_Bags.tradegoods, cB_Bags.bagStuff, cB_Bags.bagJunk)
-	for _, v in next, cB_CustomBags do
-		if v.active then cbNivaya:ShowBags(cB_Bags[v.name]) end
-	end
+	for _,v in ipairs(cB_CustomBags) do if v.active then cbNivaya:ShowBags(cB_Bags[v.name]) end end
 end
 
 function cbNivaya:OnClose()
-	cbNivaya:HideBags(cB_Bags.main, cB_Bags.armor, cB_Bags.bagNew, cB_Bags.bagItemSets, cB_Bags.quest, cB_Bags.consumables, cB_Bags.battlepet, 
+	cbNivaya:HideBags(cB_Bags.main, cB_Bags.armor, cB_Bags.bagNew, cB_Bags.bagItemSets, cB_Bags.gem, cB_Bags.quest, cB_Bags.consumables, cB_Bags.battlepet, 
 					  cB_Bags.tradegoods, cB_Bags.bagStuff, cB_Bags.bagJunk, cB_Bags.key)
-	for _,v in ipairs(cB_CustomBags) do
-		if v.active then cbNivaya:HideBags(cB_Bags[v.name]) end
-	end
+	for _,v in ipairs(cB_CustomBags) do if v.active then cbNivaya:HideBags(cB_Bags[v.name]) end end
 end
 
 function cbNivaya:OnBankOpened() 
 	cB_Bags.bank:Show(); 
-	cbNivaya:ShowBags(cB_Bags.bankSets, cB_Bags.bankReagent, cB_Bags.bankArmor, cB_Bags.bankQuest, cB_Bags.bankTrade, cB_Bags.bankConsumables, cB_Bags.bankBattlePet) 
+	cbNivaya:ShowBags(cB_Bags.bankSets, cB_Bags.bankReagent, cB_Bags.bankArmor, cB_Bags.bankGem, cB_Bags.bankQuest, cB_Bags.bankTrade, cB_Bags.bankConsumables, cB_Bags.bankBattlePet) 
 	if cBniv.BankCustomBags then
-		for _,v in ipairs(cB_CustomBags) do
-			if v.active then cbNivaya:ShowBags(cB_Bags['Bank'..v.name]) end
-		end
+		for _,v in ipairs(cB_CustomBags) do if v.active then cbNivaya:ShowBags(cB_Bags['Bank'..v.name]) end end
 	end
 end
 
 function cbNivaya:OnBankClosed()
-	cbNivaya:HideBags(cB_Bags.bank, cB_Bags.bankSets, cB_Bags.bankReagent, cB_Bags.bankArmor, cB_Bags.bankQuest, cB_Bags.bankTrade, cB_Bags.bankConsumables, cB_Bags.bankBattlePet)
+	cbNivaya:HideBags(cB_Bags.bank, cB_Bags.bankSets, cB_Bags.bankReagent, cB_Bags.bankArmor, cB_Bags.bankGem, cB_Bags.bankQuest, cB_Bags.bankTrade, cB_Bags.bankConsumables, cB_Bags.bankBattlePet)
 	if cBniv.BankCustomBags then
-		for _,v in ipairs(cB_CustomBags) do
-			if v.active then cbNivaya:HideBags(cB_Bags['Bank'..v.name]) end
-		end
+		for _,v in ipairs(cB_CustomBags) do if v.active then cbNivaya:HideBags(cB_Bags['Bank'..v.name]) end end
 	end
 end
 
@@ -504,6 +514,7 @@ function cbNivaya:CatDropDownInit()
 	AddInfoItem("Consumables")
 	AddInfoItem("Quest")
 	AddInfoItem("TradeGoods")
+	AddInfoItem("Gem")
 	AddInfoItem("Stuff")
 	AddInfoItem("Junk")
 	AddInfoItem("Bag")
@@ -522,7 +533,7 @@ function cbNivaya:CatDropDownOnClick(self, type)
 	local itemID = cbNivCatDropDown.itemID
 
 	if (type == "MarkAsNew") then
-		cB_KnownItems[itemID] = nil
+		table.remove(cB_KnownItems, itemID)
 	elseif (type == "MarkAsKnown") then
 		cB_KnownItems[itemID] = cbNivaya:getItemCount(itemName)
 	else
@@ -579,6 +590,10 @@ local function HandleSlash(str)
 		cBnivCfg.Armor = not cBnivCfg.Armor
 		cB_filterEnabled["Armor"] = cBnivCfg.Armor
 		StatusMsg('The "Armor and Weapons" filter is now ', '.', cBnivCfg.Armor, true, false)
+	elseif str == 'gem' then
+		cBnivCfg.Gem = not cBnivCfg.Gem
+		cB_filterEnabled["Gem"] = cBnivCfg.Gem
+		StatusMsg('The "Gem and Weapons" filter is now ', '.', cBnivCfg.Gem, true, false)
 		updateBags = true
 	elseif str == 'junk' then
 		cBnivCfg.Junk = not cBnivCfg.Junk
@@ -655,6 +670,11 @@ local function HandleSlash(str)
 
 	elseif str == 'delbag' then
 		table.remove(cB_CustomBags, idx)
+		for k,v in pairs(cBniv_CatInfo) do
+			if v==str2 then
+				cBniv_CatInfo[k] = nil
+			end
+		end
 		StatusMsg('The specified custom container has been removed. Reload your UI for this change to take effect!', '', nil, true, false)
 		
 	elseif str == 'listbags' then
@@ -686,6 +706,7 @@ local function HandleSlash(str)
 		StatusMsg('(', ') |cFFFFFF00new|r - Toggle the "New Items" filter.', cBnivCfg.NewItems, false, true)
 		StatusMsg('(', ') |cFFFFFF00trade|r - Toggle the "Trade Goods" filter .', cBnivCfg.TradeGoods, false, true)
 		StatusMsg('(', ') |cFFFFFF00armor|r - Toggle the "Armor and Weapons" filter .', cBnivCfg.Armor, false, true)
+		StatusMsg('(', ') |cFFFFFF00gem|r - Toggle the "Gem" filter .', cBnivCfg.Gem, false, true)
 		StatusMsg('(', ') |cFFFFFF00junk|r - Toggle the "Junk" filter.', cBnivCfg.Junk, false, true)
 		StatusMsg('(', ') |cFFFFFF00sets|r - Toggle the "ItemSets" filters.', cBnivCfg.ItemSets, false, true)
 		StatusMsg('(', ') |cFFFFFF00consumables|r - Toggle the "Consumables" filters.', cBnivCfg.Consumables, false, true)
@@ -703,7 +724,6 @@ local function HandleSlash(str)
 		StatusMsg('', " |cFFFFFF00bagprio|r [name] - Changes the filter priority of a custom container. High priority prevents items from being classified as junk or new, low priority doesn't.")
 		StatusMsg('(', ') |cFFFFFF00bankbags|r - Show custom containers in the bank too.', cBnivCfg.BankCustomBags, false, true)
 	end
-
 	if updateBags then
 		cbNivaya:UpdateBags()
 	end
@@ -759,7 +779,10 @@ Event:SetScript('OnEvent', function(self, event, ...)
 				NivayacBniv_Bank.reagentBtn:Show()
 				buyReagent:Hide()
 			end)
-			F.Reskin(buyReagent)
+			if Aurora then
+				local F = Aurora[1]
+				F.Reskin(buyReagent)
+			end
 			buyReagent:RegisterEvent("REAGENTBANK_PURCHASED")
 		end
 

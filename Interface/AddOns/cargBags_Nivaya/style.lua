@@ -1,4 +1,3 @@
-local F, C, L = unpack(FreeUI)
 
 local addon, ns = ...
 local cargBags = ns.cargBags
@@ -23,13 +22,7 @@ local Textures = {
 	Right =			mediaPath .. "Right",
 }
 
-local captionFont
 
-if C.unitframes.UnitframesNameFont_Pixel then
-	captionFont = C.UnitframesNameFont.pixel
-else
-	captionFont = C.UnitframesNameFont.standard
-end
 
 local itemSlotSize = ns.options.itemSlotSize
 ------------------------------------------
@@ -64,74 +57,25 @@ local GetNumFreeSlots = function(bagType)
 	return free, max
 end
 
-local QuickSort, invTypes
+local QuickSort;
 do
-	invTypes = {
-		INVTYPE_HEAD 		= 1,
-		INVTYPE_NECK		= 2,
-		INVTYPE_SHOULDER	= 3,
-		INVTYPE_CLOAK		= 4,
-		INVTYPE_CHEST		= 5,
-		INVTYPE_BODY		= 6, -- Shirt
-		INVTYPE_TABARD		= 7,
-		INVTYPE_WRIST		= 8,
-		INVTYPE_HAND		= 9,
-		INVTYPE_WAIST		= 10,
-		INVTYPE_LEGS		= 11,
-		INVTYPE_FEET		= 12,
-		INVTYPE_FINGER		= 13,
-		INVTYPE_TRINKET 	= 14,
-
-		INVTYPE_2HWEAPON	= 15,
-		INVTYPE_RANGED		= 16, -- Bows
-		INVTYPE_RANGEDRIGHT = 16, -- Wands, Guns, and Crossbows
-
-		INVTYPE_WEAPON 		= 17, -- One-Hand
-		INVTYPE_WEAPONMAINHAND = 18,
-		INVTYPE_WEAPONOFFHAND = 19,
-		INVTYPE_SHIELD		= 20,
-		INVTYPE_HOLDABLE	= 21,
-
-		INVTYPE_BAG			= 25
-	}
 	local func = function(v1, v2)
-		local item1, item2 = v1[1], v2[1]
-		if (item1 == nil) or (item2 == nil) then return not not item1 end
-
-		-- higher quality first
-		if item1.rarity ~= item2.rarity then
-			if item1.rarity and item2.rarity then
-				return item1.rarity > item2.rarity
-			elseif (item1.rarity == nil) or (item2.rarity == nil) then
-				return not not item1.rarity
+		if (v1 == nil) or (v2 == nil) then return (v1 and true or false) end
+		if v1[1] == -1 or v2[1] == -1 then
+			return v1[1] > v2[1] -- empty slots last
+		elseif v1[2] ~= v2[2] then
+			if v1[2] and v2[2] then
+				return v1[2] > v2[2] -- higher quality first
+			elseif (v1[2] == nil) or (v2[2] == nil) then
+				return (v1[2] and true or false)
 			else
 				return false
 			end
+		elseif v1[1] ~= v2[1] then
+			return v1[1] > v2[1] -- group identical item ids
+		else
+			return v1[4] > v2[4] -- full/larger stacks first
 		end
-
-		-- group item types
-		if item1.typeID ~= item2.typeID then
-			return item1.typeID > item2.typeID
-		elseif item1.subTypeID ~= item2.subTypeID then
-			return item1.subTypeID > item2.subTypeID
-		end
-
-		-- group equipment types
-		if (item1.equipLoc ~= "" and item2.equipLoc ~= "") and (item1.equipLoc ~= item2.equipLoc) then
-			if not invTypes[item1.equipLoc] or not invTypes[item2.equipLoc] then
-				print(item1.link, item1.equipLoc, item2.link, item2.equipLoc)
-			else
-				return invTypes[item1.equipLoc] < invTypes[item2.equipLoc]
-			end
-		end
-
-		-- group same items
-		if item1.id ~= item2.id then
-			return item1.id > item2.id
-		end
-
-		-- sort larger stacks first
-		return item1.count > item2.count
 	end;
 	QuickSort = function(tbl) table.sort(tbl, func) end
 end
@@ -148,21 +92,18 @@ function MyContainer:OnContentsChanged()
 	local tReagent = (tName == "cBniv_BankReagent")
 
 	local buttonIDs = {}
-	for i, button in pairs(self.buttons) do
+  	for i, button in pairs(self.buttons) do
 		local item = cbNivaya:GetItemInfo(button.bagID, button.slotID)
 		if item.link then
-			if item.equipLoc ~= "" and not invTypes[item.equipLoc] then
-				print(item.link, item.equipLoc)
-			end
-			buttonIDs[i] = {item, button}
+			buttonIDs[i] = { item.id, item.rarity, button, item.count }
 		else
-			buttonIDs[i] = { nil, button }
+			buttonIDs[i] = { -1, -2, button, -1 }
 		end
 	end
 	if ((tBank or tReagent) and cBnivCfg.SortBank) or (not (tBank or tReagent) and cBnivCfg.SortBags) then QuickSort(buttonIDs) end
 
 	for _,v in ipairs(buttonIDs) do
-		local button = v[2]
+		local button = v[3]
 		button:ClearAllPoints()
 	  
 		local xPos = col * (itemSlotSize + 2) + 2
@@ -272,26 +213,17 @@ end
 -- Reset New
 local resetNewItems = function(self)
 	cB_KnownItems = cB_KnownItems or {}
-	if not cBniv.clean then
-		for item, numItem in next, cB_KnownItems do
-			if type(item) == "string" then
-				cB_KnownItems[item] = nil
-			end
-		end
-		cBniv.clean = true
-	end
 	for bag = 0, 4 do
 		local tNumSlots = GetContainerNumSlots(bag)
 		if tNumSlots > 0 then
 			for slot = 1, tNumSlots do
 				local item = cbNivaya:GetItemInfo(bag, slot)
 				--print("resetNewItems", item.id)
-				if item.id then
-					if cB_KnownItems[item.id] then
-						cB_KnownItems[item.id] = cB_KnownItems[item.id] + (item.stackCount and item.stackCount or 0)
-					else
-						cB_KnownItems[item.id] = item.stackCount and item.stackCount or 0
-					end
+				item.id = item.id or 0
+				if cB_KnownItems[item.id] then
+					cB_KnownItems[item.id] = cB_KnownItems[item.id] + (item.stackCount and item.stackCount or 0)
+				else
+					cB_KnownItems[item.id] = item.stackCount and item.stackCount or 0
 				end
 			end 
 		end
@@ -312,11 +244,13 @@ local UpdateDimensions = function(self)
 	end
 	if self.bagToggle then
 		local tBag = (self.name == "cBniv_Bag")
-		local extraHeight = (tBag and self.hintShown) and (8 + 4) or 0
+		local fheight = (ns.options.fonts.standard[2] + 4)
+		local extraHeight = (tBag and self.hintShown) and (fheight + 4) or 0
 		height = height + 24 + extraHeight
 	end
 	if self.Caption then		-- Space for captions
-		height = height + 8 + 12
+		local fheight = (ns.options.fonts.standard[2] + 12)
+		height = height + fheight
 	end
 	self:SetHeight(self.ContainerHeight + height)
 end
@@ -411,7 +345,7 @@ local createIconButton = function (name, parent, texture, point, hint, isBag)
 	
 	button.tooltip = button:CreateFontString()
 	-- button.tooltip:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", isBag and -76 or -59, 4.5)
-	F.SetFS(button.tooltip)
+	button.tooltip:SetFont(unpack(ns.options.fonts.standard))
 	button.tooltip:SetJustifyH("RIGHT")
 	button.tooltip:SetText(hint)
 	button.tooltip:SetTextColor(0.8, 0.8, 0.8)
@@ -513,16 +447,16 @@ function MyContainer:OnCreate(name, settings)
 
 	-- The frame background
 	local tBankCustom = (tBankBags and not cBnivCfg.BankBlack)
-	local color_rb = 0
-	local color_gb = tBankCustom and .2 or 0
-	local color_bb = tBankCustom and .3 or 0
-	local alpha_fb = .75
+	local color_rb = ns.options.colors.background[1]
+	local color_gb = tBankCustom and .2 or ns.options.colors.background[2]
+	local color_bb = tBankCustom and .3 or ns.options.colors.background[3]
+	local alpha_fb = ns.options.colors.background[4]
 
 	-- The frame background
 	local background = CreateFrame("Frame", nil, self)
 	background:SetBackdrop{
-		bgFile = "Interface\\AddOns\\cargBags_Nivaya\\media\\blank",
-		edgeFile = "Interface\\AddOns\\cargBags_Nivaya\\media\\blank",
+		bgFile = Textures.Background,
+		edgeFile = Textures.Background,
 		tile = true, tileSize = 16, edgeSize = 1,
 		insets = {left = 1, right = 1, top = 1, bottom = 1},
 	}
@@ -531,19 +465,31 @@ function MyContainer:OnCreate(name, settings)
 	background:SetBackdropColor(color_rb,color_gb,color_bb,alpha_fb)
 	background:SetBackdropBorderColor(0, 0, 0, 1)
 
-	F.CreateBD(background)
-	F.CreateSD(background)
-
 	background:SetPoint("TOPLEFT", -4, 4)
 	background:SetPoint("BOTTOMRIGHT", 4, -4)
 
+	if Aurora then
+		local F = Aurora[1]
+		F.CreateBD(background)
+		F.CreateSD(background)
+	end
 
 	-- Caption, close button
 	local caption = background:CreateFontString(background, "OVERLAY", nil)
-	F.SetFS(caption)
+	if FreeUI then
+		local C = FreeUI[2]
+		local captionFont
 
-	caption:SetFont(unpack(captionFont))
+		if C.unitframes.UnitframesNameFont_Pixel then
+			captionFont = C.UnitframesNameFont.pixel
+		else
+			captionFont = C.UnitframesNameFont.standard
+		end
 
+		caption:SetFont(unpack(captionFont))
+	else
+		caption:SetFont(unpack(ns.options.fonts.standard))
+	end
 	if(caption) then
 		local t = L.bagCaptions[self.name] or (tBankBags and strsub(self.name, 5))
 		if not t then t = self.name end
@@ -554,8 +500,16 @@ function MyContainer:OnCreate(name, settings)
 		
 		if (tBag or tBank) then
 			local close = CreateFrame("Button", nil, self, "UIPanelCloseButton")
-			close:SetPoint("TOPRIGHT", 8, 8)
-			F.ReskinClose(close, "TOPRIGHT", self, "TOPRIGHT", 1, 1)
+			if Aurora then
+				local F = Aurora[1]
+				F.ReskinClose(close, "TOPRIGHT", self, "TOPRIGHT", 1, 1)
+			else
+				close:SetPoint("TOPRIGHT", 8, 8)
+				close:SetDisabledTexture("Interface\\AddOns\\cargBags_Nivaya\\media\\CloseButton\\UI-Panel-MinimizeButton-Disabled")
+				close:SetNormalTexture("Interface\\AddOns\\cargBags_Nivaya\\media\\CloseButton\\UI-Panel-MinimizeButton-Up")
+				close:SetPushedTexture("Interface\\AddOns\\cargBags_Nivaya\\media\\CloseButton\\UI-Panel-MinimizeButton-Down")
+				close:SetHighlightTexture("Interface\\AddOns\\cargBags_Nivaya\\media\\CloseButton\\UI-Panel-MinimizeButton-Highlight", "ADD")
+			end
 			close:SetScript("OnClick", function(self) if cbNivaya:AtBank() then CloseBankFrame() else CloseAllBags() end end)
 		end
 	end
@@ -615,7 +569,7 @@ function MyContainer:OnCreate(name, settings)
 	end
 		
 	local tBtnOffs = 0
-	if (tBag or tBank) then
+  	if (tBag or tBank) then
 		-- Bag bar for changing bags
 		local bagType = tBag and "bags" or "bank"
 		
@@ -771,7 +725,7 @@ function MyContainer:OnCreate(name, settings)
 		self.DropTarget:SetScript("OnReceiveDrag", DropTargetProcessItem)
 		
 		local fs = self:CreateFontString(nil, "OVERLAY")
-		F.SetFS(fs)
+		fs:SetFont(unpack(ns.options.fonts.standard))
 		fs:SetJustifyH("LEFT")
 		fs:SetPoint("BOTTOMRIGHT", self.DropTarget, "BOTTOMRIGHT", 1.5, 1.5)
 		self.EmptySlotCounter = fs
@@ -804,23 +758,17 @@ function MyContainer:OnCreate(name, settings)
 		searchIcon:SetHeight(16)
 		
 		-- Hint
-		-- self.hint = background:CreateFontString(nil, "OVERLAY", nil)
-		-- self.hint:SetPoint("BOTTOMLEFT", infoFrame, -0.5, 31.5)
-		-- F.SetFS(self.hint)
-		-- self.hint:SetTextColor(1, 1, 1, 0.4)
-		
-		-- if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-		-- 	self.hint:SetFont(C.media.font.normal, 12, "OUTLINE")
-		-- 	self.hint:SetText("Ctrl + Alt + 鼠标右键给物品分类")
-		-- else
-		-- 	self.hint:SetText("Ctrl + Alt + Right Click an item to assign category")
-		-- end
-		-- self.hintShown = true
+		self.hint = background:CreateFontString(nil, "OVERLAY", nil)
+		self.hint:SetPoint("BOTTOMLEFT", infoFrame, -0.5, 31.5)
+		self.hint:SetFont(unpack(ns.options.fonts.standard))
+		self.hint:SetTextColor(1, 1, 1, 0.4)
+		self.hint:SetText("Ctrl + Alt + Right Click an item to assign category")
+		self.hintShown = true
 		
 		-- The money display
 		local money = self:SpawnPlugin("TagDisplay", "[money]", self)
 		money:SetPoint("TOPRIGHT", self, -25.5, -2.5)
-		F.SetFS(money)
+		money:SetFont(unpack(ns.options.fonts.standard))
 		money:SetJustifyH("RIGHT")
 		money:SetShadowColor(0, 0, 0, 0)
 	end

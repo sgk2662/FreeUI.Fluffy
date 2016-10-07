@@ -3,11 +3,7 @@ local cargBags = ns.cargBags
 
 local cbNivaya = cargBags:NewImplementation("Nivaya")
 cbNivaya:RegisterBlizzard()
-function cbNivaya:UpdateBags()
-	for i = -1, 11 do
-		cbNivaya:UpdateBag(i)
-	end
-end
+function cbNivaya:UpdateBags() for i = -3, 11 do cbNivaya:UpdateBag(i) end end
 
 local L = cBnivL
 cB_Filters = {}
@@ -15,8 +11,8 @@ cB_KnownItems = cB_KnownItems or {}
 cBniv_CatInfo = {}
 cB_ItemClass = {}
 
-cB_existsBankBag = { Armor = true, Quest = true, TradeGoods = true, Consumables = true, BattlePet = true }
-cB_filterEnabled = { Armor = true, Quest = true, TradeGoods = true, Consumables = true, Keyring = true, Junk = true, Stuff = true, ItemSets = true, BattlePet = true }
+cB_existsBankBag = { Armor = true, Gem = true, Quest = true, TradeGoods = true, Consumables = true, BattlePet = true }
+cB_filterEnabled = { Armor = true, Gem = true, Quest = true, TradeGoods = true, Consumables = true, Keyring = true, Junk = true, Stuff = true, ItemSets = true, BattlePet = true }
 
 --------------------
 --Basic filters
@@ -32,9 +28,7 @@ cB_Filters.fHideEmpty = function(item) if cBnivCfg.CompressEmpty then return ite
 ------------------------------------
 cB_Filters.fItemClass = function(item, container)
 	if not item.id  then	return false	end
-	if not cB_ItemClass[item.id] then
-		cbNivaya:ClassifyItem(item)
-	end
+	if not cB_ItemClass[item.id] then cbNivaya:ClassifyItem(item) end
 	
 	local t, bag = cB_ItemClass[item.id]
 
@@ -49,34 +43,28 @@ cB_Filters.fItemClass = function(item, container)
 end
 
 function cbNivaya:ClassifyItem(item)
+	-- keyring
+	if item.bagID == -2 then cB_ItemClass[item.id] = "Keyring"; return true end
 
-	if item.bagID == -2 then
-		-- keyring
-		cB_ItemClass[item.id] = "Keyring"
-	elseif cBniv_CatInfo[item.id] then
-		-- user assigned containers
-		cB_ItemClass[item.id] = cBniv_CatInfo[item.id]
-	elseif (item.rarity == 0) then
-		-- junk
-		cB_ItemClass[item.id] = "Junk"
-	elseif item.typeID then
-		-- type based filters
-		if (item.typeID == _G.LE_ITEM_CLASS_ARMOR) or (item.typeID == _G.LE_ITEM_CLASS_WEAPON)	then
-			cB_ItemClass[item.id] = "Armor"
-		elseif (item.typeID == _G.LE_ITEM_CLASS_QUESTITEM) then
-			cB_ItemClass[item.id] = "Quest"
-		elseif (item.typeID == _G.LE_ITEM_CLASS_TRADEGOODS) then
-			cB_ItemClass[item.id] = "TradeGoods"
-		elseif (item.typeID == _G.LE_ITEM_CLASS_CONSUMABLE) then
-			cB_ItemClass[item.id] = "Consumables"
-		elseif(item.typeID == _G.LE_ITEM_CLASS_BATTLEPET) then
-			cB_ItemClass[item.id] = "BattlePet"
+	-- user assigned containers
+	local tC = cBniv_CatInfo[item.id]
+	if tC then cB_ItemClass[item.id] = tC; return true end
+
+	-- junk
+	if (item.rarity == 0) then cB_ItemClass[item.id] = "Junk"; return true end
+
+	-- type based filters
+	if item.type then
+		if		(item.type == L.Armor) or (item.type == L.Weapon)	then cB_ItemClass[item.id] = "Armor"; return true
+		elseif	(item.type == L.Gem)								then cB_ItemClass[item.id] = "Gem"; return true
+		elseif	(item.type == L.Quest)								then cB_ItemClass[item.id] = "Quest"; return true
+		elseif	(item.type == L.Trades)								then cB_ItemClass[item.id] = "TradeGoods"; return true
+		elseif	(item.type == L.Consumables)						then cB_ItemClass[item.id] = "Consumables"; return true
+		elseif	(item.type == L.BattlePet)							then cB_ItemClass[item.id] = "BattlePet"; return true
 		end
 	end
-
-	if not cB_ItemClass[item.id] then
-		cB_ItemClass[item.id] = "NoClass"
-	end
+	
+	cB_ItemClass[item.id] = "NoClass"
 end
 
 ------------------------------------------
@@ -89,10 +77,10 @@ function cbNivaya:getItemCount(itemName)
 		if tNumSlots > 0 then
 			for j = 1,tNumSlots do
 				local tLink = GetContainerItemLink(i,j)
-				local tName
+				local _, tName
 				if tLink then
 					if tLink:find("battlepet") then
-						tName = select(2, strmatch(tLink, "|H(.-)|h(.-)|h"))
+						_, tName = strmatch(tLink, "|H(.-)|h(.-)|h")
 					else
 						tName = GetItemInfo(tLink)
 					end
@@ -112,7 +100,7 @@ cB_Filters.fNewItems = function(item)
 	if not ((item.bagID >= 0) and (item.bagID <= 4)) then return false end
 	if not item.link then return false end
 	if not cB_KnownItems[item.id] then return true end
-	local t = cbNivaya:getItemCount(item.name)
+	local t = GetItemCount(item.id)	--cbNivaya:getItemCount(item.id)
 	return (t > cB_KnownItems[item.id]) and true or false
 end
 
@@ -136,7 +124,7 @@ cB_Filters.fItemSets = function(item)
 	local _,_,itemStr = string.find(item.link, "^|c%x+|H(.+)|h%[.*%]")
 	if item2setOF[itemStr] then return true end
 	-- Check Equipment Manager sets:
-	if item.isInSet then return true end
+	if cargBags.itemKeys["setID"](item) then return true end
    return false
 end
 

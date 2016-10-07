@@ -1,5 +1,3 @@
-local F, C, L = unpack(FreeUI)
-
 --[[
 	cargBags: An inventory framework addon for World of Warcraft
 
@@ -91,8 +89,7 @@ function ItemButton:Create(tpl, parent)
 	bFS = _G[button:GetName().."Count"]
 	bFS:ClearAllPoints()
 	bFS:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 1.5, 1.5);
-	F.SetFS(bFS)
-
+	bFS:SetFont(unpack(ns.options.fonts.itemCount))
 	return button
 end
 
@@ -106,10 +103,10 @@ end
 
 --[[!
 	Fetches the item-info of the button, just a small wrapper for comfort
+	@param item <table> [optional]
 	@return item <table>
 ]]
-function ItemButton:GetItemInfo()
-	--print("ItemButton:GetItemInfo", bagID)
-	return self.implementation:GetItemInfo(self.bagID, self.slotID)
+function ItemButton:GetItemInfo(item)
+	return self.implementation:GetItemInfo(self.bagID, self.slotID, item)
 end
 

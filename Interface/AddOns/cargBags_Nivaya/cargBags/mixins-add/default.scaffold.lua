@@ -1,4 +1,3 @@
-local F, C, L = unpack(FreeUI)
 --[[
 LICENSE
 	cargBags: An inventory framework addon for World of Warcraft
@@ -31,28 +30,27 @@ local cargBags = ns.cargBags
 local function noop() end
 
 -- Upgrade Level retrieval
-local ScanTip, lvlPattern
-local function GetItemLevel(itemLink)
-	if not lvlPattern then
-		lvlPattern = gsub(ITEM_LEVEL, '%%d', '(%%d+)')
-	end
+local ItemUpgradeInfo = LibStub("LibItemUpgradeInfo-1.0")
+--[[
+local S_UPGRADE_LEVEL = "^" .. gsub(ITEM_UPGRADE_TOOLTIP_FORMAT, "%%d", "(%%d+)")	-- Search pattern
+local scantip = CreateFrame("GameTooltip", "ItemUpgradeScanTooltip", nil, "GameTooltipTemplate")
+scantip:SetOwner(UIParent, "ANCHOR_NONE")
 
-	if not ScanTip then
-		ScanTip = CreateFrame("GameTooltip","ScanTip",nil,"GameTooltipTemplate")
-		ScanTip:SetOwner(UIParent,"ANCHOR_NONE")
-	end
-	ScanTip:ClearLines()
-	ScanTip:SetHyperlink(itemLink)
-
-	for i = 2, min(5, ScanTip:NumLines()) do
-		local line = _G["ScanTipTextLeft"..i]:GetText()
-		local itemLevel = strmatch(line, lvlPattern)
-		if itemLevel then
-			return tonumber(itemLevel)
+local function GetItemUpgradeLevel(itemLink)
+	scantip:SetOwner(UIParent, "ANCHOR_NONE")
+	scantip:SetHyperlink(itemLink)
+	for i = 2, scantip:NumLines() do -- Line 1 = name so skip
+		local text = _G["ItemUpgradeScanTooltipTextLeft"..i]:GetText()
+		if text and text ~= "" then
+			local currentUpgradeLevel, maxUpgradeLevel = strmatch(text, S_UPGRADE_LEVEL)
+			if currentUpgradeLevel then
+				return currentUpgradeLevel, maxUpgradeLevel
+			end
 		end
 	end
+	scantip:Hide()
 end
-
+]]
 local function Round(num, idp)
 	local mult = 10^(idp or 0)
 	return math.floor(num * mult + 0.5) / mult
@@ -80,15 +78,29 @@ local function CreateInfoString(button, position)
 	else
 		str:SetJustifyH("RIGHT")
 		str:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 1.5, 1.5)
-	end	
-	F.SetFS(str)
-
+	end
+	str:SetFont(unpack(ns.options.fonts.itemCount))
 	return str
+end
+
+local function GetScreenModes()
+	local curResIndex = GetCurrentResolution()
+	local curRes = curResIndex > 0 and select(curResIndex, GetScreenResolutions()) or nil
+	local windowedMode = Display_DisplayModeDropDown:windowedmode()
+	
+	local resolution = curRes or (windowedMode and GetCVar("gxWindowedResolution")) or GetCVar("gxFullscreenResolution")
+	
+	return resolution
 end
 
 local function ItemButton_Scaffold(self)
 	self:SetSize(37, 37)
-	local bordersize = 1
+--[[
+	local monitorIndex = (tonumber(GetCVar('gxMonitor')) or 0) + 1
+	local resolution = select(GetCurrentResolution(monitorIndex), GetScreenResolutions(monitorIndex))
+	local bordersize = 768/string.match(resolution, "%d+x(%d+)")/(GetCVar("uiScale")*cBnivCfg.scale)
+]]
+	local bordersize = 768/string.match(GetScreenModes(), "%d+x(%d+)")/(GetCVar("uiScale")*cBnivCfg.scale)
 	local name = self:GetName()
 	self.Icon = _G[name.."IconTexture"]
 	self.Count = _G[name.."Count"]
@@ -111,10 +123,17 @@ end
 	@param item <table> The itemTable holding information, see Implementation:GetItemInfo()
 	@callback OnUpdate(item)
 ]]
+local L = cargBags:GetLocalizedTypes()
+local ilvlTypes = {[L.ItemClass["Armor"]] = true, [L.ItemClass["Weapon"]] = true}
 local function ItemButton_Update(self, item)
 	if item.texture then
-		self.Icon:SetTexture(item.texture)
-		self.Icon:SetTexCoord(.08, .92, .08, .92)
+		local tex = item.texture or (cBnivCfg.CompressEmpty and self.bgTex)
+		if tex then
+			self.Icon:SetTexture(tex)
+			self.Icon:SetTexCoord(.08, .92, .08, .92)
+		else
+			self.Icon:SetColorTexture(1,1,1,0.1)
+		end
 	else
 		if cBnivCfg.CompressEmpty then
 			self.Icon:SetTexture(self.bgTex)
@@ -144,9 +163,8 @@ local function ItemButton_Update(self, item)
 
 	-- Item Level
 	if item.link then
-		item.level = GetItemLevel(item.link)
-
-		if (item.equipLoc ~= "") and (item.level and item.level > 0) then
+		if item.type and ilvlTypes[item.type] and item.level > 0 then
+			item.level = ItemUpgradeInfo:GetUpgradedItemLevel(item.link)
 			self.BottomString:SetText(item.level)
 			self.BottomString:SetTextColor(GetItemQualityColor(item.rarity))
 		else

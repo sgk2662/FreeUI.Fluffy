@@ -222,11 +222,11 @@ rActionBar:CreateExtraBar(A, extrabar)
 -----------------------------
 
 local vehicleexitbar = {
-  framePoint      = { "BOTTOMLEFT", A.."Bar1", "BOTTOMRIGHT", 5, 0 },
+  framePoint      = { "BOTTOM", UIParent, "BOTTOM", 126, 194 },
   frameScale      = 1,
   framePadding    = 4,
-  buttonWidth     = 32,
-  buttonHeight    = 32,
+  buttonWidth     = 16,
+  buttonHeight    = 16,
   buttonMargin    = 4,
   numCols         = 1,
   startPoint      = "BOTTOMLEFT",

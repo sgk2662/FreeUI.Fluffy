@@ -36,14 +36,14 @@ function rActionBar:CreateMicroMenuBar(addonName,cfg)
   cfg.frameVisibility = cfg.frameVisibility or "[petbattle] hide; show"
   local buttonList = {}
   for idx, buttonName in next, MICRO_BUTTONS do
-    local button = _G[buttonName]
-    if button and button:IsShown() then
-      if buttonName == "StoreMicroButton" then
-         table.insert(buttonList, #buttonList, button) --storemicrobutton fix
-      else
-         table.insert(buttonList, button)
-      end
-    end
+	local button = _G[buttonName]
+	if button and button:IsShown() then
+	  if buttonName == "StoreMicroButton" then
+		 table.insert(buttonList, #buttonList, button) --storemicrobutton fix
+	  else
+		 table.insert(buttonList, button)
+	  end
+	end
   end
   --achievement micro button has wrong alpha on first login when buttons are reparented to early, delay bar setup
   local frame = L:CreateButtonFrame(cfg,buttonList,true)
@@ -68,32 +68,32 @@ function rActionBar:CreateActionBar1(addonName,cfg)
   local frame = L:CreateButtonFrame(cfg,buttonList)
   --fix the button grid for actionbar1
   local function ToggleButtonGrid()
-    if InCombatLockdown() then
-      print("Grid toggle for actionbar1 is not possible in combat.")
-      return
-    end
-    local showgrid = tonumber(GetCVar("alwaysShowActionBars"))
-    for i, button in next, buttonList do
-      button:SetAttribute("showgrid", showgrid)
-      ActionButton_ShowGrid(button)
-    end
+	if InCombatLockdown() then
+	  print("Grid toggle for actionbar1 is not possible in combat.")
+	  return
+	end
+	local showgrid = tonumber(GetCVar("alwaysShowActionBars"))
+	for i, button in next, buttonList do
+	  button:SetAttribute("showgrid", showgrid)
+	  ActionButton_ShowGrid(button)
+	end
   end
   hooksecurefunc("MultiActionBar_UpdateGridVisibility", ToggleButtonGrid)
   --_onstate-page state driver
   for i, button in next, buttonList do
-    frame:SetFrameRef(buttonName..i, button)
+	frame:SetFrameRef(buttonName..i, button)
   end
   frame:Execute(([[
-    buttons = table.new()
-    for i=1, %d do
-      table.insert(buttons, self:GetFrameRef("%s"..i))
-    end
+	buttons = table.new()
+	for i=1, %d do
+	  table.insert(buttons, self:GetFrameRef("%s"..i))
+	end
   ]]):format(numButtons, buttonName))
   frame:SetAttribute("_onstate-page", [[
-    --print("_onstate-page","index",newstate)
-    for i, button in next, buttons do
-      button:SetAttribute("actionpage", newstate)
-    end
+	--print("_onstate-page","index",newstate)
+	for i, button in next, buttons do
+	  button:SetAttribute("actionpage", newstate)
+	end
   ]])
   RegisterStateDriver(frame, "page", cfg.actionPage)
 end
@@ -208,13 +208,13 @@ function rActionBar:CreateVehicleExitBar(addonName,cfg)
   cfg.frameVisibilityFunc = "exit"
   --create vehicle exit button
   local button = CreateFrame("CHECKBUTTON", A.."VehicleExitButton", nil, "ActionButtonTemplate, SecureHandlerClickTemplate")
-  button.icon:SetTexture("interface\\addons\\"..A.."\\media\\vehicleexit")
+  --button.icon:SetTexture("interface\\addons\\"..A.."\\media\\vehicleexit")
   button:RegisterForClicks("AnyUp")
   local function OnClick(self)
-    if UnitOnTaxi("player") then TaxiRequestEarlyLanding() else VehicleExit() end self:SetChecked(false)
+	if UnitOnTaxi("player") then TaxiRequestEarlyLanding() else VehicleExit() end self:SetChecked(false)
   end
   button:SetScript("OnClick", OnClick)
-  F.Reskin(button)
+  F.ReskinClose(button)
   local buttonList = { button }
   local frame = L:CreateButtonFrame(cfg, buttonList)
   --[canexitvehicle] is not triggered on taxi, exit workaround

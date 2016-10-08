@@ -10,6 +10,8 @@
 	<Script file="tweaks\colours.lua"/>
 	<Script file="tweaks\disable.lua"/>
 	<Script file="tweaks\DragEmAll.lua"/>
+	<Script file="tweaks\EncounterJournalPlus_InstanceInfo.lua"/>
+	<Include file="tweaks\EncounterJournalPlus_InstanceInfo.xml"/>
 	<Script file="tweaks\errors.lua"/>
 	<Script file="tweaks\expbar.lua"/>
 	<Script file="tweaks\fastercamera.lua"/>

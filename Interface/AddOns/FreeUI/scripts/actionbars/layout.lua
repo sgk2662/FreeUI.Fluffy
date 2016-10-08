@@ -136,7 +136,7 @@ local bar4 = {
   buttonWidth     = 26,
   buttonHeight    = 26,
   buttonMargin    = 4,
-  numCols         = 1,
+  numCols         = 2,
   startPoint      = "TOPRIGHT",
   fader           = fader_1,
 }
@@ -157,6 +157,7 @@ local bar5 = {
   numCols         = 1,
   startPoint      = "TOPRIGHT",
   fader           = fader_1,
+  frameVisibility = "hide"
 }
 --create
 rActionBar:CreateActionBar5(A, bar5)

@@ -2,4 +2,5 @@
 ..\..\FrameXML\UI.xsd">
 	<Script file="quest\objectivetracker.lua"/>
 	<Script file="quest\Levelland.lua"/>
+	<Script file="quest\numQuests.lua"/>
 </Ui>

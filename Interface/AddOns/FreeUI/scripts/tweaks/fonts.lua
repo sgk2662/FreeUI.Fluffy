@@ -38,10 +38,10 @@ _G.UNIT_NAME_FONT = UNITNAME
 _G.NAMEPLATE_FONT = NORMAL
 _G.DAMAGE_TEXT_FONT = CRIT
 
-RaidWarningFrame.slot1:SetFont(CHAT, 20, "OUTLINE")
-RaidWarningFrame.slot2:SetFont(CHAT, 20, "OUTLINE")
-RaidBossEmoteFrame.slot1:SetFont(CHAT, 20, "OUTLINE")
-RaidBossEmoteFrame.slot2:SetFont(CHAT, 20, "OUTLINE")
+RaidWarningFrame.slot1:SetFont(HEADER, 20, "OUTLINE")
+RaidWarningFrame.slot2:SetFont(HEADER, 20, "OUTLINE")
+RaidBossEmoteFrame.slot1:SetFont(HEADER, 20, "OUTLINE")
+RaidBossEmoteFrame.slot2:SetFont(HEADER, 20, "OUTLINE")
 
 
 -- Base fonts, everything inhierits from these fonts.

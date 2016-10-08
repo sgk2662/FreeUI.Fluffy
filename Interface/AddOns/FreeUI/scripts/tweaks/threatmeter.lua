@@ -4,6 +4,14 @@ local F, C = unpack(select(2, ...))
 
 if not C.general.threatMeter then return end
 
+local threatMeternameFont
+
+if C.unitframes.UnitframesNameFont_Pixel then
+	threatMeternameFont = C.UnitframesNameFont.pixel
+else
+	threatMeternameFont = C.UnitframesNameFont.standard
+end
+
 local f = CreateFrame("StatusBar", "FreeUIThreatMeter", UIParent)
 f:SetStatusBarTexture(C.media.texture)
 f:SetMinMaxValues(0, 100)
@@ -19,6 +27,7 @@ F.CreateBD(bg)
 
 local nametext = F.CreateFS(f, C.FONT_SIZE_NORMAL, "LEFT")
 nametext:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, 2)
+nametext:SetFont(unpack(threatMeternameFont))
 
 local addonLoaded
 addonLoaded = function(_, addon)

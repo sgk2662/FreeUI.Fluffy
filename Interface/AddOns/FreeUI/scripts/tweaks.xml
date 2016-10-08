@@ -17,6 +17,7 @@
 	<Script file="tweaks\fastercamera.lua"/>
 	<Script file="tweaks\fonts.lua"/>
 	<Script file="tweaks\globals.lua"/>
+	<Script file="tweaks\HiddenSkinTracker.lua"/>
 	<Script file="tweaks\init.lua"/>
 	<Script file="tweaks\loot.lua"/>
 	<Script file="tweaks\lootroll.lua"/>

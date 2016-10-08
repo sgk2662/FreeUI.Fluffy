@@ -26,13 +26,7 @@ hooksecurefunc(ObjectiveTrackerFrame, "SetPoint", function(_, _, parent)
 	end
 end)
 
--- for _, headerName in pairs({"QuestHeader", "AchievementHeader", "ScenarioHeader"}) do
--- 	ObjectiveTrackerFrame.BlocksFrame[headerName].Background:Hide()
--- end
--- BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:Hide()
-
--- ObjectiveTrackerFrame.HeaderMenu.Title:SetAlpha(0)
--- OBJECTIVE_TRACKER_DOUBLE_LINE_HEIGHT = 30
+OBJECTIVE_TRACKER_DOUBLE_LINE_HEIGHT = 30
 
 -- [[ Difficulty color for ObjectiveTrackerFrame lines ]]
 
@@ -71,7 +65,6 @@ end)
 
 -- Header
 
---F.SetFS(ot.HeaderMenu.Title)
 ot.HeaderMenu.Title:SetFont(C.media.font.header, 16, "OUTLINE")
 
 -- Minimize button
@@ -263,22 +256,23 @@ hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, 
 		local label = bar.Label
 
 		bar.BarBG:Hide()
+		bar.BarFrame:Hide()
+		bar:SetStatusBarTexture(C.media.backdrop)
+		-- bar:SetStatusBarColor(237/255, 82/255, 46/255)
+		bar:SetHeight(14)
 
 		icon:SetMask(nil)
+		icon:SetSize(24, 24)
 		icon:SetDrawLayer("BACKGROUND", 1)
 		icon:ClearAllPoints()
-		icon:SetPoint("RIGHT", 35, 2)
+		icon:SetPoint("RIGHT", 30, 0)
 		bar.newIconBg = F.ReskinIcon(icon)
-
-		bar.BarFrame:Hide()
-
-		bar:SetStatusBarTexture(C.media.backdrop)
 
 		label:ClearAllPoints()
 		label:SetPoint("CENTER")
 		F.SetFS(label)
 
-		local bg = F.CreateBDFrame(bar)
+		local bg = F.CreateBDFrame(bar, .6)
 		bg:SetPoint("TOPLEFT", -1, 1)
 		bg:SetPoint("BOTTOMRIGHT", 0, -2)
 
@@ -287,7 +281,6 @@ hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, 
 
 	bar.IconBG:Hide()
 	bar.newIconBg:SetShown(icon:IsShown())
-	progressBar.Bar:SetValue(50)
 end)
 
 -- [[ World quest objective progress bar ]]
@@ -300,22 +293,23 @@ hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(self, bloc
 		local label = bar.Label
 
 		bar.BarBG:Hide()
+		bar.BarFrame:Hide()
+		bar:SetStatusBarTexture(C.media.backdrop)
+		bar:SetStatusBarColor(237/255, 82/255, 46/255)
+		bar:SetHeight(14)
 
 		icon:SetMask(nil)
+		icon:SetSize(24, 24)
 		icon:SetDrawLayer("BACKGROUND", 1)
 		icon:ClearAllPoints()
-		icon:SetPoint("RIGHT", 35, 2)
+		icon:SetPoint("RIGHT", 30, 0)
 		bar.newIconBg = F.ReskinIcon(icon)
-
-		bar.BarFrame:Hide()
-
-		bar:SetStatusBarTexture(C.media.backdrop)
 
 		label:ClearAllPoints()
 		label:SetPoint("CENTER")
 		F.SetFS(label)
 
-		local bg = F.CreateBDFrame(bar)
+		local bg = F.CreateBDFrame(bar, .6)
 		bg:SetPoint("TOPLEFT", -1, 1)
 		bg:SetPoint("BOTTOMRIGHT", 0, -2)
 
@@ -324,12 +318,11 @@ hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(self, bloc
 
 	bar.IconBG:Hide()
 	bar.newIconBg:SetShown(icon:IsShown())
-	progressBar.Bar:SetValue(50)
 end)
 
 
-
 -- [[ Header background ]]
+
 for _, headerName in next, {"QuestHeader", "AchievementHeader", "ScenarioHeader"} do
 	local header = _G.ObjectiveTrackerFrame.BlocksFrame[headerName]
 	header.Background:Hide()
@@ -342,7 +335,6 @@ for _, headerName in next, {"QuestHeader", "AchievementHeader", "ScenarioHeader"
 	bg:SetSize(210, 30)
 end
 
---
 ScenarioStageBlock:HookScript("OnShow", function()
 	if not ScenarioStageBlock.skinned then
 		ScenarioStageBlock.NormalBG:SetAlpha(.6)
@@ -358,11 +350,6 @@ ScenarioStageBlock:HookScript("OnShow", function()
 		ScenarioStageBlock.skinned = true
 	end
 end)
-
-
-
---ScenarioChallengeModeBlock
---ScenarioProvingGroundsBlock
 
 
 -- [[ Init ]]

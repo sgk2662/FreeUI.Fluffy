@@ -3,12 +3,12 @@ local koKR, ruRU, zhCN, zhTW, western = LSM.LOCALE_BIT_koKR, LSM.LOCALE_BIT_ruRU
 -- -----
 -- BACKGROUND
 -- -----
-LSM:Register("background", "myMedia_BG_B", 			[[Interface\Addons\FreeUI\media\HalBackgroundB.tga]])
-LSM:Register("background", "myMedia_BG_A", 			[[Interface\Addons\FreeUI\media\HalBackgroundA.tga]])
+LSM:Register("background", "myMedia_BG_B", 				[[Interface\Addons\FreeUI\media\HalBackgroundB.tga]])
+LSM:Register("background", "myMedia_BG_A", 				[[Interface\Addons\FreeUI\media\HalBackgroundA.tga]])
 -- -----
 --  BORDER
 -- ----
-LSM:Register("border", "myMedia_border_roth", 		[[Interface\Addons\FreeUI\media\border_roth.tga]])
+LSM:Register("border", "myMedia_border_roth", 			[[Interface\Addons\FreeUI\media\border_roth.tga]])
 -- -----
 --   FONT
 -- -----
@@ -26,6 +26,22 @@ LSM:Register("font", "pixfontCN", 						[[Fonts\pixfontCN.ttf]], zhCN + zhTW + w
 LSM:Register("font", "Hiragino", 						[[Fonts\Hiragino.ttf]], zhCN + zhTW + western)
 LSM:Register("font", "lihei", 							[[Fonts\lihei.ttf]], zhCN + zhTW + western)
 LSM:Register("font", "yaheibold", 						[[Fonts\yaheibold.ttf]], zhCN + zhTW + western)
+
+LSM:Register("font", "张海山草泥马体", 					[[Fonts\CN\zhscnmt.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "张海山锐谐体", 						[[Fonts\CN\zhsrxt.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "颜体楷书", 							[[Fonts\CN\yanti.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "Zfull-GB", 						[[Fonts\CN\Zfull-GB.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "苹方", 							[[Fonts\CN\PingFangTC-Semibold.otf]], zhCN + zhTW + western)
+LSM:Register("font", "方正柳楷", 							[[Fonts\CN\方正柳楷.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "方正粗黑宋简", 						[[Fonts\CN\方正粗黑宋简.otf]], zhCN + zhTW + western)
+LSM:Register("font", "方正行黑", 							[[Fonts\CN\方正行黑.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "方正跃进体", 						[[Fonts\CN\方正跃进体.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "方正邱氏粗瘦金书简体", 				[[Fonts\CN\方正邱氏粗瘦金书简体.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "方正黑隶简_粗", 					[[Fonts\CN\方正黑隶简_粗.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "書體坊顏體", 						[[Fonts\CN\書體坊顏體.ttf]], zhCN + zhTW + western)
+
+
+
 
 -- -----
 --   SOUND

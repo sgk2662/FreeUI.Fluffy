@@ -37,6 +37,7 @@
 	<Script file="tweaks\reputation.lua"/>
 	<Script file="tweaks\role.lua"/>
 	<Script file="tweaks\SafeQueue.lua"/>
+	<Script file="tweaks\SpeedyLoad.lua"/>
 	<Script file="tweaks\stats.lua"/>
 	<Script file="tweaks\tekkrush.lua"/>
 	<Script file="tweaks\threatmeter.lua"/>

@@ -17,7 +17,6 @@
 	<Script file="tweaks\fastercamera.lua"/>
 	<Script file="tweaks\fonts.lua"/>
 	<Script file="tweaks\globals.lua"/>
-	<Script file="tweaks\HiddenSkinTracker.lua"/>
 	<Script file="tweaks\init.lua"/>
 	<Script file="tweaks\loot.lua"/>
 	<Script file="tweaks\lootroll.lua"/>
@@ -41,6 +40,5 @@
 	<Script file="tweaks\stats.lua"/>
 	<Script file="tweaks\tekkrush.lua"/>
 	<Script file="tweaks\threatmeter.lua"/>
-	<Script file="tweaks\TinyFact.lua"/>
 	<Script file="tweaks\worldstateframe.lua"/>
 </Ui>

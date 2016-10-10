@@ -571,7 +571,7 @@ local Shared = function(self, unit, isSingle)
 			elseif unit=="player" then
 				self.Iconbg:SetVertexColor(0, 0, 0)
 				if C.unitframes.castbarSeparate then
-					Castbar:SetStatusBarColor(unpack(C.class))
+					Castbar:SetStatusBarColor(C.classcolours[class].r, C.classcolours[class].g, C.classcolours[class].b)
 				else
 					Castbar:SetStatusBarColor(0, 0, 0, .3)
 				end

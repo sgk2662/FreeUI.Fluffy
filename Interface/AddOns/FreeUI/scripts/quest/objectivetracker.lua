@@ -269,7 +269,6 @@ hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, 
 		icon:SetDrawLayer("BACKGROUND", 1)
 		icon:ClearAllPoints()
 		icon:SetPoint("RIGHT", 30, 0)
-		F.CreateSD(icon)
 		bar.newIconBg = F.ReskinIcon(icon)
 
 		bar.Label:ClearAllPoints()
@@ -306,7 +305,6 @@ hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(self, bloc
 		icon:SetDrawLayer("BACKGROUND", 1)
 		icon:ClearAllPoints()
 		icon:SetPoint("RIGHT", 30, 0)
-		F.CreateSD(icon)
 		bar.newIconBg = F.ReskinIcon(icon)
 
 		bar.Label:ClearAllPoints()

@@ -2,14 +2,6 @@
 
 local F, C, L = unpack(select(2, ...))
 
-local chattabFont
-
-if C.unitframes.UnitframesNameFont_Pixel then
-	chattabFont = C.UnitframesNameFont.pixel
-else
-	chattabFont = C.UnitframesNameFont.standard
-end
-
 CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA = 0
 CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = 0
 CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 1
@@ -86,9 +78,15 @@ local faneifyTab = function(frame, sel)
 		frame:HookScript('OnEnter', OnEnter)
 		frame:HookScript('OnLeave', OnLeave)
 
-		F.SetFS(frame:GetFontString())
-
-		frame:GetFontString():SetFont(unpack(chattabFont))
+		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+			if C.appearance.fontUseChinesePixelFont then
+				frame:GetFontString():SetFont(unpack(C.fontCN.pixel))
+			else
+				frame:GetFontString():SetFont(unpack(C.fontCN.standard))
+			end
+		else
+			F.SetFS(frame:GetFontString())
+		end
 
 		frame.Fane = true
 	end

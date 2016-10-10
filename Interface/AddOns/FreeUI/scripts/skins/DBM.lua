@@ -1,11 +1,12 @@
 local F, C, L = unpack(select(2, ...))
 
 local DBMBarFont
-
-if C.unitframes.UnitframesNameFont_Pixel then
-	DBMBarFont = C.UnitframesNameFont.pixel
-else
-	DBMBarFont = C.UnitframesNameFont.standard
+if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+	if C.appearance.fontUseChinesePixelFont then
+		DBMBarFont = C.fontCN.pixel
+	else
+		DBMBarFont = C.fontCN.standard
+	end
 end
 
 local function InitStyle()

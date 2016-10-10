@@ -9,13 +9,11 @@ local name = UnitName("player")
 local realm = GetRealmName()
 local class = select(2, UnitClass("player"))
 
-
-local nameFont
-
-if C.unitframes.UnitframesNameFont_Pixel then
-	nameFont = C.UnitframesNameFont.pixel
+local unitframeFont
+if C.appearance.fontUseChinesePixelFont then
+	unitframeFont = C.fontCN.pixel
 else
-	nameFont = C.UnitframesNameFont.standard
+	unitframeFont = C.fontCN.standard
 end
 
 local shadow = C.unitframes.shadow
@@ -511,7 +509,7 @@ local Shared = function(self, unit, isSingle)
 	-- Colour power by power type for dps/tank layout. Because this is brighter, make the background darker for contrast.
 	if C.unitframes.healerClasscolours then
 		Power.colorPower = true
-		Power.bg:SetVertexColor(0, 0, 0, .25)
+		-- Power.bg:SetVertexColor(0, 0, 0, .25)
 	end
 
 	--[[ Alt Power ]]
@@ -735,7 +733,7 @@ local UnitSpecific = {
 		Name:SetWidth(80)
 		Name:SetHeight(12)
 		Name:SetJustifyH"LEFT"
-		Name:SetFont(unpack(nameFont))
+		Name:SetFont(unpack(unitframeFont))
 		Name:SetTextColor(1, 1, 1)
 
 		self:Tag(Name, '[name]')
@@ -804,7 +802,7 @@ local UnitSpecific = {
 				Castbar:SetHeight(self:GetHeight())
 				Castbar:SetPoint(unpack(C.unitframes.player_castbar))
 				Castbar.Text:SetAllPoints(Castbar)
-				Castbar.Text:SetFont(unpack(nameFont))
+				Castbar.Text:SetFont(unpack(unitframeFont))
 				local sf = Castbar:CreateTexture(nil, "OVERLAY")
 				sf:SetVertexColor(.5, .5, .5, .5)
 				Castbar.SafeZone = sf
@@ -1237,7 +1235,7 @@ local UnitSpecific = {
 			Castbar:SetHeight(C.unitframes.castbarHeight)
 			Castbar:SetPoint(unpack(C.unitframes.target_castbar))
 			Castbar.Text:SetPoint("BOTTOM", Castbar, "TOP", 0, 4)
-			Castbar.Text:SetFont(unpack(nameFont))
+			Castbar.Text:SetFont(unpack(unitframeFont))
 			local sf = Castbar:CreateTexture(nil, "OVERLAY")
 			sf:SetVertexColor(.5, .5, .5, .5)
 			Castbar.SafeZone = sf
@@ -1259,7 +1257,7 @@ local UnitSpecific = {
 
 		local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "RIGHT")
 		ttt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", C.unitframes.targettarget_width + 5, 2)
-		ttt:SetFont(unpack(nameFont))
+		ttt:SetFont(unpack(unitframeFont))
 		ttt:SetWidth(C.unitframes.targettarget_width)
 		ttt:SetHeight(12)
 
@@ -1279,7 +1277,7 @@ local UnitSpecific = {
 		local Name = F.CreateFS(self)
 		Name:SetPoint("BOTTOMLEFT", PowerText, "BOTTOMRIGHT")
 		Name:SetPoint("RIGHT", self)
-		Name:SetFont(unpack(nameFont))
+		Name:SetFont(unpack(unitframeFont))
 		Name:SetJustifyH("RIGHT")
 		Name:SetTextColor(1, 1, 1)
 		Name:SetWordWrap(false)
@@ -1413,7 +1411,7 @@ local UnitSpecific = {
 			Castbar:SetHeight(C.unitframes.castbarHeight)
 			Castbar:SetPoint(unpack(C.unitframes.focus_castbar))
 			Castbar.Text:SetPoint("TOP", Castbar, "BOTTOM", 0, -4)
-			Castbar.Text:SetFont(unpack(nameFont))
+			Castbar.Text:SetFont(unpack(unitframeFont))
 			local sf = Castbar:CreateTexture(nil, "OVERLAY")
 			sf:SetVertexColor(.5, .5, .5, .5)
 			Castbar.SafeZone = sf
@@ -1435,7 +1433,7 @@ local UnitSpecific = {
 
 		local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "RIGHT")
 		ttt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", C.unitframes.focus_width + 5, 2)
-		ttt:SetFont(unpack(nameFont))
+		ttt:SetFont(unpack(unitframeFont))
 		ttt:SetWidth(C.unitframes.focus_width)
 		ttt:SetHeight(12)
 
@@ -1453,7 +1451,7 @@ local UnitSpecific = {
 
 		local Name = F.CreateFS(self)
 		Name:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 3)
-		Name:SetFont(unpack(nameFont))
+		Name:SetFont(unpack(unitframeFont))
 		Name:SetWidth(C.unitframes.focus_width)
 		Name:SetHeight(12)
 		Name:SetJustifyH"LEFT"
@@ -1517,7 +1515,7 @@ local UnitSpecific = {
 		Health.value = HealthPoints
 
 		local Name = F.CreateFS(self, C.FONT_SIZE_NORMAL, "LEFT")
-		Name:SetFont(unpack(nameFont))
+		Name:SetFont(unpack(unitframeFont))
 		Name:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 4)
 		Name:SetWidth((bossWidth / 2) + 10)
 		Name:SetHeight(12)
@@ -1559,7 +1557,7 @@ local UnitSpecific = {
 		Spark:SetHeight(self.Health:GetHeight())
 
 		Castbar.Text = F.CreateFS(self)
-		Castbar.Text:SetFont(unpack(nameFont))
+		Castbar.Text:SetFont(unpack(unitframeFont))
 		Castbar.Text:SetDrawLayer("ARTWORK")
 		Castbar.Text:SetAllPoints(Health)
 
@@ -1646,7 +1644,7 @@ local UnitSpecific = {
 		Name:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
 		Name:SetWidth(110)
 		Name:SetHeight(12)
-		Name:SetFont(unpack(nameFont))
+		Name:SetFont(unpack(unitframeFont))
 
 		self:Tag(Name, '[name]')
 		self.Name = Name
@@ -1657,7 +1655,7 @@ local UnitSpecific = {
 		Spark:SetHeight(self.Health:GetHeight())
 
 		Castbar.Text = F.CreateFS(self)
-		Castbar.Text:SetFont(unpack(nameFont))
+		Castbar.Text:SetFont(unpack(unitframeFont))
 		Castbar.Text:SetDrawLayer("ARTWORK")
 		Castbar.Text:SetAllPoints(Health)
 
@@ -1715,7 +1713,7 @@ do
 
 		local Text = F.CreateFS(Health, C.FONT_SIZE_NORMAL, "CENTER")
 		Text:SetPoint("CENTER", 1, 0)
-		Text:SetFont(unpack(nameFont))
+		Text:SetFont(unpack(unitframeFont))
 
 		self.Text = Text
 

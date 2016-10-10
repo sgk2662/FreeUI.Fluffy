@@ -6,14 +6,6 @@ local top = C.menubar.topPosition
 
 local r, g, b = unpack(C.class)
 
-local menubarFont
-
-if C.unitframes.UnitframesNameFont_Pixel then
-	menubarFont = C.UnitframesNameFont.pixel
-else
-	menubarFont = C.UnitframesNameFont.standard
-end
-
 local barAlpha, buttonAlpha
 
 if C.menubar.buttons_mouseover then
@@ -281,7 +273,6 @@ local function addButton(text, position, clickFunc)
 
 	local buText = F.CreateFS(bu)
 	buText:SetPoint("CENTER")
-	buText:SetFont(unpack(menubarFont))
 	buText:SetText(text)
 	bu.Text = buText
 
@@ -451,6 +442,15 @@ specButton:SetScript("OnEvent", function(self)
 			else
 				self.Text:SetText(format("S: %s  L: %s", name, lootname))
 			end
+			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+				local specFont
+				if C.appearance.fontUseChinesePixelFont then
+					specFont = C.fontCN.pixel
+				else
+					specFont = C.fontCN.standard
+				end
+				self.Text:SetFont(unpack(specFont))
+			end
 			showButton(self)
 		end
 	else
@@ -459,7 +459,15 @@ specButton:SetScript("OnEvent", function(self)
 end)
 
 local garrisonButton = addButton(GARRISON_LANDING_PAGE_TITLE, POSITION_RIGHT, GarrisonLandingPage_Toggle)
-
+if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+	local menubarFont
+	if C.appearance.fontUseChinesePixelFont then
+		menubarFont = C.fontCN.pixel
+	else
+		menubarFont = C.fontCN.standard
+	end
+	garrisonButton.Text:SetFont(unpack(menubarFont))
+end
 garrisonButton:Hide()
 
 GarrisonLandingPageMinimapButton:SetSize(1, 1)

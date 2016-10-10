@@ -3,11 +3,12 @@
 local F, C, L = unpack(select(2, ...))
 
 local EJPFont
-
-if C.unitframes.UnitframesNameFont_Pixel then
-	EJPFont = C.UnitframesNameFont.pixel
-else
-	EJPFont = C.UnitframesNameFont.standard
+if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+	if C.appearance.fontUseChinesePixelFont then
+		EJPFont = C.fontCN.pixel
+	else
+		EJPFont = C.fontCN.standard
+	end
 end
 
 EJPlus_InstanceInfo_TXT = {

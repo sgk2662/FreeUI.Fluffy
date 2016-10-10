@@ -2,14 +2,6 @@
 
 local F, C, L = unpack(select(2, ...))
 
-local mirrorbarFont
-
-if C.unitframes.UnitframesNameFont_Pixel then
-	mirrorbarFont = C.UnitframesNameFont.pixel
-else
-	mirrorbarFont = C.UnitframesNameFont.standard
-end
-
 for i = 1, 3 do
 	local barname = "MirrorTimer"..i
 	local bar = _G[barname]
@@ -30,9 +22,17 @@ for i = 1, 3 do
 	_G[barname.."Border"]:Hide()
 
 	_G[barname.."Text"] = F.CreateFS(bar)
+
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+		local mirrorbarFont
+		if C.appearance.fontUseChinesePixelFont then
+			mirrorbarFont = C.fontCN.pixel
+		else
+			mirrorbarFont = C.fontCN.standard
+		end
 		_G[barname.."Text"]:SetFont(unpack(mirrorbarFont))
 	end
+
 	_G[barname.."Text"]:ClearAllPoints()
 	_G[barname.."Text"]:SetPoint("CENTER", _G[barname.."StatusBar"])
 

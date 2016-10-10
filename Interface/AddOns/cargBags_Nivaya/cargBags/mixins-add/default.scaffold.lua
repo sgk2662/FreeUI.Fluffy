@@ -79,7 +79,12 @@ local function CreateInfoString(button, position)
 		str:SetJustifyH("RIGHT")
 		str:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 1.5, 1.5)
 	end
-	str:SetFont(unpack(ns.options.fonts.itemCount))
+	if FreeUI then
+		local F = FreeUI[1]
+		F.SetFS(str)
+	else
+		str:SetFont(unpack(ns.options.fonts.itemCount))
+	end
 	return str
 end
 

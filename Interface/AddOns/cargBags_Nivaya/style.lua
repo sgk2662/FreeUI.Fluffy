@@ -345,7 +345,13 @@ local createIconButton = function (name, parent, texture, point, hint, isBag)
 	
 	button.tooltip = button:CreateFontString()
 	-- button.tooltip:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", isBag and -76 or -59, 4.5)
-	button.tooltip:SetFont(unpack(ns.options.fonts.standard))
+	if FreeUI then
+		local F = FreeUI[1]
+		F.SetFS(button.tooltip)
+	else
+		button.tooltip:SetFont(unpack(ns.options.fonts.standard))
+	end
+
 	button.tooltip:SetJustifyH("RIGHT")
 	button.tooltip:SetText(hint)
 	button.tooltip:SetTextColor(0.8, 0.8, 0.8)
@@ -476,20 +482,24 @@ function MyContainer:OnCreate(name, settings)
 
 	-- Caption, close button
 	local caption = background:CreateFontString(background, "OVERLAY", nil)
+
 	if FreeUI then
 		local C = FreeUI[2]
-		local captionFont
+		local locale = GetLocale()
 
-		if C.unitframes.UnitframesNameFont_Pixel then
-			captionFont = C.UnitframesNameFont.pixel
+		if locale == "zhCN" or locale == "zhTW" then
+			if C.appearance.fontUseChinesePixelFont then
+				caption:SetFont(unpack(C.fontCN.pixel))
+			else
+				caption:SetFont(unpack(C.fontCN.standard))
+			end
 		else
-			captionFont = C.UnitframesNameFont.standard
+			F:SetFS(caption)
 		end
-
-		caption:SetFont(unpack(captionFont))
 	else
 		caption:SetFont(unpack(ns.options.fonts.standard))
 	end
+
 	if(caption) then
 		local t = L.bagCaptions[self.name] or (tBankBags and strsub(self.name, 5))
 		if not t then t = self.name end
@@ -725,7 +735,14 @@ function MyContainer:OnCreate(name, settings)
 		self.DropTarget:SetScript("OnReceiveDrag", DropTargetProcessItem)
 		
 		local fs = self:CreateFontString(nil, "OVERLAY")
-		fs:SetFont(unpack(ns.options.fonts.standard))
+
+		if FreeUI then
+			local F = FreeUI[1]
+			F.SetFS(fs)
+		else
+			fs:SetFont(unpack(ns.options.fonts.standard))
+		end
+
 		fs:SetJustifyH("LEFT")
 		fs:SetPoint("BOTTOMRIGHT", self.DropTarget, "BOTTOMRIGHT", 1.5, 1.5)
 		self.EmptySlotCounter = fs
@@ -760,7 +777,14 @@ function MyContainer:OnCreate(name, settings)
 		-- Hint
 		self.hint = background:CreateFontString(nil, "OVERLAY", nil)
 		self.hint:SetPoint("BOTTOMLEFT", infoFrame, -0.5, 31.5)
-		self.hint:SetFont(unpack(ns.options.fonts.standard))
+
+		if FreeUI then
+			local F = FreeUI[1]
+			F.SetFS(self.hint)
+		else
+			self.hint:SetFont(unpack(ns.options.fonts.standard))
+		end
+
 		self.hint:SetTextColor(1, 1, 1, 0.4)
 		self.hint:SetText("Ctrl + Alt + Right Click an item to assign category")
 		self.hintShown = true
@@ -768,7 +792,14 @@ function MyContainer:OnCreate(name, settings)
 		-- The money display
 		local money = self:SpawnPlugin("TagDisplay", "[money]", self)
 		money:SetPoint("TOPRIGHT", self, -25.5, -2.5)
-		money:SetFont(unpack(ns.options.fonts.standard))
+
+		if FreeUI then
+			local F = FreeUI[1]
+			F.SetFS(money)
+		else
+			money:SetFont(unpack(ns.options.fonts.standard))
+		end
+
 		money:SetJustifyH("RIGHT")
 		money:SetShadowColor(0, 0, 0, 0)
 	end

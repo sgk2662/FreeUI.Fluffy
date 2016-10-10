@@ -1,7 +1,7 @@
 local addon, ns = ...
 ns.options = {
 
-	itemSlotSize = 32,	-- Size of item slots
+	itemSlotSize = 34,	-- Size of item slots
 
 	sizes = {
 		bags = {
@@ -28,7 +28,7 @@ ns.options = {
 		--Font to use for the dropdown menu
 		dropdown = {
 			[[Interface\AddOns\cargBags_Nivaya\media\pixel.ttf]], 	-- Font path
-			10, 						-- Font Size
+			8, 						-- Font Size
 			nil,	-- Flags
 		},
 

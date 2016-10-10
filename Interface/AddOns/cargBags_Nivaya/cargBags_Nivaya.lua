@@ -45,10 +45,10 @@ do	--Replacement for UIDropDownMenu
 			local C = FreeUI[2]
 			local menuFont
 
-			if C.unitframes.UnitframesNameFont_Pixel then
-				menuFont = C.UnitframesNameFont.pixel
+			if C.appearance.fontUseChinesePixelFont then
+				menuFont = C.fontCN.pixel
 			else
-				menuFont = C.UnitframesNameFont.standard
+				menuFont = C.fontCN.standard
 			end
 
 			fstr:SetFont(unpack(menuFont))

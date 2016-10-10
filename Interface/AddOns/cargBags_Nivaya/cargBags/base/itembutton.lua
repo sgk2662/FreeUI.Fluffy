@@ -89,7 +89,14 @@ function ItemButton:Create(tpl, parent)
 	bFS = _G[button:GetName().."Count"]
 	bFS:ClearAllPoints()
 	bFS:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 1.5, 1.5);
-	bFS:SetFont(unpack(ns.options.fonts.itemCount))
+
+	if FreeUI then
+		local F = FreeUI[1]
+		F.SetFS(bFS)
+	else
+		bFS:SetFont(unpack(ns.options.fonts.itemCount))
+	end
+	
 	return button
 end
 

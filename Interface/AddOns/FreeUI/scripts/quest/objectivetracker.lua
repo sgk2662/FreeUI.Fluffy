@@ -253,7 +253,10 @@ hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, 
 	local bar = progressBar.Bar
 	local icon = bar.Icon
 	if not progressBar.styled then
-		local label = bar.Label
+		local bg = F.CreateBDFrame(bar)
+		bg:SetPoint("TOPLEFT", -1, 1)
+		bg:SetPoint("BOTTOMRIGHT", 0, -2)
+		F.CreateSD(bg)
 
 		bar.BarBG:Hide()
 		bar.BarFrame:Hide()
@@ -266,15 +269,12 @@ hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, 
 		icon:SetDrawLayer("BACKGROUND", 1)
 		icon:ClearAllPoints()
 		icon:SetPoint("RIGHT", 30, 0)
+		F.CreateSD(icon)
 		bar.newIconBg = F.ReskinIcon(icon)
 
-		label:ClearAllPoints()
-		label:SetPoint("CENTER")
-		F.SetFS(label)
-
-		local bg = F.CreateBDFrame(bar, .6)
-		bg:SetPoint("TOPLEFT", -1, 1)
-		bg:SetPoint("BOTTOMRIGHT", 0, -2)
+		bar.Label:ClearAllPoints()
+		bar.Label:SetPoint("CENTER")
+		F.SetFS(bar.Label)
 
 		progressBar.styled = true
 	end

@@ -2,7 +2,7 @@ local F, C, L = unpack(select(2, ...))
 local _G = _G
 local next, type = _G.next, _G.type
 local playername, _ = UnitName('player')
-local r, g, b = C.appearance.colorFontrgb.r, C.appearance.colorFontrgb.g, C.appearance.colorFontrgb.b
+local r, g, b = C.appearance.fontColorFontRGB.r, C.appearance.fontColorFontRGB.g, C.appearance.fontColorFontRGB.b
 local locale = GetLocale()
 local font
 
@@ -37,12 +37,6 @@ _G.STANDARD_TEXT_FONT = NORMAL
 _G.UNIT_NAME_FONT = UNITNAME
 _G.NAMEPLATE_FONT = NORMAL
 _G.DAMAGE_TEXT_FONT = CRIT
-
-RaidWarningFrame.slot1:SetFont(HEADER, 20, "OUTLINE")
-RaidWarningFrame.slot2:SetFont(HEADER, 20, "OUTLINE")
-RaidBossEmoteFrame.slot1:SetFont(HEADER, 20, "OUTLINE")
-RaidBossEmoteFrame.slot2:SetFont(HEADER, 20, "OUTLINE")
-
 
 -- Base fonts, everything inhierits from these fonts.
 -- FrameXML\Fonts.xml
@@ -160,14 +154,21 @@ SetFont("SystemFont_Outline_WTF2",         NORMAL, 36, "OUTLINE")
 SetFont("GameTooltipHeader",               NORMAL, 14)
 SetFont("System_IME",                      NORMAL, 16)
 
+--
+
 SetFont("ZoneTextFont",                    HEADER, 40, nil, nil, {0, 0, 0}, 1, -1)
 SetFont("SubZoneTextFont",                 HEADER, 40, nil, nil, {0, 0, 0}, 1, -1)
 SetFont("WorldMapTextFont",                HEADER, 40, nil, nil, {0, 0, 0}, 1, -1)
 
-SetFont("GameFontNormalSmall",                      NORMAL, 11)
+SetFont("RaidWarningFrame.slot1",	HEADER, 28, nil, nil, {0, 0, 0}, 1, -1)
+SetFont("RaidWarningFrame.slot2", 	HEADER, 28, nil, nil, {0, 0, 0}, 1, -1)
+SetFont("RaidBossEmoteFrame.slot1",	HEADER, 28, nil, nil, {0, 0, 0}, 1, -1)
+SetFont("RaidBossEmoteFrame.slot2",	HEADER, 28, nil, nil, {0, 0, 0}, 1, -1)
+
+SetFont("GameFontNormalSmall",		NORMAL, 11)
 
 
-if C.appearance.colorFont then
+if C.appearance.fontUseColorFont then
 	local yellowFonts = {
 		"GameFontNormal",
 		"GameFontNormalSmall",

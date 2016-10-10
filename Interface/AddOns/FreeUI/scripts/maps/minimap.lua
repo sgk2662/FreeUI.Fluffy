@@ -1,7 +1,7 @@
 local F, C, L = unpack(select(2, ...))
 
 --local r, g, b = unpack(C.class)
-local r, g, b = C.appearance.colorFontrgb.r, C.appearance.colorFontrgb.g, C.appearance.colorFontrgb.b
+local r, g, b = C.appearance.fontColorFontRGB.r, C.appearance.fontColorFontRGB.g, C.appearance.fontColorFontRGB.b
 
 --
 local Scale = C.minimap.scale

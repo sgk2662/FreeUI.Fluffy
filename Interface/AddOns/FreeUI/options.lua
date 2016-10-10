@@ -582,6 +582,7 @@ C["hideDebuffs"] = {
 	[173649] = true, -- Tormmok defeated
 	[173660] = true, -- Aeda Brightdawn defeated
  	[173657] = true, -- Defender Illona defeated
+ 	[206151] = true, -- 挑战者的负担
 }
 
 if select(2, UnitClass("player")) == "PRIEST" then C.hideDebuffs[6788] = false end

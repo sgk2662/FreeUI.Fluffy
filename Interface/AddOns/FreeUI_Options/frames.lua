@@ -64,7 +64,7 @@ options.ProfileBox = ProfileBox
 
 local title = options:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 title:SetPoint("TOP", 0, -26)
-title:SetText("FreeUI "..GetAddOnMetadata("FreeUI", "Version"))
+title:SetText("FreeUI.Fluffy "..GetAddOnMetadata("FreeUI", "Version"))
 
 local reloadText = options:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 reloadText:SetPoint("BOTTOM", 0, 14)
@@ -246,14 +246,8 @@ do
 	local combo = ns.CreateCheckBox(general, "combo", true, true)
 	combo:SetPoint("TOPLEFT", threatMeter, "BOTTOMLEFT", 0, -8)
 
-	local objectivetracker = ns.CreateCheckBox(general, "objectivetracker", true, true)
-	objectivetracker:SetPoint("TOPLEFT", combo, "BOTTOMLEFT", 0, -8)
-
-	local helmCloak = ns.CreateCheckBox(general, "helmcloakbuttons", true, true)
-	helmCloak:SetPoint("TOPLEFT", objectivetracker, "BOTTOMLEFT", 0, -8)
-
 	local mailButton = ns.CreateCheckBox(general, "mailButton", true, true)
-	mailButton:SetPoint("TOPLEFT", helmCloak, "BOTTOMLEFT", 0, -8)
+	mailButton:SetPoint("TOPLEFT", combo, "BOTTOMLEFT", 0, -8)
 
 	local ncshadow = ns.CreateCheckBox(general, "ncshadow", true, true)
 	ncshadow:SetPoint("TOPLEFT", mailButton, "BOTTOMLEFT", 0, -8)
@@ -296,8 +290,11 @@ do
 	local fontUseAlternativeFont = ns.CreateCheckBox(appearance, "fontUseAlternativeFont", true, true)
 	fontUseAlternativeFont:SetPoint("TOPLEFT", fonts, "BOTTOMLEFT", 0, -20)
 
+	local fontUseChinesePixelFont = ns.CreateCheckBox(appearance, "fontUseChinesePixelFont", true, true)
+	fontUseChinesePixelFont:SetPoint("TOPLEFT", fontUseAlternativeFont, "BOTTOMLEFT", 0, -20)
+
 	local fontSizeNormal = ns.CreateNumberSlider(appearance, "fontSizeNormal", 5, 32, 5, 32, 1, true)
-	fontSizeNormal:SetPoint("TOPLEFT", fontUseAlternativeFont, "BOTTOMLEFT", 16, -26)
+	fontSizeNormal:SetPoint("TOPLEFT", fontUseChinesePixelFont, "BOTTOMLEFT", 16, -26)
 
 	appearance.normalSample = appearance:CreateFontString()
 	appearance.normalSample:SetPoint("TOPLEFT", fontSizeNormal, "BOTTOMLEFT", 0, -16)

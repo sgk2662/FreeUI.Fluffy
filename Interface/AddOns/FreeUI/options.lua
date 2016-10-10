@@ -17,36 +17,25 @@ C.media = {
 	["texture"]    = "Interface\\AddOns\\FreeUI\\media\\Texture1", 					-- statusbar texture
 
 	["font"] = {
-		["normal"]          = "Fonts\\FRIZQT__.ttf",	-- 游戏主字体
-		["chat"]            = "Fonts\\FRIZQT__.ttf",	-- 聊天框
-		["unitname"]        = "Fonts\\FRIZQT__.ttf",	-- 人物头上的名字
-		["pixelCN"]         = "Fonts\\pixfontCN.ttf",	-- 中文像素
-		["pixel"]           = "Interface\\AddOns\\FreeUI\\media\\pixel.ttf",	-- 英文像素
-		["header"]          = "Interface\\AddOns\\FreeUI\\media\\ExocetBlizzardMedium.ttf",	-- 标题
-		["damage"]          = "Interface\\AddOns\\FreeUI\\media\\PEPSI_pl.ttf",		-- 伤害
+		["normal"] 		= "Fonts\\FRIZQT__.ttf",	-- 游戏主字体
+		["unitname"] 	= "Fonts\\FRIZQT__.ttf",	-- 人物头上的名字
+		["damage"] 		= "Fonts\\skurri.ttf",		-- 伤害
+		["header"]		= "Fonts\\MORPHEUS.ttf",	-- 标题
+		["chat"]		= "Fonts\\ARIALN.ttf",		-- 聊天
+		["pixel"]		= "Interface\\AddOns\\FreeUI\\media\\pixel.ttf",	-- 英文像素
 	},
 }
 
-if GetLocale() == "zhCN" then
-	C.media.font.normal = "Fonts\\ARKai_T.ttf"		-- 简体中文客户端主字体
-	C.media.font.chat = "Fonts\\ARKai_T.ttf"
-	C.media.font.header = "Fonts\\ARKai_T.ttf"
-elseif GetLocale() == "zhTW" then
-	C.media.font.normal = "Fonts\\blei00d.ttf"		-- 繁体中文客户端主字体
-	C.media.font.chat = "Fonts\\blei00d.ttf"
-	C.media.font.header = "Fonts\\blei00d.ttf"
-end
-
-C.UnitframesNameFont = {
-	standard = {
-		C.media.font.normal,
-		11,
-		"OUTLINE",
-	},
-	pixel = {
-		C.media.font.pixelCN,
+C.fontCN = {
+	["pixel"] = {	-- 中文像素
+		"Fonts\\pixfontCN.ttf",
 		10,
 		"OUTLINEMONOCHROME",
+	},
+	["standard"] = {	-- 中文普通
+		"Fonts\\ARKai_T.ttf",
+		11,
+		"OUTLINE",
 	},
 }
 
@@ -76,14 +65,14 @@ C["appearance"] = {
 	["colourScheme"] = 1,			-- 1 = class coloured, 2 = custom
 		["customColour"] = {r = 1, g = 1, b = 1},
 	["fontUseAlternativeFont"] = false,
+	["fontUseChinesePixelFont"] = false,
 	["fontSizeNormal"] = 8,
 	["fontSizeLarge"] = 16,
 	["fontOutline"] = true,
 	["fontOutlineStyle"] = 2,		-- 1 = normal, 2 = monochrome
-	["fontShadow"] = false,
-
-	["colorFont"] = true,
-	["colorFontrgb"] = {r = 247/255, g = 225/255, b =171/255},
+	["fontShadow"] = true,
+	["fontUseColorFont"] = true,
+	["fontColorFontRGB"] = {r = 247/255, g = 225/255, b =171/255},
 }
 
 C["automation"] = {
@@ -261,7 +250,6 @@ C["unitframes"] = {
 	["num_arena_buffs"] = 8,
 	["num_focus_debuffs"] = 4,
 
-	["UnitframesNameFont_Pixel"] = false,
 }
 
 C["buff"] = {

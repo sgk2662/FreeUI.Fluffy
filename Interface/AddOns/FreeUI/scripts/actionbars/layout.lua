@@ -130,7 +130,7 @@ rActionBar:CreateActionBar3(A, bar3)
 -----------------------------
 
 local bar4 = {
-  framePoint      = { "RIGHT", UIParent, "RIGHT", 0, -200 },
+  framePoint      = { "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 160 },
   frameScale      = 1,
   framePadding    = 4,
   buttonWidth     = 26,

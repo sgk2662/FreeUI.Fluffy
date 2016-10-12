@@ -127,7 +127,13 @@ local createSlot = function(id)
 	name:SetNonSpaceWrap(true)
 
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-		name:SetFont(C.media.font.normal, 12, "OUTLINE")
+		local lootFont
+		if C.appearance.fontUseChinesePixelFont then
+			lootFont = C.fontCN.pixel
+		else
+			lootFont = C.fontCN.standard
+		end
+		name:SetFont(unpack(lootFont))
 	end
 
 	frame.name = name

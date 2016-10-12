@@ -41,6 +41,22 @@ if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
 	UIErrorsFrame:SetFont(C.media.font.normal, 12, "OUTLINE")
 end
 
+if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+	local errorsFont
+	if C.appearance.fontUseChinesePixelFont then
+		errorsFont = C.fontCN.pixel
+	else
+		errorsFont = C.fontCN.standard
+	end
+	firstErrorFrame.text:SetFont(unpack(errorsFont))
+	secondErrorFrame.text:SetFont(unpack(errorsFont))
+	secondErrorFrame.text:SetPoint("TOP", UIParent, 0, -95)
+
+	UIErrorsFrame:SetFont(unpack(errorsFont))
+else
+	F.SetFS(UIErrorsFrame)
+end
+
 local state = 0
 firstErrorFrame:SetScript("OnHide", function() state = 0 end)
 local Error = CreateFrame("Frame")

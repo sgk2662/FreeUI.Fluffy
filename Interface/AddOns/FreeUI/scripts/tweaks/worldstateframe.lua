@@ -7,13 +7,18 @@ local function restyleStateFrames()
 			local _, g = f:GetRegions()
 
 			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-				g:SetFont(C.media.font.normal, 12, "OUTLINE")
+				local stateFont
+				if C.appearance.fontUseChinesePixelFont then
+					stateFont = C.fontCN.pixel
+				else
+					stateFont = C.fontCN.standard
+				end
+				g:SetFont(unpack(stateFont))
 			else
 				F.SetFS(g)
+				g:SetShadowOffset(0, 0)
 			end
-
-			g:SetShadowOffset(0, 0)
-			g:SetTextColor(1, 1, 1)
+			g:SetTextColor(C.appearance.fontColorFontRGB.r, C.appearance.fontColorFontRGB.g, C.appearance.fontColorFontRGB.b)
 
 			f.styled = true
 		end

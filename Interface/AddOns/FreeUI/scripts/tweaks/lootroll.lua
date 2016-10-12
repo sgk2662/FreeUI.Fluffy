@@ -166,7 +166,13 @@ function addon:UpdateGroupLoot()
 			frame.text:SetPoint("RIGHT", frame.need, "LEFT")
 
 			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-				frame.text:SetFont(C.media.font.normal, 12, "OUTLINE")
+				local lootrollFont
+				if C.appearance.fontUseChinesePixelFont then
+					lootrollFont = C.fontCN.pixel
+				else
+					lootrollFont = C.fontCN.standard
+				end
+				frame.text:SetFont(unpack(lootrollFont))
 			end
 
 			frame.text:SetWordWrap(false)

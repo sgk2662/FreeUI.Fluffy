@@ -680,6 +680,9 @@ do
 	local ilvlspec = ns.CreateCheckBox(tooltip, "ilvlspec", true, true)
 	ilvlspec:SetPoint("TOPLEFT", combathideALL, "BOTTOMLEFT", 0, -8)
 
+	local idtip = ns.CreateCheckBox(tooltip, "idtip", true, true)
+	idtip:SetPoint("TOPLEFT", ilvlspec, "BOTTOMLEFT", 0, -8)
+
 	local function toggleTooltipOptions()
 		local shown = enable:GetChecked()
 		cursor:SetShown(shown)
@@ -688,6 +691,7 @@ do
 		showRank:SetShown(shown)
 		combathideALL:SetShown(shown)
 		ilvlspec:SetShown(shown)
+		idtip:SetShown(shown)
 	end
 
 	enable:HookScript("OnClick", toggleTooltipOptions)

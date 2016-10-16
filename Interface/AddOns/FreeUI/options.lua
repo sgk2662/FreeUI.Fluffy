@@ -162,6 +162,7 @@ C["tooltip"] = {
 	["showGRank"] = false,
 	["showRealm"] = true,
 	["playerTitle"] = false,
+	["idtip"] = true,
 }
 
 C["quests"] = {

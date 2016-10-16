@@ -1,6 +1,7 @@
 local F, C, L = unpack(select(2, ...))
 
 if not C.tooltip.enable then return end
+if not C.tooltip.idtip then return end
 
 local ADDON_NAME, ns = ...
 

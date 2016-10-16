@@ -214,6 +214,7 @@ ns.localization.tooltipcombathideALL = "Hide tooltip while in combat"
 ns.localization.tooltiphideHealthbar = "Hide health bar"
 ns.localization.tooltippowerbar = "Show mana / power / rage bar"
 ns.localization.tooltipilvlspec = "item level and specialization"
+ns.localization.tooltipidtip = "Show item and spell id "
 
 ns.localization.classmod = "Class specific"
 ns.localization.classmodSubText = "These options allow you to toggle the class-specific modules in the UI."

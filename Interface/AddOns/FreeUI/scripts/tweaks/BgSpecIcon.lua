@@ -28,7 +28,7 @@ if gameLocale == "zhCN" then
 	L["Demonology"] = "恶魔学识"
 	L["Destruction"] = "毁灭"
 	L["Discipline"] = "戒律"
-	L["Elemental"] = "元素战斗"
+	L["Elemental"] = "元素"
 	L["Enhancement"] = "增强"
 	L["Feral"] = "野性"
 	L["Feral Combat"] = "野性战斗"

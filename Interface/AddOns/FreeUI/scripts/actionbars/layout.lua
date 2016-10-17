@@ -46,7 +46,7 @@ local bagbar = {
   buttonMargin    = 2,
   numCols         = 6, --number of buttons per column
   startPoint      = "BOTTOMRIGHT", --start postion of first button: BOTTOMLEFT, TOPLEFT, TOPRIGHT, BOTTOMRIGHT
-  fader           = fader,
+  fader           = nil,
   frameVisibility = "hide"
 }
 --create
@@ -65,7 +65,7 @@ local micromenubar = {
   buttonMargin    = 0,
   numCols         = 12,
   startPoint      = "BOTTOMLEFT",
-  fader           = fader,
+  fader           = nil,
   frameVisibility = "hide"
 }
 --create
@@ -176,6 +176,7 @@ local stancebar = {
   numCols         = 12,
   startPoint      = "BOTTOMLEFT",
   fader           = nil,
+  frameVisibility = "hide",
 }
 --create
 rActionBar:CreateStanceBar(A, stancebar)
@@ -191,7 +192,7 @@ local petbar = {
   framePadding    = 2,
   buttonWidth     = 24,
   buttonHeight    = 24,
-  buttonMargin    = 4,
+  buttonMargin    = 8,
   numCols         = 12,
   startPoint      = "BOTTOMLEFT",
   fader           = fader_2,

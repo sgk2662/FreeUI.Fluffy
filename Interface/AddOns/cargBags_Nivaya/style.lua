@@ -484,7 +484,7 @@ function MyContainer:OnCreate(name, settings)
 	local caption = background:CreateFontString(background, "OVERLAY", nil)
 
 	if FreeUI then
-		local C = FreeUI[2]
+		local F, C, L = unpack(FreeUI)
 		local locale = GetLocale()
 
 		if locale == "zhCN" or locale == "zhTW" then
@@ -494,7 +494,7 @@ function MyContainer:OnCreate(name, settings)
 				caption:SetFont(unpack(C.fontCN.standard))
 			end
 		else
-			F:SetFS(caption)
+			F.SetFS(caption)
 		end
 	else
 		caption:SetFont(unpack(ns.options.fonts.standard))

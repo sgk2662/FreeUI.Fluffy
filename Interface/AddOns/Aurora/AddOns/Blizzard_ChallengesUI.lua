@@ -4,14 +4,18 @@ local _, private = ...
 local _G = _G
 
 -- [[ Core ]]
-local _, C = _G.unpack(private.Aurora)
+local F, C = _G.unpack(private.Aurora)
 
 C.themes["Blizzard_ChallengesUI"] = function()
 	_G.ChallengesFrameInset:DisableDrawLayer("BORDER")
 	_G.ChallengesFrameInsetBg:Hide()
 
+--	_G.ChallengesModeWeeklyBest.Child.Star:Hide()
+--	_G.ChallengesModeWeeklyBest.Child.Glow:Hide()
 	_G.ChallengesModeWeeklyBest.Child.Level:SetPoint("CENTER", ChallengesModeWeeklyBest.Child.Star, "CENTER", 0, 3)
-		
+
+	F.CreateBD(ChallengesFrame.GuildBest, .3)
+
 	select(1, _G.ChallengesFrame.GuildBest:GetRegions()):Hide()
 	select(3, _G.ChallengesFrame.GuildBest:GetRegions()):Hide()
 	

@@ -22,15 +22,26 @@ local CBnormal = C.unitframes.castbarColorNormal
 
 local colors = setmetatable({
 	power = setmetatable({
-		["MANA"] = {0.37, 0.6, 1},
-		["RAGE"] = {0.86, 0, 0.04},
-		["FUEL"] = {0, 0.55, 0.5},
-		["FOCUS"] = {1, 0.81,  0.27},
-		["ENERGY"] = {.9, .9, .1},
-		["RUNIC_POWER"] = {0, 0.81, 1},
-		["LUNAR_POWER"] = {.5, .52, .9},
-		["FURY"] = {77/255, 216/255, 39/255},
-		["PAIN"] = {255/255, 156/255, 0},
+		["MANA"] = { .37, .6, 1 },
+		["RAGE"] = { 1, 0, 0 },
+		["FOCUS"] = { 1, .5, .25 },
+		["ENERGY"] = { 1, 1, 0 },
+		["COMBO_POINTS"] = { 1, .96, .41 },
+		["RUNES"] = { .5, .5, .5 },
+		["RUNIC_POWER"] = { 0, .82, 1 },
+		["SOUL_SHARDS"] = { .5, .32, .55 },
+		["LUNAR_POWER"] = { .3, .52, .9 },
+		["HOLY_POWER"] = { .95, .90, .60 },
+		["MAELSTROM"] = { 0, .5, 1 },
+		["INSANITY"] = { .4, 0, .8 },
+		["CHI"] = { .71, 1, .92 },
+		["ARCANE_CHARGES"] = { .1, .1, .98 },
+		["FURY"] = { .788, .259, .992},
+		["PAIN"] = { 255/255, 156/255, 0},
+		-- vehicle colors
+		["AMMOSLOT"] = { 0.80, 0.60, 0.00 },
+		["FUEL"] = { 0.0, 0.55, 0.5 },
+		-- ["STAGGER"] = { {r = 0.52, g = 1.0, b = 0.52}, {r = 1.0, g = 0.98, b = 0.72}, {r = 1.0, g = 0.42, b = 0.42},},
 	}, {__index = oUF.colors.power}),
 }, {__index = oUF.colors})
 
@@ -802,7 +813,11 @@ local UnitSpecific = {
 				Castbar:SetHeight(self:GetHeight())
 				Castbar:SetPoint(unpack(C.unitframes.player_castbar))
 				Castbar.Text:SetAllPoints(Castbar)
-				Castbar.Text:SetFont(unpack(unitframeFont))
+
+				if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+					Castbar.Text:SetFont(unpack(unitframeFont))
+				end
+
 				local sf = Castbar:CreateTexture(nil, "OVERLAY")
 				sf:SetVertexColor(.5, .5, .5, .5)
 				Castbar.SafeZone = sf
@@ -1235,7 +1250,11 @@ local UnitSpecific = {
 			Castbar:SetHeight(C.unitframes.castbarHeight)
 			Castbar:SetPoint(unpack(C.unitframes.target_castbar))
 			Castbar.Text:SetPoint("BOTTOM", Castbar, "TOP", 0, 4)
-			Castbar.Text:SetFont(unpack(unitframeFont))
+
+			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+				Castbar.Text:SetFont(unpack(unitframeFont))
+			end
+
 			local sf = Castbar:CreateTexture(nil, "OVERLAY")
 			sf:SetVertexColor(.5, .5, .5, .5)
 			Castbar.SafeZone = sf
@@ -1411,7 +1430,11 @@ local UnitSpecific = {
 			Castbar:SetHeight(C.unitframes.castbarHeight)
 			Castbar:SetPoint(unpack(C.unitframes.focus_castbar))
 			Castbar.Text:SetPoint("TOP", Castbar, "BOTTOM", 0, -4)
-			Castbar.Text:SetFont(unpack(unitframeFont))
+
+			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+				Castbar.Text:SetFont(unpack(unitframeFont))
+			end
+
 			local sf = Castbar:CreateTexture(nil, "OVERLAY")
 			sf:SetVertexColor(.5, .5, .5, .5)
 			Castbar.SafeZone = sf

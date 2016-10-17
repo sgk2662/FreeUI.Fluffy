@@ -80,13 +80,15 @@ local function InitStyle()
 
 			DBMRangeCheckRadar.background:SetTexture("")
 			F.CreateBDFrame(DBMRangeCheckRadar)
-
 			F.SetFS(DBMRangeCheckRadar.text)
-			DBMRangeCheckRadar.text:SetFont(unpack(DBMBarFont))
 			DBMRangeCheckRadar.text:SetTextColor(1, 1, 1)
 			F.SetFS(DBMRangeCheckRadar.inRangeText)
-			DBMRangeCheckRadar.inRangeText:SetFont(unpack(DBMBarFont))
 			DBMRangeCheckRadar.inRangeText:SetTextColor(1, 1, 1)
+
+			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+				DBMRangeCheckRadar.text:SetFont(unpack(DBMBarFont))
+				DBMRangeCheckRadar.inRangeText:SetFont(unpack(DBMBarFont))
+			end
 
 			firstRange = false
 		end
@@ -97,7 +99,9 @@ local function InitStyle()
 		if not anchor.styled then
 			local header = anchor:GetRegions()
 			F.SetFS(header)
-			header:SetFont(unpack(DBMBarFont))
+			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+				header:SetFont(unpack(DBMBarFont))
+			end
 			header:SetTextColor(1, 1, 1)
 
 			anchor.styled = true
@@ -123,8 +127,11 @@ local function InitStyle()
 
 				F.SetFS(text)
 				F.SetFS(timer)
-				text:SetFont(unpack(DBMBarFont))
-				timer:SetFont(unpack(DBMBarFont))
+				
+				if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+					text:SetFont(unpack(DBMBarFont))
+					timer:SetFont(unpack(DBMBarFont))
+				end
 
 				F.CreateBDFrame(sb)
 

@@ -188,11 +188,12 @@ C["unitframes"] = {
 	["enableArena"] = false,					-- enable arena/flag carrier frames
 
 	["absorb"] = true, 							-- absorb bar/over absorb glow
-	["powerTypeColor"] = false,					-- 玩家框体的能量条染色按照能量类型
-	["castbar"] = true,							-- 启用内置施法条
+	["healthClassColor"] = true,				-- 血量条损血使用职业染色
+	["powerTypeColor"] = false,					-- 能量条染色按照能量类型
+	["castbar"] = true,							-- 启用施法条
 	["castbarSeparate"] = false,				-- 施法条分离
 	["pvp"] = true, 							-- show pvp icon on player frame
-	["statusIndicator"] = false,					-- show combat/resting status on player frame
+	["statusIndicator"] = true,					-- show combat/resting status on player frame
 		["statusIndicatorCombat"] = true,				-- show combat status (else: only resting)
 
 	["player"] = {"BOTTOM", UIParent, "BOTTOM", 0, 200},						-- player unitframe position

@@ -36,8 +36,8 @@ local colors = setmetatable({
 		["INSANITY"] = { .4, 0, .8 },
 		["CHI"] = { .71, 1, .92 },
 		["ARCANE_CHARGES"] = { .1, .1, .98 },
-		["FURY"] = { .788, .259, .992},
-		["PAIN"] = { 255/255, 156/255, 0},
+		["FURY"] = { 54/255, 199/255, 63/255 },
+		["PAIN"] = { 255/255, 156/255, 0 },
 		-- vehicle colors
 		["AMMOSLOT"] = { 0.80, 0.60, 0.00 },
 		["FUEL"] = { 0.0, 0.55, 0.5 },
@@ -255,19 +255,6 @@ oUF.Tags.Methods['free:missinghealth'] = function(unit)
 end
 oUF.Tags.Events['free:missinghealth'] = oUF.Tags.Events.missinghp
 
--- show demonic fury value for demolock
-oUF.Tags.Methods['free:demofury'] = function(unit)
-	local spec = GetSpecialization()
-	local fury = UnitPower('player', SPELL_POWER_DEMONIC_FURY)
-	if class == 'WARLOCK' and spec == SPEC_WARLOCK_DEMONOLOGY then
-		local r, g, b = 0.9, 0.37, 0.37
-		return hex(r, g, b)..siValue(fury)
-	else
-		return nil
-	end
-end
-oUF.Tags.Events['free:demofury'] = 'UNIT_POWER PLAYER_SPECIALIZATION_CHANGED PLAYER_TALENT_UPDATE UNIT_HEALTH UNIT_CONNECTION'
-
 oUF.Tags.Methods['free:power'] = function(unit)
 	local min, max = UnitPower(unit), UnitPowerMax(unit)
 	if(min == 0 or max == 0 or not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit)) then return end
@@ -311,17 +298,14 @@ local PostUpdateHealth = function(Health, unit, min, max)
 		else
 			self.Healthdef:SetMinMaxValues(0, max)
 			self.Healthdef:SetValue(max-min)
-			--self.Healthdef:GetStatusBarTexture():SetVertexColor(self.ColorGradient(min, max, unpack(self.colors.smooth)))
-			self.Healthdef:GetStatusBarTexture():SetVertexColor(r, g, b)	-- 掉血用职业染色！
-			self.Healthdef:Show()
-		end
+			
+			if C.unitframes.healthClassColor then
+				self.Healthdef:GetStatusBarTexture():SetVertexColor(r, g, b)
+			else
+				self.Healthdef:GetStatusBarTexture():SetVertexColor(self.ColorGradient(min, max, unpack(self.colors.smooth)))
+			end
 
-		if C.unitframes.powerTypeColor and unit == "player" then
-			self.Power.colorPower = true
-			self.Power.bg:SetVertexColor(0, 0, 0, .1)
-		else
-			self.Power:SetStatusBarColor(r, g, b)
-			self.Power.bg:SetVertexColor(r/2, g/2, b/2)
+			self.Healthdef:Show()
 		end
 
 		if tapped or offline then
@@ -393,6 +377,14 @@ local PostUpdatePower = function(Power, unit, cur, max, min)
 
 	if Power.Text then
 		Power.Text:SetTextColor(Power:GetStatusBarColor())
+	end
+
+	if not UnitIsPlayer(unit) then
+		local r, g, b
+		local reaction = C.reactioncolours[UnitReaction(unit, "player") or 5]
+		r, g, b = unpack(reaction)
+		Power:SetStatusBarColor(r, g, b)
+		Power.bg:SetVertexColor(r/2, g/2, b/2)
 	end
 end
 
@@ -492,6 +484,8 @@ local Shared = function(self, unit, isSingle)
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetStatusBarTexture(C.media.texture)
 
+	
+
 	Power.frequentUpdates = true
 	SmoothBar(Power)
 
@@ -515,12 +509,12 @@ local Shared = function(self, unit, isSingle)
 	Power.bg:SetPoint("LEFT")
 	Power.bg:SetPoint("RIGHT")
 	Power.bg:SetTexture(C.media.backdrop)
-	Power.bg:SetVertexColor(0, 0, 0, .5)
+	Power.bg:SetVertexColor(0, 0, 0, .2)
 
-	-- Colour power by power type for dps/tank layout. Because this is brighter, make the background darker for contrast.
-	if C.unitframes.healerClasscolours then
+	if C.unitframes.powerTypeColor and unit == "player" then
 		Power.colorPower = true
-		-- Power.bg:SetVertexColor(0, 0, 0, .25)
+	else
+		Power.colorClass = true
 	end
 
 	--[[ Alt Power ]]
@@ -770,18 +764,8 @@ local UnitSpecific = {
 
 		local PowerText = F.CreateFS(Power, C.FONT_SIZE_NORMAL, "RIGHT")
 		PowerText:SetPoint("BOTTOMRIGHT", Health, "TOPRIGHT", 0, 3)
-		if powerType ~= 0 then PowerText.frequentUpdates = .1 end
-		local spec = GetSpecialization()
-		local fury = UnitPower('player', SPELL_POWER_DEMONIC_FURY)
-		if class == 'WARLOCK' and spec == SPEC_WARLOCK_DEMONOLOGY then
-			self:Tag(PowerText, '[free:demofury]')
-		else
-			self:Tag(PowerText, '[free:power]')
-		end
+		self:Tag(PowerText, '[free:power]')
 		Power.Text = PowerText
-
-		self.RaidIcon:ClearAllPoints()
-		self.RaidIcon:Hide()
 
 		-- Cast bar
 
@@ -1377,6 +1361,7 @@ local UnitSpecific = {
 		Shared(self, ...)
 
 		local Health = self.Health
+		local Power = self.Power
 		local Castbar = self.Castbar
 		local Spark = Castbar.Spark
 
@@ -1503,6 +1488,7 @@ local UnitSpecific = {
 		Shared(self, ...)
 
 		local Health = self.Health
+		local Power = self.Power
 		local Castbar = self.Castbar
 		local Spark = Castbar.Spark
 
@@ -1523,6 +1509,7 @@ local UnitSpecific = {
 		Shared(self, ...)
 
 		local Health = self.Health
+		local Power = self.Power
 		local Castbar = self.Castbar
 		local Spark = Castbar.Spark
 
@@ -1649,8 +1636,12 @@ local UnitSpecific = {
 		Shared(self, ...)
 
 		local Health = self.Health
+		local Power = self.Power
 		local Castbar = self.Castbar
 		local Spark = Castbar.Spark
+
+		Power.colorPower = false
+		Power.colorClass = true
 
 		self:SetAttribute('initial-height', arenaHeight)
 		self:SetAttribute('initial-width', arenaWidth)
@@ -1733,6 +1724,9 @@ do
 		self.disallowVehicleSwap = false
 
 		local Health, Power = self.Health, self.Power
+
+		Power.colorPower = false
+		Power.colorClass = true
 
 		local Text = F.CreateFS(Health, C.FONT_SIZE_NORMAL, "CENTER")
 		Text:SetPoint("CENTER", 1, 0)

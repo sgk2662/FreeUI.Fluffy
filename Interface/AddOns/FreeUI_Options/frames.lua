@@ -249,11 +249,8 @@ do
 	local mailButton = ns.CreateCheckBox(general, "mailButton", true, true)
 	mailButton:SetPoint("TOPLEFT", combo, "BOTTOMLEFT", 0, -8)
 
-	local ncshadow = ns.CreateCheckBox(general, "ncshadow", true, true)
-	ncshadow:SetPoint("TOPLEFT", mailButton, "BOTTOMLEFT", 0, -8)
-
 	local rareAlert = ns.CreateCheckBox(general, "rareAlert", true)
-	rareAlert:SetPoint("TOPLEFT", ncshadow, "BOTTOMLEFT", 0, -8)
+	rareAlert:SetPoint("TOPLEFT", mailButton, "BOTTOMLEFT", 0, -8)
 
 	local rareAlertPlaySound = ns.CreateCheckBox(general, "rareAlert_playSound")
 	rareAlertPlaySound:SetPoint("TOPLEFT", rareAlert, "BOTTOMLEFT", 16, -8)
@@ -281,8 +278,11 @@ do
 	local uiFader = ns.CreateCheckBox(appearance, "uiFader", true, true)
 	uiFader:SetPoint("TOPLEFT", interface, "BOTTOMLEFT", 0, -20)
 
+	local ncShadow = ns.CreateCheckBox(appearance, "ncShadow", true, true)
+	ncShadow:SetPoint("TOPLEFT", uiFader, "BOTTOMLEFT", 0, -8)
+
 	local colours = ns.addSubCategory(appearance, ns.localization.appearanceColours)
-	colours:SetPoint("TOPLEFT", uiFader, "BOTTOMLEFT", 0, -30)
+	colours:SetPoint("TOPLEFT", ncShadow, "BOTTOMLEFT", 0, -30)
 
 	local colourScheme = ns.CreateRadioButtonGroup(appearance, "colourScheme", 2, true, true)
 	colourScheme.buttons[1]:SetPoint("TOPLEFT", colours, "BOTTOMLEFT", 0, -41)

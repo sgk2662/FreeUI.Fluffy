@@ -1,6 +1,6 @@
 local F, C, L = unpack(select(2, ...))
 
-if not C.general.ncshadow then return end
+if not C.appearance.ncShadow then return end
 
 local f = CreateFrame("Frame", "ShadowBackground")
 f:SetPoint("TOPLEFT")

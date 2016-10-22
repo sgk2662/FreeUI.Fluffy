@@ -57,7 +57,6 @@ C["general"] = {
 	["undressButton"] = true, 		-- undress button on dressup frame
 	["objectivetracker"] = true,	-- restyle objectivetracker
 	["cooldownpulse"] = true,
-	["ncshadow"] = true,
 	["combo"] = false,
 }
 
@@ -74,6 +73,7 @@ C["appearance"] = {
 	["fontUseColorFont"] = true,
 	["fontColorFontRGB"] = {r = 247/255, g = 225/255, b =171/255},
 	["uiFader"] = true,
+	["ncShadow"] = true,
 }
 
 C["automation"] = {

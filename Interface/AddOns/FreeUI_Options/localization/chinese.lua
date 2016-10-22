@@ -68,6 +68,9 @@ ns.localization.generalundressButtonTooltip = "在试衣间界面添加一键脱
 
 ns.localization.appearance = "外观"
 ns.localization.appearanceSubText = "改变部分外观"
+ns.localization.appearanceInterface = "界面"
+ns.localization.appearanceuiFader = "渐隐淡出"
+ns.localization.appearanceuiFaderTooltip = "当前没有目标以及没有进入战斗时，界面元素整体渐隐淡出。"
 ns.localization.appearanceColours = "颜色"
 ns.localization.appearanceFonts = "字体"
 ns.localization.appearancecolourScheme = "颜色方案"

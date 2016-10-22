@@ -73,6 +73,7 @@ C["appearance"] = {
 	["fontShadow"] = true,
 	["fontUseColorFont"] = true,
 	["fontColorFontRGB"] = {r = 247/255, g = 225/255, b =171/255},
+	["uiFader"] = true,
 }
 
 C["automation"] = {

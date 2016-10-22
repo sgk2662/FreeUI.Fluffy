@@ -275,8 +275,14 @@ do
 	local appearance = FreeUIOptionsPanel.appearance
 	appearance.tab.Icon:SetTexture("Interface\\Icons\\inv_ore_arcanite_01")
 
+	local interface = ns.addSubCategory(appearance, ns.localization.appearanceInterface)
+	interface:SetPoint("TOPLEFT", appearance.subText, "BOTTOMLEFT", 0, -8)
+
+	local uiFader = ns.CreateCheckBox(appearance, "uiFader", true, true)
+	uiFader:SetPoint("TOPLEFT", interface, "BOTTOMLEFT", 0, -20)
+
 	local colours = ns.addSubCategory(appearance, ns.localization.appearanceColours)
-	colours:SetPoint("TOPLEFT", appearance.subText, "BOTTOMLEFT", 0, -8)
+	colours:SetPoint("TOPLEFT", uiFader, "BOTTOMLEFT", 0, -30)
 
 	local colourScheme = ns.CreateRadioButtonGroup(appearance, "colourScheme", 2, true, true)
 	colourScheme.buttons[1]:SetPoint("TOPLEFT", colours, "BOTTOMLEFT", 0, -41)

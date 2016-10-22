@@ -4,7 +4,6 @@ if not Blizzard_TradeSkillUI then
 	LoadAddOn("Blizzard_TradeSkillUI")
 end
 
-
 --- Initialization ---
 local numTabs = 0
 local searchTxt = ''
@@ -18,6 +17,8 @@ local function InitDB()
 		CTradeSkillDB['Unlock'] = false
 		CTradeSkillDB['Fade'] = true
 		CTradeSkillDB['Level'] = true
+		CTradeSkillDB['Tooltip'] = false
+		CTradeSkillDB['Drag'] = false
 	end
 	if not CTradeSkillDB['Tabs'] then CTradeSkillDB['Tabs'] = {} end
 
@@ -59,7 +60,7 @@ f:RegisterEvent('TRADE_SKILL_DATA_SOURCE_CHANGED')
 	local function isCurrentTab(self)
 		if self.tooltip and IsCurrentSpell(self.tooltip) then
 			if TradeSkillFrame:IsShown() and (self.isSub == 0) then
-				CTradeSkillDB['Panel'] = C_TradeSkillUI.GetTradeSkillLine()
+				CTradeSkillDB['Panel'] = self.id
 				restoreFilters()
 			end
 			self:SetChecked(true)
@@ -196,7 +197,7 @@ f:RegisterEvent('TRADE_SKILL_DATA_SOURCE_CHANGED')
 		local prof1, prof2, arch, fishing, cooking, firstaid = GetProfessions()
 		local profs = {prof1, prof2, cooking, firstaid}
 		for _, prof in pairs(profs) do
-			local num, offset, line, _, _, spec = select(5, GetProfessionInfo(prof))
+			local num, offset, _, _, _, spec = select(5, GetProfessionInfo(prof))
 			if (spec and spec ~= 0) then num = 1 end
 			for i = 1, num do
 				if not IsPassiveSpell(offset + i, BOOKTYPE_PROFESSION) then
@@ -204,7 +205,7 @@ f:RegisterEvent('TRADE_SKILL_DATA_SOURCE_CHANGED')
 					if (i == 1) then
 						tinsert(mainTabs, id)
 						if init and not CTradeSkillDB['Panel'] then
-							CTradeSkillDB['Panel'] = line
+							CTradeSkillDB['Panel'] = id
 							return
 						end
 					else
@@ -249,8 +250,12 @@ f:RegisterEvent('TRADE_SKILL_DATA_SOURCE_CHANGED')
 			TradeSkillFrame.RecipeList:SetHeight(CTradeSkillDB['Size'] * 16 + 5) --405
 		end
 
-		if forced and #TradeSkillFrame.RecipeList.buttons < floor(CTradeSkillDB['Size'], 0.5) + 2 then
-			HybridScrollFrame_CreateButtons(TradeSkillFrame.RecipeList, 'TradeSkillRowButtonTemplate', 0, 0)
+		if forced then
+			if #TradeSkillFrame.RecipeList.buttons < floor(CTradeSkillDB['Size'], 0.5) + 2 then
+				local range = TradeSkillFrame.RecipeList.scrollBar:GetValue()
+				HybridScrollFrame_CreateButtons(TradeSkillFrame.RecipeList, 'TradeSkillRowButtonTemplate', 0, 0)
+				TradeSkillFrame.RecipeList.scrollBar:SetValue(range)
+			end
 			TradeSkillFrame.RecipeList:Refresh()
 		end
 	end
@@ -336,6 +341,12 @@ hooksecurefunc('ToggleGameMenu', function()
 end)
 
 
+--- Other Adjustment ---
+TradeSkillFrame.RankFrame:SetWidth(500)
+TradeSkillFrame.SearchBox:SetWidth(240)
+MainMenuBarOverlayFrame:SetFrameStrata('MEDIUM')
+
+
 --- Refresh TSFrame ---
 TradeSkillFrame:HookScript('OnSizeChanged', function(self)
 	if self:IsShown() and not InCombatLockdown() then
@@ -346,32 +357,59 @@ end)
 
 
 --- Refresh RecipeList ---
-hooksecurefunc('HybridScrollFrame_Update', function(self, ...)
-	if (self == TradeSkillFrame.RecipeList) then
-		if self.FilterBar:IsVisible() then
-			self:SetHeight(CTradeSkillDB['Size'] * 16 - 11) --389
-		else
-			self:SetHeight(CTradeSkillDB['Size'] * 16 + 5) --405
-		end
+hooksecurefunc(TradeSkillFrame.RecipeList, 'UpdateFilterBar', function(self)
+	if self.FilterBar:IsVisible() then
+		self:SetHeight(CTradeSkillDB['Size'] * 16 - 11) --389
+	else
+		self:SetHeight(CTradeSkillDB['Size'] * 16 + 5) --405
 	end
 end)
 
 
---- Other Adjustment ---
-TradeSkillFrame.RankFrame:SetWidth(500)
-TradeSkillFrame.SearchBox:SetWidth(240)
-MainMenuBarOverlayFrame:SetFrameStrata('MEDIUM')
-
-
---- Required Level Display ---
+--- Refresh RecipeButton ---
 TradeSkillFrame.RecipeList:HookScript('OnUpdate', function(self, ...)
 	for i = 1, #self.buttons do
+		local button = self.buttons[i]
+
+		--- Button Draggable ---
+		if not button.CTSDrag then
+			button:RegisterForDrag('LeftButton')
+			button:SetScript('OnDragStart', function(self)
+				if CTradeSkillDB and CTradeSkillDB['Drag'] then
+					if not InCombatLockdown() then
+						if self.tradeSkillInfo and not self.isHeader then
+							PickupSpell(self.tradeSkillInfo.recipeID)
+						end
+					end
+				end
+			end)
+			button.CTSDrag = true
+		end
+
+		--- Button Tooltip ---
+		if not button.CTSTip then
+			button:HookScript('OnEnter', function(self)
+				if CTradeSkillDB and CTradeSkillDB['Tooltip'] then
+					if self.tradeSkillInfo and not self.isHeader then
+						local link = C_TradeSkillUI.GetRecipeLink(self.tradeSkillInfo.recipeID)
+						GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
+						GameTooltip:SetHyperlink(link)
+					end
+				end
+			end)
+			button:HookScript('OnLeave', function()
+				if CTradeSkillDB and CTradeSkillDB['Tooltip'] then
+					GameTooltip:Hide()
+				end
+			end)
+			button.CTSTip = true
+		end
+
+		--- Required Level ---
 		if CTradeSkillDB and CTradeSkillDB['Level'] == true then
-			local button = self.buttons[i]
-			local lvlFrame = _G['CTSLevel_' .. i] or CreateFrame('Frame', 'CTSLevel_' .. i, button)
-			if not lvlFrame.Text then
-				lvlFrame.Text = lvlFrame:CreateFontString(nil, 'BACKGROUND', 'GameFontNormalSmall')
-				lvlFrame.Text:SetPoint('RIGHT', button.Text, 'LEFT', 1, 0)
+			if not button.CTSLevel then
+				button.CTSLevel = button:CreateFontString(nil, 'ARTWORK', 'GameFontNormalSmall')
+				button.CTSLevel:SetPoint('RIGHT', button.Text, 'LEFT', 1, 0)
 			end
 
 			if button.tradeSkillInfo and not button.isHeader then
@@ -379,19 +417,17 @@ TradeSkillFrame.RecipeList:HookScript('OnUpdate', function(self, ...)
 				local item = C_TradeSkillUI.GetRecipeItemLink(recipe)
 				local quality, _, level = select(3, GetItemInfo(item))
 				if quality and level and level > 1 then
-					lvlFrame.Text:SetText(level)
-					lvlFrame.Text:SetTextColor(GetItemQualityColor(quality))
+					button.CTSLevel:SetText(level)
+					button.CTSLevel:SetTextColor(GetItemQualityColor(quality))
 				else
-					lvlFrame.Text:SetText('')
+					button.CTSLevel:SetText('')
 				end
 			else
-				if lvlFrame.Text then
-					lvlFrame.Text:SetText('')
-				end
+				button.CTSLevel:SetText('')
 			end
 		else
-			if _G['CTSLevel_' .. i] then
-				_G['CTSLevel_' .. i].Text:SetText('')
+			if button.CTSLevel then
+				button.CTSLevel:SetText('')
 			end
 		end
 	end
@@ -597,6 +633,22 @@ local function createOptions()
 			info.checked = CTradeSkillDB['Level']
 			UIDropDownMenu_AddButton(info, level)
 
+			info.text = DISPLAY .. ' ' .. INFO
+			info.func = function()
+				CTradeSkillDB['Tooltip'] = not CTradeSkillDB['Tooltip']
+			end
+			info.keepShownOnClick = true
+			info.checked = CTradeSkillDB['Tooltip']
+			UIDropDownMenu_AddButton(info, level)
+
+			info.text = DRAG_MODEL .. ' ' .. AUCTION_CATEGORY_RECIPES
+			info.func = function()
+				CTradeSkillDB['Drag'] = not CTradeSkillDB['Drag']
+			end
+			info.keepShownOnClick = true
+			info.checked = CTradeSkillDB['Drag']
+			UIDropDownMenu_AddButton(info, level)
+
 			info.func = nil
 			info.checked = 	nil
 			info.notCheckable = true
@@ -647,7 +699,7 @@ local function createOptions()
 	UIDropDownMenu_Initialize(CTSDropdown, CTSDropdown_Init, 'MENU')
 
 	--- Option Button ---
-	local button = CreateFrame('Button', 'CTSOption', TradeSkillFrame.FilterButton, 'UIMenuButtonStretchTemplate')
+	local button = CreateFrame('Button', 'CTSOption', TradeSkillFrame, 'UIMenuButtonStretchTemplate')
 	button:SetScript('OnClick', function(self) ToggleDropDownMenu(1, nil, CTSDropdown, self, 2, -6) end)
 	button:SetPoint('RIGHT', TradeSkillFrame.FilterButton, 'LEFT', -8, 0)
 	button:SetText(GAMEOPTIONS_MENU)

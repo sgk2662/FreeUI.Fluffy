@@ -22,8 +22,8 @@ local CBnormal = C.unitframes.castbarColorNormal
 
 local colors = setmetatable({
 	power = setmetatable({
-		["MANA"] = { .37, .6, 1 },
-		["RAGE"] = { 1, 0, 0 },
+		["MANA"] = { 100/255, 149/255, 237/255 },
+		["RAGE"] = { 205/255, 0/255, 0/255 },
 		["FOCUS"] = { 1, .5, .25 },
 		["ENERGY"] = { 1, 1, 0 },
 		["COMBO_POINTS"] = { 1, .96, .41 },
@@ -484,8 +484,6 @@ local Shared = function(self, unit, isSingle)
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetStatusBarTexture(C.media.texture)
 
-	
-
 	Power.frequentUpdates = true
 	SmoothBar(Power)
 
@@ -524,7 +522,7 @@ local Shared = function(self, unit, isSingle)
 		AltPowerBar:SetWidth(playerWidth)
 		AltPowerBar:SetHeight(altPowerHeight)
 		AltPowerBar:SetStatusBarTexture(C.media.texture)
-		AltPowerBar:SetPoint("BOTTOM", oUF_FreePlayer, 0, -2)
+		AltPowerBar:SetPoint("BOTTOM", oUF_FreePlayer, 0, -C.unitframes.power_height-1)
 
 		local abd = CreateFrame("Frame", nil, AltPowerBar)
 		abd:SetPoint("TOPLEFT", -1, 1)

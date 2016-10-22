@@ -22,6 +22,8 @@ C_Timer.After(.1, function() -- need to wait a bit
 
 		SetCVar("TargetPriorityAllowAnyOnScreen", 0)
 		SetCVar("Targetnearestuseold", 1)
+
+		SetCVar("overrideArchive", 0)
 	end
 end)
 

@@ -40,12 +40,13 @@ local Update = function(self, event, rid, energized)
 	end
 
 	if(runes.PostUpdate) then
-		return runes:PostUpdate(rune, rid, start, duration, energized or runeReady)
+		return runes:PostUpdate(rune, rid, energized and 0 or start, duration, energized or runeReady)
 	end
 end
 
 local Path = function(self, event, ...)
-	local UpdateMethod = self.Runes.Override or Update
+	local runes = self.Runes
+	local UpdateMethod = runes.Override or Update
 	if(event == 'RUNE_POWER_UPDATE') then
 		return UpdateMethod(self, event, ...)
 	else

@@ -28,6 +28,7 @@ addon:SetScript("OnUpdate", function()
 	
 	if UnitAffectingCombat("Player")
 	or InCombatLockdown() then
+		UIParent:SetAlpha(addonTable.FADEIN);
 		return;
 	end;
 	
@@ -53,4 +54,3 @@ addon:SetScript("OnUpdate", function()
 		end;
 	end;
 end);
-

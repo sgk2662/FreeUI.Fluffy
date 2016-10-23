@@ -55,7 +55,6 @@ C["general"] = {
 	["threatMeter"] = true,			-- threat bar above the target frame in dps/healer layout
 	["uiScaleAuto"] = true,			-- force the correct UI scale
 	["undressButton"] = true, 		-- undress button on dressup frame
-	["objectivetracker"] = true,	-- restyle objectivetracker
 	["cooldownpulse"] = true,
 	["combo"] = false,
 }
@@ -167,6 +166,7 @@ C["tooltip"] = {
 }
 
 C["quests"] = {
+	["questObjectiveTrackerStyle"] = true,
 	["questRewardHighlight"] = true,				-- highlights the quest reward with highest vendor price
 	["rememberObjectiveTrackerState"] = true,		-- saves objective tracker expanded/collapsed state per character
  		["alwaysCollapseObjectiveTracker"] = false,	-- always collapses objective tracker on login

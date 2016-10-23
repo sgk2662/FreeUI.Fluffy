@@ -252,11 +252,6 @@ do
 	local rareAlert = ns.CreateCheckBox(general, "rareAlert", true)
 	rareAlert:SetPoint("TOPLEFT", mailButton, "BOTTOMLEFT", 0, -8)
 
-	local rareAlertPlaySound = ns.CreateCheckBox(general, "rareAlert_playSound")
-	rareAlertPlaySound:SetPoint("TOPLEFT", rareAlert, "BOTTOMLEFT", 16, -8)
-
-	rareAlert.children = {rareAlertPlaySound}
-
 	local misc = ns.addSubCategory(general, ns.localization.generalMisc)
 	misc:SetPoint("TOPLEFT", interruptOutdoors, "BOTTOMLEFT", -16, -20)
 
@@ -279,10 +274,10 @@ do
 	uiFader:SetPoint("TOPLEFT", interface, "BOTTOMLEFT", 0, -20)
 
 	local ncShadow = ns.CreateCheckBox(appearance, "ncShadow", true, true)
-	ncShadow:SetPoint("TOPLEFT", uiFader, "BOTTOMLEFT", 0, -8)
+	ncShadow:SetPoint("LEFT", uiFader, "RIGHT", 240, 0)
 
 	local colours = ns.addSubCategory(appearance, ns.localization.appearanceColours)
-	colours:SetPoint("TOPLEFT", ncShadow, "BOTTOMLEFT", 0, -30)
+	colours:SetPoint("TOPLEFT", uiFader, "BOTTOMLEFT", 0, -30)
 
 	local colourScheme = ns.CreateRadioButtonGroup(appearance, "colourScheme", 2, true, true)
 	colourScheme.buttons[1]:SetPoint("TOPLEFT", colours, "BOTTOMLEFT", 0, -41)
@@ -395,40 +390,39 @@ do
 	local enableStyle = ns.CreateCheckBox(actionbars, "enableStyle", true, true)
 	enableStyle:SetPoint("TOPLEFT", enable, "BOTTOMLEFT", 16, -8)
 
-	local rightBarsMouseover = ns.CreateCheckBox(actionbars, "rightbars_mouseover", false, true)
-	rightBarsMouseover:SetPoint("TOPLEFT", enableStyle, "BOTTOMLEFT", 0, -8)
-
-	local stancebar_mouseover = ns.CreateCheckBox(actionbars, "stancebar_mouseover", false, true)
-	stancebar_mouseover:SetPoint("TOPLEFT", rightBarsMouseover, "BOTTOMLEFT", 0, -8)
-
-	local petbar_mouseover = ns.CreateCheckBox(actionbars, "petbar_mouseover", false, true)
-	petbar_mouseover:SetPoint("TOPLEFT", stancebar_mouseover, "BOTTOMLEFT", 0, -8)
-
-	enable.children = {rightBarsMouseover, stancebar_mouseover, petbar_mouseover}
-
-	local bar3Fold = ns.CreateCheckBox(actionbars, "bar3Fold", true, true)
-	bar3Fold:SetPoint("TOPLEFT", petbar_mouseover, "BOTTOMLEFT", 0, -8)
-
 	local hotKey = ns.CreateCheckBox(actionbars, "hotKey")
-	hotKey:SetPoint("TOPLEFT", bar3Fold, "BOTTOMLEFT", 0, -8)
+	hotKey:SetPoint("TOPLEFT", enableStyle, "BOTTOMLEFT", 0, -8)
 	
 	local macroName = ns.CreateCheckBox(actionbars, "macroName", true, true)
 	macroName:SetPoint("TOPLEFT", hotKey, "BOTTOMLEFT", 0, -8)
+
+	-- local rightBarsMouseover = ns.CreateCheckBox(actionbars, "rightbars_mouseover", false, true)
+	-- rightBarsMouseover:SetPoint("TOPLEFT", enableStyle, "BOTTOMLEFT", 0, -8)
+
+	-- local stancebar_mouseover = ns.CreateCheckBox(actionbars, "stancebar_mouseover", false, true)
+	-- stancebar_mouseover:SetPoint("TOPLEFT", rightBarsMouseover, "BOTTOMLEFT", 0, -8)
+
+	-- local petbar_mouseover = ns.CreateCheckBox(actionbars, "petbar_mouseover", false, true)
+	-- petbar_mouseover:SetPoint("TOPLEFT", stancebar_mouseover, "BOTTOMLEFT", 0, -8)
+
+	-- enable.children = {rightBarsMouseover, stancebar_mouseover, petbar_mouseover}
+
+	-- local bar3Fold = ns.CreateCheckBox(actionbars, "bar3Fold", true, true)
+	-- bar3Fold:SetPoint("TOPLEFT", petbar_mouseover, "BOTTOMLEFT", 0, -8)
 	
 	local function toggleActionBarsOptions()
 		local shown = enable:GetChecked()
 		enableStyle:SetShown(shown)
-		bar3Fold:SetShown(shown)
-		rightBarsMouseover:SetShown(shown)
-		petbar_mouseover:SetShown(shown)
-		stancebar_mouseover:SetShown(shown)
 		macroName:SetShown(shown)
 		hotKey:SetShown(shown)
+		-- bar3Fold:SetShown(shown)
+		-- rightBarsMouseover:SetShown(shown)
+		-- petbar_mouseover:SetShown(shown)
+		-- stancebar_mouseover:SetShown(shown)
 	end
 	
 	enable:HookScript("OnClick", toggleActionBarsOptions)
 	actionbars:HookScript("OnShow", toggleActionBarsOptions)
-
 end
 
 -- [[ Bags ]]
@@ -643,20 +637,23 @@ end
 do
 	local quests = FreeUIOptionsPanel.quests
 	quests.tab.Icon:SetTexture("Interface\\Icons\\achievement_quests_completed_06")
-	tinsert(ns.newCategories, quests)
+--	tinsert(ns.newCategories, quests)
+
+	local questObjectiveTrackerStyle = ns.CreateCheckBox(quests, "questObjectiveTrackerStyle", true)
+	questObjectiveTrackerStyle:SetPoint("TOPLEFT", quests.subText, "BOTTOMLEFT", 0, -8)
 
 	local questRewardHighlight = ns.CreateCheckBox(quests, "questRewardHighlight", true)
- 	questRewardHighlight:SetPoint("TOPLEFT", quests.subText, "BOTTOMLEFT", 0, -8)
+	questRewardHighlight:SetPoint("TOPLEFT", questObjectiveTrackerStyle, "BOTTOMLEFT", 0, -8)
 
- 	local rememberObjectiveTrackerState = ns.CreateCheckBox(quests, "rememberObjectiveTrackerState", true)
- 	rememberObjectiveTrackerState:SetPoint("TOPLEFT", questRewardHighlight, "BOTTOMLEFT", 0, -8)
- 	tinsert(ns.newOptions, rememberObjectiveTrackerState)
+	local rememberObjectiveTrackerState = ns.CreateCheckBox(quests, "rememberObjectiveTrackerState", true)
+	rememberObjectiveTrackerState:SetPoint("TOPLEFT", questRewardHighlight, "BOTTOMLEFT", 0, -8)
+--	tinsert(ns.newOptions, rememberObjectiveTrackerState)
  
- 	local alwaysCollapseObjectiveTracker = ns.CreateCheckBox(quests, "alwaysCollapseObjectiveTracker")
- 	alwaysCollapseObjectiveTracker:SetPoint("TOPLEFT", rememberObjectiveTrackerState, "BOTTOMLEFT", 16, -8)
- 	tinsert(ns.newOptions, alwaysCollapseObjectiveTracker)
+	local alwaysCollapseObjectiveTracker = ns.CreateCheckBox(quests, "alwaysCollapseObjectiveTracker")
+	alwaysCollapseObjectiveTracker:SetPoint("TOPLEFT", rememberObjectiveTrackerState, "BOTTOMLEFT", 16, -8)
+--	tinsert(ns.newOptions, alwaysCollapseObjectiveTracker)
  
- 	rememberObjectiveTrackerState.children = {alwaysCollapseObjectiveTracker}
+	rememberObjectiveTrackerState.children = {alwaysCollapseObjectiveTracker}
 end
 
 -- [[ Tooltip ]]

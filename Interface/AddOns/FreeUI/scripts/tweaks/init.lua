@@ -64,3 +64,15 @@ local function SetupChat()
 		ToggleChatColorNamesByClassGroup(true, channel)
 	end
 end
+
+
+local f = CreateFrame("Frame")
+function f:OnEvent(event)
+	hooksecurefunc("MainMenuMicroButton_ShowAlert", function(alert)
+		alert:Hide()
+	end)
+end
+
+f:RegisterEvent("ADDON_LOADED")
+f:RegisterEvent("PLAYER_LEVEL_UP")
+f:SetScript("OnEvent", f.OnEvent)

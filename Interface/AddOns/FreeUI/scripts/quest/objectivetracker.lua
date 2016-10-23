@@ -121,6 +121,20 @@ do
 	else
 		F.SetFS(header.Text)
 	end
+
+	local header_bonus = BONUS_OBJECTIVE_TRACKER_MODULE.Header
+	header_bonus.Background:Hide()
+	local bg = header_bonus:CreateTexture(nil, "ARTWORK")
+	bg:SetTexture([[Interface\LFGFrame\UI-LFG-SEPARATOR]])
+	bg:SetTexCoord(0, 0.6640625, 0, 0.3125)
+	bg:SetVertexColor(r * 0.7, g * 0.7, b * 0.7)
+	bg:SetPoint("BOTTOMLEFT", -30, -4)
+	bg:SetSize(210, 30)
+	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+		header_bonus.Text:SetFont(C.media.font.header, 16, "OUTLINE")
+	else
+		F.SetFS(header_bonus.Text)
+	end
 end
 
 hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE, "SetBlockHeader", function(_, block)

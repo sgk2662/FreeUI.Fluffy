@@ -55,7 +55,11 @@ local function OnEvent(_, _, subEvent, _, sourceGUID, sourceName, _, _, _, destN
 		end
 
 		if channel then
-			SendChatMessage("Interrupted: "..destName.."'s "..GetSpellLink(spellID)..".", channel)
+			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+				SendChatMessage("已打断: "..destName.."'s "..GetSpellLink(spellID)..".", channel)
+			else
+				SendChatMessage("Interrupted: "..destName.."'s "..GetSpellLink(spellID)..".", channel)
+			end
 		end
 	end
 end

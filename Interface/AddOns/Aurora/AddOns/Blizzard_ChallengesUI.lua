@@ -2,34 +2,58 @@ local _, private = ...
 
 -- [[ Lua Globals ]]
 local _G = _G
+local ipairs = _G.ipairs
 
 -- [[ Core ]]
 local F, C = _G.unpack(private.Aurora)
+local skinned = {}
 
 C.themes["Blizzard_ChallengesUI"] = function()
+    --[[ ChallengesKeystoneFrame ]]--
+    local KeystoneFrame = _G.ChallengesKeystoneFrame
+    F.CreateBD(KeystoneFrame)
+    F.ReskinClose(KeystoneFrame.CloseButton)
+    F.Reskin(KeystoneFrame.StartButton)
+
+    _G.hooksecurefunc(KeystoneFrame, "Reset", function(self)
+        self:GetRegions():Hide()
+        KeystoneFrame.InstructionBackground:SetAlpha(0.5)
+    end)
+    _G.hooksecurefunc(KeystoneFrame, "OnKeystoneSlotted", function(self)
+        for i, affix in ipairs(self.Affixes) do
+            affix.Border:Hide()
+
+            affix.Portrait:SetTexture(nil)
+            F.ReskinIcon(affix.Portrait)
+            if affix.info then
+                affix.Portrait:SetTexture(_G.CHALLENGE_MODE_EXTRA_AFFIX_INFO[affix.info.key].texture)
+            elseif affix.affixID then
+                local _, _, filedataid = _G.C_ChallengeMode.GetAffixInfo(affix.affixID)
+                affix.Portrait:SetTexture(filedataid)
+            end
+        end
+    end)
+
+    --[[ ChallengesFrame ]]--
+    local ChallengesFrame = _G.ChallengesFrame
+    ChallengesFrame:DisableDrawLayer("BACKGROUND")
 	_G.ChallengesFrameInset:DisableDrawLayer("BORDER")
 	_G.ChallengesFrameInsetBg:Hide()
 
---	_G.ChallengesModeWeeklyBest.Child.Star:Hide()
---	_G.ChallengesModeWeeklyBest.Child.Glow:Hide()
-	_G.ChallengesModeWeeklyBest.Child.Level:SetPoint("CENTER", ChallengesModeWeeklyBest.Child.Star, "CENTER", 0, 3)
+    ChallengesFrame.WeeklyBest:SetPoint("TOPLEFT")
+    ChallengesFrame.WeeklyBest:SetPoint("BOTTOMRIGHT")
+    ChallengesFrame.WeeklyBest.Child.Star:SetPoint("TOPLEFT", 54, -41)
 
-	F.CreateBD(ChallengesFrame.GuildBest, .3)
+    ChallengesFrame.GuildBest.Line:SetColorTexture(0.7, 0.7, 0.7)
+    ChallengesFrame.GuildBest.Line:SetPoint("TOP", 0, -24)
+    ChallengesFrame.GuildBest.Line:SetHeight(1)
 
-	select(1, _G.ChallengesFrame.GuildBest:GetRegions()):Hide()
-	select(3, _G.ChallengesFrame.GuildBest:GetRegions()):Hide()
-	
-	for i = 1, 2 do
-		select(i, _G.ChallengesFrame:GetRegions()):Hide()
-	end
-	
-	hooksecurefunc("ChallengesFrame_Update", function()
-		for i = 1, 9 do
-			local bu = _G.ChallengesFrame.DungeonIcons[i]
-			if bu then
-				select(1, bu:GetRegions()):Hide()
-				bu.Icon:SetTexCoord(.08, .92, .08, .92)
-			end
-		end
-	end)
+    _G.hooksecurefunc("ChallengesFrame_Update", function(self)
+        for i, icon in ipairs(self.DungeonIcons) do
+            if not skinned[icon] then
+                icon:GetRegions():Hide()
+                skinned[icon] = true
+            end
+        end
+    end)
 end

@@ -37,6 +37,7 @@ C.themes["Blizzard_AuctionUI"] = function()
 	for i = 1, 4 do
 		select(i, _G.AuctionProgressFrame:GetRegions()):Hide()
 	end
+	_G.AuctionProgressBar.Border:Hide()
 	_G.BrowseFilterScrollFrame:GetRegions():Hide()
 	select(2, _G.BrowseFilterScrollFrame:GetRegions()):Hide()
 	_G.BrowseScrollFrame:GetRegions():Hide()

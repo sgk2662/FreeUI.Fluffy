@@ -14,7 +14,7 @@ C.media = {
 	["glow"]       = "Interface\\AddOns\\FreeUI\\media\\glowTex", 					-- glow/shadow texture
 	["gradient"]   = "Interface\\AddOns\\FreeUI\\media\\gradient",
 	["roleIcons"]  = "Interface\\Addons\\FreeUI\\media\\UI-LFG-ICON-ROLES",
-	["texture"]    = "Interface\\AddOns\\FreeUI\\media\\Texture1", 					-- statusbar texture
+	["texture"]    = "Interface\\AddOns\\FreeUI\\media\\statusbar", 					-- statusbar texture
 
 	["font"] = {
 		["normal"] 		= "Fonts\\FRIZQT__.ttf",	-- 游戏主字体
@@ -71,7 +71,7 @@ C["appearance"] = {
 	["fontShadow"] = true,
 	["fontUseColorFont"] = true,
 	["fontColorFontRGB"] = {r = 247/255, g = 225/255, b =171/255},
-	["uiFader"] = true,
+	["uiFader"] = false,
 	["ncShadow"] = true,
 }
 

@@ -87,50 +87,6 @@ local region = TimeManagerClockButton:GetRegions()
 region:Hide()
 TimeManagerClockButton:Hide()
 
--- garrison/orderhall
-GarrisonLandingPageMinimapButton:ClearAllPoints()
-GarrisonLandingPageMinimapButton:SetParent(Minimap)
-GarrisonLandingPageMinimapButton:SetPoint('TOPRIGHT', Minimap, -3, -30)
-GarrisonLandingPageMinimapButton:SetSize(36, 36)
-hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', function(self)
-	self:SetNormalTexture('')
-	self:SetPushedTexture('')
-	self:SetHighlightTexture('')
-	
-	local icon = self:CreateTexture(nil,'OVERLAY',nil,7)
-	icon:SetSize(24, 24)
-	icon:SetPoint('CENTER')
-	icon:SetTexture([[Interface/AddOns/FreeUI/media/garrison2]])
-	icon:SetVertexColor(1, 1, 1)
-	self.icon = icon
-	
-	if (C_Garrison.GetLandingPageGarrisonType() == LE_GARRISON_TYPE_6_0) then
-		self.title = GARRISON_LANDING_PAGE_TITLE;
-		self.description = MINIMAP_GARRISON_LANDING_PAGE_TOOLTIP;
-	else
-		self.title = ORDER_HALL_LANDING_PAGE_TITLE;
-		self.description = MINIMAP_ORDER_HALL_LANDING_PAGE_TOOLTIP;
-	end
-end)
-
-GarrisonLandingPageMinimapButton:SetScript('OnEnter', function(self) 
-	--self.icon:SetVertexColor(color.r, color.g, color.b)
-	self.icon:SetVertexColor(1, .8, 0)
-end)
-
-GarrisonLandingPageMinimapButton:SetScript('OnLeave', function(self) 
-	self.icon:SetVertexColor(1, 1, 1)
-end)
---[[
-GarrisonLandingPageMinimapButton:SetScript('OnMouseDown', function(self) 
-	self.icon:SetVertexColor(0, 1, 1)
-end)
-				
-GarrisonLandingPageMinimapButton:SetScript('OnMouseUp', function(self) 
-	self.icon:SetVertexColor(1, .8, 0)
-end)
-]]			
-GarrisonMinimapBuilding_ShowPulse = function() end
 
 -- difficulty
 MiniMapInstanceDifficulty:ClearAllPoints()
@@ -153,17 +109,8 @@ QueueStatusMinimapButtonBorder:SetTexture(nil)
 --QueueStatusMinimapButtonBorder:SetPoint("BOTTOMRIGHT", lfg, "BOTTOMRIGHT", 4, -4)
 --QueueStatusMinimapButtonBorder:SetVertexColor(0, 0, 0, 1)
 
--- mail
--- MiniMapMailFrame:ClearAllPoints()
--- MiniMapMailFrame:SetParent(Minimap)
--- MiniMapMailFrame:SetFrameStrata'HIGH'
--- MiniMapMailFrame:SetPoint('BOTTOM', Minimap, 0, 27)
--- MiniMapMailIcon:ClearAllPoints()
--- MiniMapMailIcon:SetTexCoord(.1, .9, .1, .9)
--- MiniMapMailIcon:SetTexture([[Interface\AddOns\FreeUI\media\mail]])
--- MiniMapMailIcon:SetPoint("TOPLEFT", MiniMapMailFrame, "TOPLEFT", 8, -8)
--- MiniMapMailIcon:SetPoint("BOTTOMRIGHT", MiniMapMailFrame, "BOTTOMRIGHT", -8, 8)
 
+-- mail
 local mail = CreateFrame("Frame", "FreeUIMailFrame", Minimap)
 mail:Hide()
 mail:RegisterEvent("UPDATE_PENDING_MAIL")
@@ -189,6 +136,8 @@ MiniMapMailFrame:SetAlpha(0)
 MiniMapMailFrame:SetSize(22, 10)
 MiniMapMailFrame:ClearAllPoints()
 MiniMapMailFrame:SetPoint("CENTER", mt)
+
+
 
 -- durability
 --[[
@@ -255,24 +204,6 @@ Minimap:HookScript("OnEnter", function()
 end)
 Minimap:HookScript("OnLeave", function()
 	MinimapZoneTextButton:SetAlpha(0)
-end)
-
-
--- world capture bar
-hooksecurefunc('UIParent_ManageFramePositions', function()
-	if NUM_EXTENDED_UI_FRAMES then
-		for i = 1, NUM_EXTENDED_UI_FRAMES do
-			local bar = _G['WorldStateCaptureBar'..i]
-			if bar and bar:IsVisible() then
-				bar:ClearAllPoints()
-				if i == 1 then
-					bar:SetPoint('BOTTOM', MinimapCluster, 'TOP', 0, 30)
-				else
-					bar:SetPoint('BOTTOM', _G['WorldStateCaptureBar'..(i - 1)], 'TOP', 0, 20)
-				end
-			end
-		end
-	end
 end)
 
 
@@ -470,5 +401,6 @@ for _, ticketButton in pairs({HelpOpenTicketButton, HelpOpenWebTicketButton}) do
 	ticketButton:HookScript("OnShow", positionTicketButtons)
 	ticketButton:HookScript("OnHide", positionTicketButtons)
 end
+
 
 

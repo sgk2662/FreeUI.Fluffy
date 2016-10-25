@@ -511,6 +511,7 @@ local Shared = function(self, unit, isSingle)
 
 	if C.unitframes.powerTypeColor and unit == "player" then
 		Power.colorPower = true
+		Power.bg:SetVertexColor(0, 0, 0, .25)
 	else
 		Power.colorClass = true
 	end

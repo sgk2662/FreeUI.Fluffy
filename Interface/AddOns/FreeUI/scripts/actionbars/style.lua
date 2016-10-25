@@ -12,13 +12,13 @@ local gsub = gsub
 
 local textures = {
 	blank = "Interface\\Buttons\\WHITE8x8",
-	normal= "Interface\\AddOns\\FreeUI\\media\\gloss",
-	flash = "Interface\\AddOns\\FreeUI\\media\\flash",
-	hover = "Interface\\AddOns\\FreeUI\\media\\hover",
-	pushed = "Interface\\AddOns\\FreeUI\\media\\pushed",
-	checked = "Interface\\AddOns\\FreeUI\\media\\checked",
-	equipped = "Interface\\AddOns\\FreeUI\\media\\gloss_grey",
-	outer_shadow = "Interface\\AddOns\\FreeUI\\media\\glow",
+	normal= "Interface\\AddOns\\FreeUI\\media\\button\\gloss",
+	flash = "Interface\\AddOns\\FreeUI\\media\\button\\flash",
+	hover = "Interface\\AddOns\\FreeUI\\media\\button\\hover",
+	pushed = "Interface\\AddOns\\FreeUI\\media\\button\\pushed",
+	checked = "Interface\\AddOns\\FreeUI\\media\\button\\checked",
+	equipped = "Interface\\AddOns\\FreeUI\\media\\button\\gloss_grey",
+	outer_shadow = "Interface\\AddOns\\FreeUI\\media\\button\\glow",
 	}
 
 local color = {

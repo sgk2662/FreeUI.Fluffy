@@ -4,7 +4,7 @@ local HEIGHT 		= 2
 local _, CLASS 		= UnitClass("player")
 local COLOR			= CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CLASS] or RAID_CLASS_COLORS[CLASS]
 local POSITION		= {"TOP", Minimap, "BOTTOM", 0, 32}
-local OFFSET		= -4
+local OFFSET		= -3
 local TIP			= {"TOPRIGHT", UIParent, -275, -235}
 local TEXTURE 		= [[Interface/AddOns/FreeUI/media/statusbar]]
 
@@ -73,7 +73,7 @@ local setBackdrop = function(frame)
 	frame.bg:SetBackdropColor(0, 0, 0, .35)
 end
 
-local Experience = CreateFrame("StatusBar", nil, f)
+local Experience = CreateFrame("StatusBar", nil, f, 'AnimatedStatusBarTemplate')
 setBar(Experience)
 Experience:SetFrameLevel(4)
 Experience:SetStatusBarColor(.4, .1, .6)
@@ -87,16 +87,22 @@ Rest:EnableMouse(false)
 Rest:SetStatusBarColor(.2, .4, .8)
 Rest:SetAllPoints(Experience)
 
-local Artifact = CreateFrame("StatusBar", nil, f)
-setBar(Artifact)
-Artifact:SetFrameLevel(4)
-Artifact:SetStatusBarColor(230/255, 204/255, 128/255)
-setBackdrop(Artifact)
-
-local Reputation = CreateFrame("StatusBar", nil, f)
+local Reputation = CreateFrame("StatusBar", nil, f, 'AnimatedStatusBarTemplate')
 setBar(Reputation)
 Reputation:SetFrameLevel(4)
 setBackdrop(Reputation)
+
+local Artifact = CreateFrame("StatusBar", nil, f, 'AnimatedStatusBarTemplate')
+setBar(Artifact)
+Artifact:SetFrameLevel(4)
+Artifact:SetStatusBarColor(229/255, 205/255, 157/255)
+setBackdrop(Artifact)
+
+local Honor = CreateFrame("StatusBar", nil, f, 'AnimatedStatusBarTemplate')
+setBar(Honor)
+Honor:SetFrameLevel(4)
+Honor:SetStatusBarColor(205/255, 6/255, 0/255)
+setBackdrop(Honor)
 
 local numberize = function(v)
 	if v <= 9999 then return v end
@@ -184,8 +190,9 @@ local artifact_update = function(self, event)
 		local percent = math.ceil(xp/next*100)
 
 		Artifact:ClearAllPoints()
-		Artifact:SetMinMaxValues(0, next)
-		Artifact:SetValue(xp)
+		-- Artifact:SetMinMaxValues(0, next)
+		-- Artifact:SetValue(xp)
+		Artifact:SetAnimatedValues(xp, 0, next, num + spent)
 
 		local y = POSITION[5]
 		if Experience:IsShown() then
@@ -220,6 +227,75 @@ local showArtifactTooltip = function(self)
 	end
 end
 
+local honor_update = function(self, event)
+	local level = UnitHonorLevel("player")
+	local levelmax = GetMaxPlayerHonorLevel()
+	if UnitLevel("player") < MAX_PLAYER_LEVEL or level == levelmax then
+		Honor:Hide()
+	else
+		Honor:ClearAllPoints()
+		local current = UnitHonor("player")
+		local max = UnitHonorMax("player")
+
+		if (level == levelmax) then
+			Honor:SetAnimatedValues(1, 0, 1, level)
+		else
+			Honor:SetAnimatedValues(current, 0, max, level)
+		end
+
+		local exhaustionStateID = GetHonorRestState()
+		if (exhaustionStateID == 1) then
+			Honor:SetStatusBarColor(1.0, 0.71, 0)
+			Honor:SetAnimatedTextureColors(1.0, 0.71, 0)
+		else
+			Honor:SetStatusBarColor(1.0, 0.24, 0)
+			Honor:SetAnimatedTextureColors(1.0, 0.24, 0)
+		end
+
+		local y = POSITION[5]
+		if Experience:IsShown() then
+			y = y + OFFSET
+		end
+		if Reputation:IsShown() then
+			y = y + OFFSET
+		end
+		if Artifact:IsShown() then
+			y = y + OFFSET
+		end
+		Honor:SetPoint(POSITION[1], POSITION[2], POSITION[3], POSITION[4], y)
+		Honor:Show()
+	end
+end
+
+local showHonorTooltip = function(self) 
+	if UnitLevel("player") == MAX_PLAYER_LEVEL then
+		local current = UnitHonor("player");
+		local max = UnitHonorMax("player");
+		local level = UnitHonorLevel("player")
+		local levelmax = GetMaxPlayerHonorLevel()
+
+		GameTooltip:SetOwner(self, "ANCHOR_NONE")
+		GameTooltip:SetPoint(TIP[1], TIP[2], TIP[3], TIP[4], TIP[5])
+
+		GameTooltip:AddLine(HONOR)
+
+		if (CanPrestige()) then
+			GameTooltip:AddLine(PVP_HONOR_PRESTIGE_AVAILABLE)
+			GameTooltip:AddDivider()
+		end
+		GameTooltip:AddDoubleLine(HONOR_LEVEL_LABEL:gsub("%%d",""), level, 1, 1, 1)
+
+		if (CanPrestige()) then
+			GameTooltip:AddLine(PVP_HONOR_PRESTIGE_AVAILABLE);
+		elseif (level == levelmax) then
+			GameTooltip:AddLine(MAX_HONOR_LEVEL);
+		else
+			GameTooltip:AddDoubleLine(HONOR_BAR:gsub("%%d/%%d",""), format('%d / %d (%d%%)', current, max, current/max * 100), 1, 1, 1)
+		end
+		GameTooltip:Show()
+	end
+end
+
 -- events
 Experience:RegisterEvent("PLAYER_ENTERING_WORLD")
 Experience:RegisterEvent("PLAYER_LEVEL_UP")
@@ -249,3 +325,12 @@ Artifact:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 Artifact:SetScript("OnEvent", artifact_update)
 Artifact:SetScript("OnEnter", function() showArtifactTooltip(Artifact) end)
 Artifact:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+Honor:RegisterEvent("UPDATE_FACTION")
+Honor:RegisterEvent("CHAT_MSG_COMBAT_FACTION_CHANGE")
+Honor:RegisterEvent("HONOR_XP_UPDATE")
+Honor:RegisterEvent("HONOR_PRESTIGE_UPDATE")
+Honor:RegisterEvent("PLAYER_ENTERING_WORLD")
+Honor:SetScript("OnEvent", honor_update)
+Honor:SetScript("OnEnter", function() showHonorTooltip(Honor) end)
+Honor:SetScript("OnLeave", function() GameTooltip:Hide() end)

@@ -6,8 +6,10 @@
 	<Script file="LibItemUpgradeInfo-1.0\LibItemUpgradeInfo-1.0.lua"/>
 	<Script file="LibItemLevel.lua"/>
 	<Script file="LibInspect\LibInspect.lua"/>
-	<Script file="Taint.lua"/>
 	<Script file="rLib\core.lua"/>
 	<Script file="rLib\framefader.lua"/>
+	<Script file="Fixes\Taint.lua"/>
+	<Script file="Fixes\DropdownMenu\EasyMenu.lua"/>
+	<Include file="Fixes\DropdownMenu\UIDropDownMenu.xml"/>
 </Ui>
 

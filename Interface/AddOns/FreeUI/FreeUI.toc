@@ -24,10 +24,10 @@ libs\load_libs.xml
 scripts\actionbars.xml
 scripts\automation.xml
 scripts\buffs.xml
-scripts\chat.xml
+scripts\chats.xml
 scripts\combat.xml
 scripts\maps.xml
-scripts\quest.xml
+scripts\quests.xml
 scripts\skins.xml
 scripts\tooltips.xml
 scripts\tweaks.xml

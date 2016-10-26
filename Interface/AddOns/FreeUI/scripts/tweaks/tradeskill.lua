@@ -596,12 +596,12 @@ StaticPopupDialogs['CTRADESKILL_WARNING'] = {
 local function createOptions()
 	--- Dropdown Menu ---
 	local function CTSDropdown_Init(self, level)
-		local info = UIDropDownMenu_CreateInfo()
+		local info = Lib_UIDropDownMenu_CreateInfo()
 		if level == 1 then
 			info.text = f:GetName()
 			info.isTitle = true
 			info.notCheckable = true
-			UIDropDownMenu_AddButton(info, level)
+			Lib_UIDropDownMenu_AddButton(info, level)
 
 			info.isTitle = false
 			info.disabled = false
@@ -613,7 +613,7 @@ local function createOptions()
 				StaticPopup_Show('CTRADESKILL_WARNING')
 			end
 			info.checked = CTradeSkillDB['Unlock']
-			UIDropDownMenu_AddButton(info, level)
+			Lib_UIDropDownMenu_AddButton(info, level)
 
 			info.text = 'UI ' .. ACTION_SPELL_AURA_REMOVED_BUFF
 			info.func = function()
@@ -622,7 +622,7 @@ local function createOptions()
 			end
 			info.keepShownOnClick = true
 			info.checked = CTradeSkillDB['Fade']
-			UIDropDownMenu_AddButton(info, level)
+			Lib_UIDropDownMenu_AddButton(info, level)
 
 			info.text = STAT_AVERAGE_ITEM_LEVEL
 			info.func = function()
@@ -631,7 +631,7 @@ local function createOptions()
 			end
 			info.keepShownOnClick = true
 			info.checked = CTradeSkillDB['Level']
-			UIDropDownMenu_AddButton(info, level)
+			Lib_UIDropDownMenu_AddButton(info, level)
 
 			info.text = DISPLAY .. ' ' .. INFO
 			info.func = function()
@@ -639,7 +639,7 @@ local function createOptions()
 			end
 			info.keepShownOnClick = true
 			info.checked = CTradeSkillDB['Tooltip']
-			UIDropDownMenu_AddButton(info, level)
+			Lib_UIDropDownMenu_AddButton(info, level)
 
 			info.text = DRAG_MODEL .. ' ' .. AUCTION_CATEGORY_RECIPES
 			info.func = function()
@@ -647,7 +647,7 @@ local function createOptions()
 			end
 			info.keepShownOnClick = true
 			info.checked = CTradeSkillDB['Drag']
-			UIDropDownMenu_AddButton(info, level)
+			Lib_UIDropDownMenu_AddButton(info, level)
 
 			info.func = nil
 			info.checked = 	nil
@@ -657,16 +657,16 @@ local function createOptions()
 			info.text = PRIMARY
 			info.value = 1
 			info.disabled = InCombatLockdown()
-			UIDropDownMenu_AddButton(info, level)
+			Lib_UIDropDownMenu_AddButton(info, level)
 
 			info.text = SECONDARY
 			info.value = 2
 			info.disabled = InCombatLockdown()
-			UIDropDownMenu_AddButton(info, level)
+			Lib_UIDropDownMenu_AddButton(info, level)
 		elseif level == 2 then
 			info.isNotRadio = true
 			info.keepShownOnClick = true
-			if UIDROPDOWNMENU_MENU_VALUE == 1 then
+			if Lib_UIDropDownMenu_MENU_VALUE == 1 then
 				for i = 1, numTabs do
 					local tab = _G['CTradeSkillTab' .. i]
 					if tab and (tab.isSub == 0) then
@@ -676,10 +676,10 @@ local function createOptions()
 							sortTabs()
 						end
 						info.checked = CTradeSkillDB['Tabs'][tab.id]
-						UIDropDownMenu_AddButton(info, level)
+						Lib_UIDropDownMenu_AddButton(info, level)
 					end
 				end
-			elseif UIDROPDOWNMENU_MENU_VALUE == 2 then
+			elseif Lib_UIDropDownMenu_MENU_VALUE == 2 then
 				for i = 1, numTabs do
 					local tab = _G['CTradeSkillTab' .. i]
 					if tab and (tab.isSub == 1) then
@@ -689,18 +689,18 @@ local function createOptions()
 							sortTabs()
 						end
 						info.checked = CTradeSkillDB['Tabs'][tab.id]
-						UIDropDownMenu_AddButton(info, level)
+						Lib_UIDropDownMenu_AddButton(info, level)
 					end
 				end
 			end
 		end
 	end
-	local menu = CreateFrame('Frame', 'CTSDropdown', nil, 'UIDropDownMenuTemplate')
-	UIDropDownMenu_Initialize(CTSDropdown, CTSDropdown_Init, 'MENU')
+	local menu = CreateFrame('Frame', 'CTSDropdown', nil, 'Lib_UIDropDownMenuTemplate')
+	Lib_UIDropDownMenu_Initialize(CTSDropdown, CTSDropdown_Init, 'MENU')
 
 	--- Option Button ---
 	local button = CreateFrame('Button', 'CTSOption', TradeSkillFrame, 'UIMenuButtonStretchTemplate')
-	button:SetScript('OnClick', function(self) ToggleDropDownMenu(1, nil, CTSDropdown, self, 2, -6) end)
+	button:SetScript('OnClick', function(self) Lib_ToggleDropDownMenu(1, nil, CTSDropdown, self, 2, -6) end)
 	button:SetPoint('RIGHT', TradeSkillFrame.FilterButton, 'LEFT', -8, 0)
 	button:SetText(GAMEOPTIONS_MENU)
 	button:SetSize(80, 22)

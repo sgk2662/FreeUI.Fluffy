@@ -27,7 +27,6 @@
 	<Script file="tweaks\moneytext.lua"/>
 	<Script file="tweaks\myMedia.lua"/>
 	<Script file="tweaks\ncShadow.lua"/>
-	<Script file="tweaks\NoAsiaFonts.lua"/>
 	<Script file="tweaks\PaperDollFrame.lua"/>
 	<Script file="tweaks\petbattles.lua"/>
 	<Script file="tweaks\queuetimer.lua"/>

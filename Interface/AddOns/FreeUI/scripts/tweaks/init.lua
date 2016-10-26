@@ -8,19 +8,19 @@ C_Timer.After(.1, function() -- need to wait a bit
 		SetCVar("nameplateOtherTopInset", -1)
 		SetCVar("nameplateOtherBottomInset", -1)
 		-- tab的行为改回7.0以前，优先tab最近的单位
-		SetCVar("TargetPriorityAllowAnyOnScreen", 0)
+		--SetCVar("TargetPriorityAllowAnyOnScreen", 0)
 		SetCVar("Targetnearestuseold", 1)
 		-- 7.0新的伤害字体显示方式
 		SetCVar("floatingCombatTextCombatDamageDirectionalScale", 1)
 		-- 最远视野距离
-		SetCVar("cameraDistanceMaxFactor", 2.6)
+		SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 
 		SetCVar("screenshotQuality", 10)
 		SetCVar("nameplateShowFriends", 0)
 		SetCVar("nameplateShowEnemies", 1)
 		SetCVar("ShowClassColorInNameplate", 1)
 
-		SetCVar("TargetPriorityAllowAnyOnScreen", 0)
+		--SetCVar("TargetPriorityAllowAnyOnScreen", 0)
 		SetCVar("Targetnearestuseold", 1)
 
 		SetCVar("overrideArchive", 0)

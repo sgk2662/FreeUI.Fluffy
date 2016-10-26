@@ -46,7 +46,7 @@ end
 
 local cvar = {
 	"cameraDistanceMoveSpeed",
-	"cameraDistanceMaxFactor",
+	"cameraDistanceMaxZoomFactor",
 }
 
 	----------------------
@@ -59,8 +59,8 @@ local cvar = {
 C_Timer.After(1, function()
 	-- not actually necessary to override from savedvars
 	-- but better to do this if other addons also set it
-	SetCVar("cameraDistanceMaxFactor", db.distance)
-	SetCVar("cameraDistanceMoveSpeed", db.speed)
+	SetCVar("cameraDistanceMaxZoomFactor", db.distance)
+	--SetCVar("cameraDistanceMoveSpeed", db.speed)
 end)
 
 local f = CreateFrame("Frame")

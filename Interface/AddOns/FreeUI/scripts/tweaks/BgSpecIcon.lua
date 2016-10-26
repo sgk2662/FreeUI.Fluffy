@@ -44,7 +44,7 @@ if gameLocale == "zhCN" then
 	L["Protection"] = "防护"
 	L["Restoration"] = "恢复"
 	L["Retribution"] = "惩戒"
-	L["Shadow"] = "暗影魔法"
+	L["Shadow"] = "暗影"
 	L["Subtlety"] = "敏锐"
 	L["Survival"] = "生存"
 	L["Unholy"] = "邪恶"

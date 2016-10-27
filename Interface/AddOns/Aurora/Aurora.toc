@@ -1,8 +1,8 @@
-## Interface: 70000
+## Interface: 70100
 ## Title: |cffF5FFFAFreeUI|r.|cffFF34B3Fluffy|r |cff00AFFFAurora|r
 ## Notes: Minimalistic window theme.
-## Author: Haleth/Lightsword
-## Version: 70000.11
+## Author: Haleth/Lightsword (Modified by Dostoyevsky@烈焰峰)
+## Version: 70100.01
 
 aurora.lua
 #gui.lua

@@ -1,9 +1,8 @@
-## Interface: 70000
+## Interface: 70100
 ## Title: |cffF5FFFAFreeUI|r.|cffFF34B3Fluffy|r
 ## Notes: Minimalistic user interface.
 ## Author: Haleth/Lightsword (Modified by Dostoyevsky@烈焰峰)
-## Version: 70000.11
-## RequiredDeps: Blizzard_CombatText
+## Version: 70100.01
 ## OptionalDeps: Clique, FreeUI_Options, MyRolePlay, oUF
 ## SavedVariables: FreeUIGlobalConfig
 ## SavedVariablesPerCharacter: FreeUIConfig

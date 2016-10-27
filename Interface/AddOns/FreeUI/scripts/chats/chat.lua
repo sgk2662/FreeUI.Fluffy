@@ -114,13 +114,13 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_CURRENCY", function(self, event, messa
 	return false, ("+ |cffffffff|Hcurrency:%d|h%s|h|r%s"):format(currencyID, currencyName, currencyAmount or ""), ...
 end)
 
-local function toggleDown(f)
-	if f:GetCurrentScroll() > 0 then
-		_G[f:GetName().."ButtonFrameBottomButton"]:Show()
-	else
-		_G[f:GetName().."ButtonFrameBottomButton"]:Hide()
-	end
-end
+-- local function toggleDown(f)
+-- 	if f:GetCurrentScroll() > 0 then
+-- 		_G[f:GetName().."ButtonFrameBottomButton"]:Show()
+-- 	else
+-- 		_G[f:GetName().."ButtonFrameBottomButton"]:Hide()
+-- 	end
+-- end
 
 local function reskinMinimize(f)
 	f:SetSize(16, 16)
@@ -143,7 +143,7 @@ local function StyleWindow(f)
 	HideForever(_G[f.."ButtonFrameDownButton"])
 
 	--frame:HookScript("OnMessageScrollChanged", toggleDown)
-	frame:HookScript("OnShow", toggleDown)
+	--frame:HookScript("OnShow", toggleDown)
 
 	frame:SetFading(false)
 

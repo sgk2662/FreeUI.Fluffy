@@ -4,6 +4,7 @@ if not Blizzard_TradeSkillUI then
 	LoadAddOn("Blizzard_TradeSkillUI")
 end
 
+
 --- Initialization ---
 local numTabs = 0
 local searchTxt = ''
@@ -17,7 +18,7 @@ local function InitDB()
 		CTradeSkillDB['Unlock'] = false
 		CTradeSkillDB['Fade'] = true
 		CTradeSkillDB['Level'] = true
-		CTradeSkillDB['Tooltip'] = false
+		CTradeSkillDB['Tooltip'] = true
 		CTradeSkillDB['Drag'] = false
 	end
 	if not CTradeSkillDB['Tabs'] then CTradeSkillDB['Tabs'] = {} end
@@ -43,15 +44,12 @@ f:RegisterEvent('TRADE_SKILL_DATA_SOURCE_CHANGED')
 --- Local Functions ---
 	--- Save Filters ---
 	local function saveFilters()
-		searchTxt = TradeSkillFrame.SearchBox:GetText()
 		filterMats = C_TradeSkillUI.GetOnlyShowMakeableRecipes()
 		filterSkill = C_TradeSkillUI.GetOnlyShowSkillUpRecipes()
 	end
 
 	--- Restore Filters ---
 	local function restoreFilters()
-		TradeSkillFrame.SearchBox:SetText('')
-		TradeSkillFrame.SearchBox:SetText(searchTxt)
 		C_TradeSkillUI.SetOnlyShowMakeableRecipes(filterMats)
 		C_TradeSkillUI.SetOnlyShowSkillUpRecipes(filterSkill)
 	end
@@ -392,8 +390,10 @@ TradeSkillFrame.RecipeList:HookScript('OnUpdate', function(self, ...)
 				if CTradeSkillDB and CTradeSkillDB['Tooltip'] then
 					if self.tradeSkillInfo and not self.isHeader then
 						local link = C_TradeSkillUI.GetRecipeLink(self.tradeSkillInfo.recipeID)
-						GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
-						GameTooltip:SetHyperlink(link)
+						if link then
+							GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
+							GameTooltip:SetHyperlink(link)
+						end
 					end
 				end
 			end)
@@ -415,12 +415,14 @@ TradeSkillFrame.RecipeList:HookScript('OnUpdate', function(self, ...)
 			if button.tradeSkillInfo and not button.isHeader then
 				local recipe = button.tradeSkillInfo.recipeID
 				local item = C_TradeSkillUI.GetRecipeItemLink(recipe)
-				local quality, _, level = select(3, GetItemInfo(item))
-				if quality and level and level > 1 then
-					button.CTSLevel:SetText(level)
-					button.CTSLevel:SetTextColor(GetItemQualityColor(quality))
-				else
-					button.CTSLevel:SetText('')
+				if item then
+					local quality, _, level = select(3, GetItemInfo(item))
+					if quality and level and level > 1 then
+						button.CTSLevel:SetText(level)
+						button.CTSLevel:SetTextColor(GetItemQualityColor(quality))
+					else
+						button.CTSLevel:SetText('')
+					end
 				end
 			else
 				button.CTSLevel:SetText('')
@@ -470,7 +472,7 @@ hooksecurefunc('ChatEdit_InsertLink', function(link)
 			local text = strmatch(link, '|h%[(.+)%]|h|r')
 			if text then
 				text = strmatch(text, ':%s(.+)') or text
-				TradeSkillFrame.SearchBox:SetText(text:lower())
+				TradeSkillFrame.SearchBox:SetText(text)
 			end
 		end
 	end
@@ -485,15 +487,6 @@ hooksecurefunc('ContainerFrameItemButton_OnModifiedClick', function(self, button
 		end
 	end
 end)
-
-
---- Fix RecipeLink ---
-local getRecipe = C_TradeSkillUI.GetRecipeLink
-C_TradeSkillUI.GetRecipeLink = function(link)
-	if link and (link ~= '') then
-		return getRecipe(link)
-	end
-end
 
 
 --- Druid Unshapeshift ---
@@ -549,7 +542,7 @@ local function injectVellumButton()
 	end)
 
 	hooksecurefunc(TradeSkillFrame.DetailsFrame, 'RefreshButtons', function(self)
-		if C_TradeSkillUI.GetTradeSkillLine() ~= 333 or not self.createVerbOverride then
+		if (C_TradeSkillUI.GetTradeSkillLine() ~= 333) or C_TradeSkillUI.IsTradeSkillLinked() or not self.createVerbOverride then
 			vellum:Hide()
 		else
 			local recipeInfo = self.selectedRecipeID and C_TradeSkillUI.GetRecipeInfo(self.selectedRecipeID)
@@ -596,12 +589,12 @@ StaticPopupDialogs['CTRADESKILL_WARNING'] = {
 local function createOptions()
 	--- Dropdown Menu ---
 	local function CTSDropdown_Init(self, level)
-		local info = Lib_UIDropDownMenu_CreateInfo()
+		local info = UIDropDownMenu_CreateInfo()
 		if level == 1 then
 			info.text = f:GetName()
 			info.isTitle = true
 			info.notCheckable = true
-			Lib_UIDropDownMenu_AddButton(info, level)
+			UIDropDownMenu_AddButton(info, level)
 
 			info.isTitle = false
 			info.disabled = false
@@ -613,7 +606,7 @@ local function createOptions()
 				StaticPopup_Show('CTRADESKILL_WARNING')
 			end
 			info.checked = CTradeSkillDB['Unlock']
-			Lib_UIDropDownMenu_AddButton(info, level)
+			UIDropDownMenu_AddButton(info, level)
 
 			info.text = 'UI ' .. ACTION_SPELL_AURA_REMOVED_BUFF
 			info.func = function()
@@ -622,7 +615,7 @@ local function createOptions()
 			end
 			info.keepShownOnClick = true
 			info.checked = CTradeSkillDB['Fade']
-			Lib_UIDropDownMenu_AddButton(info, level)
+			UIDropDownMenu_AddButton(info, level)
 
 			info.text = STAT_AVERAGE_ITEM_LEVEL
 			info.func = function()
@@ -631,7 +624,7 @@ local function createOptions()
 			end
 			info.keepShownOnClick = true
 			info.checked = CTradeSkillDB['Level']
-			Lib_UIDropDownMenu_AddButton(info, level)
+			UIDropDownMenu_AddButton(info, level)
 
 			info.text = DISPLAY .. ' ' .. INFO
 			info.func = function()
@@ -639,7 +632,7 @@ local function createOptions()
 			end
 			info.keepShownOnClick = true
 			info.checked = CTradeSkillDB['Tooltip']
-			Lib_UIDropDownMenu_AddButton(info, level)
+			UIDropDownMenu_AddButton(info, level)
 
 			info.text = DRAG_MODEL .. ' ' .. AUCTION_CATEGORY_RECIPES
 			info.func = function()
@@ -647,7 +640,7 @@ local function createOptions()
 			end
 			info.keepShownOnClick = true
 			info.checked = CTradeSkillDB['Drag']
-			Lib_UIDropDownMenu_AddButton(info, level)
+			UIDropDownMenu_AddButton(info, level)
 
 			info.func = nil
 			info.checked = 	nil
@@ -657,16 +650,16 @@ local function createOptions()
 			info.text = PRIMARY
 			info.value = 1
 			info.disabled = InCombatLockdown()
-			Lib_UIDropDownMenu_AddButton(info, level)
+			UIDropDownMenu_AddButton(info, level)
 
 			info.text = SECONDARY
 			info.value = 2
 			info.disabled = InCombatLockdown()
-			Lib_UIDropDownMenu_AddButton(info, level)
+			UIDropDownMenu_AddButton(info, level)
 		elseif level == 2 then
 			info.isNotRadio = true
 			info.keepShownOnClick = true
-			if Lib_UIDropDownMenu_MENU_VALUE == 1 then
+			if UIDROPDOWNMENU_MENU_VALUE == 1 then
 				for i = 1, numTabs do
 					local tab = _G['CTradeSkillTab' .. i]
 					if tab and (tab.isSub == 0) then
@@ -676,10 +669,10 @@ local function createOptions()
 							sortTabs()
 						end
 						info.checked = CTradeSkillDB['Tabs'][tab.id]
-						Lib_UIDropDownMenu_AddButton(info, level)
+						UIDropDownMenu_AddButton(info, level)
 					end
 				end
-			elseif Lib_UIDropDownMenu_MENU_VALUE == 2 then
+			elseif UIDROPDOWNMENU_MENU_VALUE == 2 then
 				for i = 1, numTabs do
 					local tab = _G['CTradeSkillTab' .. i]
 					if tab and (tab.isSub == 1) then
@@ -689,18 +682,18 @@ local function createOptions()
 							sortTabs()
 						end
 						info.checked = CTradeSkillDB['Tabs'][tab.id]
-						Lib_UIDropDownMenu_AddButton(info, level)
+						UIDropDownMenu_AddButton(info, level)
 					end
 				end
 			end
 		end
 	end
-	local menu = CreateFrame('Frame', 'CTSDropdown', nil, 'Lib_UIDropDownMenuTemplate')
-	Lib_UIDropDownMenu_Initialize(CTSDropdown, CTSDropdown_Init, 'MENU')
+	local menu = CreateFrame('Frame', 'CTSDropdown', nil, 'UIDropDownMenuTemplate')
+	UIDropDownMenu_Initialize(CTSDropdown, CTSDropdown_Init, 'MENU')
 
 	--- Option Button ---
 	local button = CreateFrame('Button', 'CTSOption', TradeSkillFrame, 'UIMenuButtonStretchTemplate')
-	button:SetScript('OnClick', function(self) Lib_ToggleDropDownMenu(1, nil, CTSDropdown, self, 2, -6) end)
+	button:SetScript('OnClick', function(self) ToggleDropDownMenu(1, nil, CTSDropdown, self, 2, -6) end)
 	button:SetPoint('RIGHT', TradeSkillFrame.FilterButton, 'LEFT', -8, 0)
 	button:SetText(GAMEOPTIONS_MENU)
 	button:SetSize(80, 22)
@@ -735,9 +728,11 @@ f:SetScript('OnEvent', function(self, event, ...)
 		TradeSkillFrame:SetAlpha(1.0)
 	elseif (event == 'TRADE_SKILL_LIST_UPDATE') then
 		saveFilters()
+		searchTxt = TradeSkillFrame.SearchBox:GetText()
 	elseif (event == 'TRADE_SKILL_DATA_SOURCE_CHANGED') then
 		if not InCombatLockdown() then
 			updateTabs()
 		end
+		TradeSkillFrame.SearchBox:SetText(searchTxt)
 	end
 end)

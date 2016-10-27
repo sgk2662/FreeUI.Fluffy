@@ -111,6 +111,7 @@ C.defaults = {
 C.frames = {}
 
 C.TOC = select(4, _G.GetBuildInfo())
+C.is71 = _G.GetBuildInfo() == "7.1.0"
 
 -- [[ Cached variables ]]
 

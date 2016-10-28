@@ -4,9 +4,6 @@ local _, private = ...
 local _G = _G
 --local select, pairs = _G.select, _G.pairs
 
--- [[ WoW API ]]
-local CreateFrame = _G.CreateFrame
-
 -- [[ Core ]]
 local F, C = _G.unpack(private.Aurora)
 
@@ -63,6 +60,7 @@ _G.tinsert(C.themes["Aurora"], function()
 		end
 	end
 
+	--[=[ Broken in 7.1 
 	--[[ Dungeon completion rewards ]]
 	local DungeonCompletionAlertFrame = _G.DungeonCompletionAlertFrame
 	local bg = CreateFrame("Frame", nil, DungeonCompletionAlertFrame)
@@ -119,6 +117,7 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.GuildChallengeAlertFrameGlow:SetTexture("")
 	_G.GuildChallengeAlertFrameShine:SetTexture("")
 	_G.GuildChallengeAlertFrameEmblemBorder:SetTexture("")
+	]=]
 
     _G.hooksecurefunc(_G.AlertFrame, "AddAlertFrame", function(self, frame)
     	local frameName = frame:GetName()

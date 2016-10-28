@@ -29,7 +29,7 @@ local cfg = {
 	factionIconAlpha = 0,
 	sbText = false,
 	pBar = false, -- unit power bar
- 	pBarMANAonly = true, -- pBar must be true
+	pBarMANAonly = true, -- pBar must be true
 	fadeOnUnit = C.tooltip.fadeOnUnit, -- fade from units instead of hiding instantly
 	combathide = C.tooltip.combathide, -- hide just interface toolitps in combat
 	combathideALL = C.tooltip.combathideALL,
@@ -156,10 +156,14 @@ local function getUnit(self)
 	local _, unit = self and self:GetUnit()
 	if(not unit) then
 		local mFocus = GetMouseFocus()
-		unit = mFocus and (mFocus.unit or mFocus:GetAttribute("unit")) or "mouseover"
+	
+		if(mFocus) then
+			local hasAttr = mFocus.GetAttribute
+			unit = mFocus.unit or (hasAttr and mFocus:GetAttribute("unit"))
+		end
 	end
 
-	return unit
+	return (unit or "mouseover")
 end
 
 FreebTip_Cache = {}
@@ -171,8 +175,8 @@ local function getPlayer(unit, origName)
 		if not name then return end
 
 		if(cfg.playerTitle) then
- 			name = origName:gsub("-(.*)", "")
- 		end
+			name = origName:gsub("-(.*)", "")
+		end
 
 		if (realm and strlen(realm) > 0) then
 			if(cfg.showRealm) then
@@ -390,7 +394,7 @@ local function OnSetUnit(self)
 
 		if(cfg.pBar) then
 			local _, pToken = UnitPowerType(unit)
- 			local isMANA = cfg.pBarMANAonly and pToken == "MANA"
+			local isMANA = cfg.pBarMANAonly and pToken == "MANA"
 
 			local pMin, pMax = UnitPower(unit), UnitPowerMax(unit)
 			if((pMin > 0 and isMANA) or (pMin > 0 and not cfg.pBarMANAonly)) then
@@ -541,16 +545,16 @@ local function UpdatePower(self, elapsed)
 			self:SetValue(pMin)
 
 			if(not self.text) then
- 				self.text = self:CreateFontString(nil, "OVERLAY")
- 				self.text:SetPoint("CENTER", self, 0, 0)
- 				self.text:SetFont(cfg.font, 10, "OUTLINE")
- 			end
+				self.text = self:CreateFontString(nil, "OVERLAY")
+				self.text:SetPoint("CENTER", self, 0, 0)
+				self.text:SetFont(cfg.font, 10, "OUTLINE")
+			end
  
- 			if(cfg.sbText) then
- 				self.text:SetText(numberize(pMin))
- 			else
- 				self.text:SetText(nil)
- 			end
+			if(cfg.sbText) then
+				self.text:SetText(numberize(pMin))
+			else
+				self.text:SetText(nil)
+			end
 		end
 	end
 end

@@ -5,4 +5,5 @@
 	<Script file="tooltips\IDTip.lua"/>
 	<Script file="tooltips\ilvlspec.lua"/>
 	<Script file="tooltips\multiItem.lua"/>
+	<Script file="tooltips\hover.lua"/>
 </Ui>

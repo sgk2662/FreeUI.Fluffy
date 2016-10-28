@@ -8,6 +8,10 @@ DEFAULT_CHATFRAME_ALPHA = 0
 CHAT_FRAME_FADE_OUT_TIME = CHAT_FRAME_FADE_TIME -- speed up fading out
 CHAT_TAB_HIDE_DELAY = CHAT_TAB_SHOW_DELAY -- ditto
 
+for i = 1, 23 do
+	CHAT_FONT_HEIGHTS[i] = i+7
+end
+
 local hooks = {}
 local chatEvents = {
 	"CHAT_MSG_CHANNEL_JOIN",

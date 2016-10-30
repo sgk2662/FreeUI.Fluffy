@@ -1074,6 +1074,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		for i = 1, #FrameBDs do
 			local FrameBD = _G[FrameBDs[i]]
 			F.CreateBD(FrameBD)
+			F.CreateSD(FrameBD)
 		end
 
 		-- Dropdown lists

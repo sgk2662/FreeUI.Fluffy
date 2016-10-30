@@ -22,6 +22,7 @@ C.themes["Blizzard_Collections"] = function()
 	end
 
 	F.CreateBD(_G.CollectionsJournal)
+	F.CreateSD(_G.CollectionsJournal)
 	F.ReskinTab(_G.CollectionsJournalTab1)
 	F.ReskinTab(_G.CollectionsJournalTab2)
 	F.ReskinTab(_G.CollectionsJournalTab3)

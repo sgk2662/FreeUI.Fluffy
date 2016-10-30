@@ -16,6 +16,7 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.VideoOptionsFrameHeader:SetPoint("TOP", _G.VideoOptionsFrame, 0, 0)
 
 	F.CreateBD(_G.VideoOptionsFrame)
+	F.CreateSD(_G.VideoOptionsFrame)
 	F.Reskin(_G.VideoOptionsFrameOkay)
 	F.Reskin(_G.VideoOptionsFrameCancel)
 	F.Reskin(_G.VideoOptionsFrameDefaults)

@@ -27,6 +27,7 @@ _G.tinsert(C.themes["Aurora"], function()
 		end
 
 		F.CreateBD(_G.InterfaceOptionsFrame)
+		F.CreateSD(_G.InterfaceOptionsFrame)
 		F.Reskin(_G.InterfaceOptionsFrameDefaults)
 		F.Reskin(_G.InterfaceOptionsFrameOkay)
 		F.Reskin(_G.InterfaceOptionsFrameCancel)

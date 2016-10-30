@@ -83,42 +83,53 @@ coords:SetPoint("BOTTOMLEFT", UIFrame, 5, 5)
 local cursorcoords = F.CreateFS(UIFrame, C.FONT_SIZE_NORMAL, "LEFT")
 cursorcoords:SetPoint("BOTTOMLEFT", coords, "TOPLEFT", 0, 4)
 
+if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+	local coordsFont
+	if C.appearance.fontUseChinesePixelFont then
+		coordsFont = C.fontCN.pixel
+	else
+		coordsFont = C.fontCN.standard
+	end
+
+	coords:SetFont(unpack(coordsFont))
+	cursorcoords:SetFont(unpack(coordsFont))
+end
+
 local freq = C.performance.mapcoords
 local last = 0
 
 WorldMapDetailFrame:HookScript("OnUpdate", function(self, elapsed)
-	if select(2, GetInstanceInfo()) == "none" then
-		last = last + elapsed
-		if last >= freq then
-			local x, y = GetPlayerMapPosition("player")
+	last = last + elapsed
+	if last >= freq then
+		local x, y = GetPlayerMapPosition("player")
+		if (x and x > 0) and (y and y > 0) then
 			x = math.floor(100 * x)
 			y = math.floor(100 * y)
-			if x ~= 0 and y ~= 0 then
-				coords:SetText(PLAYER..": "..x..", "..y)
-				cursorcoords:SetPoint("BOTTOMLEFT", coords, "TOPLEFT", 0, 4)
-			else
-				coords:SetText("")
-				cursorcoords:SetPoint("BOTTOMLEFT", UIFrame, 5, 5)
-			end
 
-			local scale = WorldMapDetailFrame:GetEffectiveScale()
-			local width = WorldMapDetailFrame:GetWidth()
-			local height = WorldMapDetailFrame:GetHeight()
-			local centerX, centerY = WorldMapDetailFrame:GetCenter()
-			local x, y = GetCursorPosition()
-			local adjustedX = (x / scale - (centerX - (width/2))) / width
-			local adjustedY = (centerY + (height/2) - y / scale) / height
-
-			if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
-				adjustedX = math.floor(100 * adjustedX)
-				adjustedY = math.floor(100 * adjustedY)
-				cursorcoords:SetText(MOUSE_LABEL..": "..adjustedX..", "..adjustedY)
-			else
-				cursorcoords:SetText(" ")
-			end
-
-			last = 0
+			coords:SetText(PLAYER..": "..x..", "..y)
+			cursorcoords:SetPoint("BOTTOMLEFT", coords, "TOPLEFT", 0, 4)
+		else
+			coords:SetText("")
+			cursorcoords:SetPoint("BOTTOMLEFT", UIFrame, 5, 5)
 		end
+
+		local scale = WorldMapDetailFrame:GetEffectiveScale()
+		local width = WorldMapDetailFrame:GetWidth()
+		local height = WorldMapDetailFrame:GetHeight()
+		local centerX, centerY = WorldMapDetailFrame:GetCenter()
+		local x, y = GetCursorPosition()
+		local adjustedX = (x / scale - (centerX - (width/2))) / width
+		local adjustedY = (centerY + (height/2) - y / scale) / height
+
+		if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
+			adjustedX = math.floor(100 * adjustedX)
+			adjustedY = math.floor(100 * adjustedY)
+			cursorcoords:SetText(MOUSE_LABEL..": "..adjustedX..", "..adjustedY)
+		else
+			cursorcoords:SetText(" ")
+		end
+
+		last = 0
 	end
 end)
 

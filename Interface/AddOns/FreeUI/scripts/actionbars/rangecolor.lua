@@ -1,4 +1,8 @@
 -- modified tullaRange by Tuller
+local F, C, L = unpack(select(2, ...))
+
+if not C.actionbars.enable then return end
+if not C.actionbars.enableStyle then return end
 
 --locals and speed
 local Addon = {}

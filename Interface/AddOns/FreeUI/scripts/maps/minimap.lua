@@ -47,7 +47,7 @@ F.CreateSD(BorderFrame)
 Minimap:SetScript('OnMouseUp', function(self, button)
 	Minimap:StopMovingOrSizing()
 	if button == 'RightButton' then
-		Lib_ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self, - (Minimap:GetWidth() * .7), -3)
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self, - (Minimap:GetWidth() * .7), 30)
 	elseif button == 'MiddleButton' then
 		securecall(ToggleCalendar)
 	else

@@ -644,7 +644,7 @@ local Shared = function(self, unit, isSingle)
 	-- [[SpellRange]]
 	self.SpellRange = {
 		insideAlpha = 1,
-		outsideAlpha = .4}
+		outsideAlpha = .3}
 
 	-- [[ Counter bar ]]
 
@@ -1964,13 +1964,15 @@ oUF:Factory(function(self)
 		'showParty', true,
 		'showPlayer', true,
 		'showSolo', false,
-	--	'xoffset', 5,
+		'xoffset', 5,
 		'yoffset', 6,
 		'maxColumns', 1,
 		'unitsperColumn', 5,
 		'columnSpacing', 6,
 		'point', "BOTTOM",
 		'columnAnchorPoint', "LEFT",
+		'groupBy', 'ASSIGNEDROLE',
+		'groupingOrder', 'TANK,HEALER,DAMAGER',
 		'oUF-initialConfigFunction', ([[
 			self:SetHeight(%d)
 			self:SetWidth(%d)
@@ -1983,14 +1985,14 @@ oUF:Factory(function(self)
 		'showParty', false,
 		'showRaid', true,
 		'xoffset', 5,
-		'yOffset', 6, -- 团队框架纵向间隔
+		'yOffset', 6,
 		'point', "BOTTOM",
 		'groupFilter', '1,2,3,4,5,6,7,8',
 		'groupingOrder', '1,2,3,4,5,6,7,8',
 		'groupBy', 'GROUP',
 		'maxColumns', 8,
 		'unitsPerColumn', 5,
-		'columnSpacing', 6,  -- 团队框架横向间隔
+		'columnSpacing', 6,
 		'columnAnchorPoint', "RIGHT",
 		'oUF-initialConfigFunction', ([[
 			self:SetHeight(%d)

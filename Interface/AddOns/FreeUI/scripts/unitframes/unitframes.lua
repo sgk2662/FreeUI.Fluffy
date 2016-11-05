@@ -31,7 +31,6 @@ local colors = setmetatable({
 		["RUNIC_POWER"] = { 0, .82, 1 },
 		["SOUL_SHARDS"] = { .5, .32, .55 },
 		["LUNAR_POWER"] = { .3, .52, .9 },
-		["HOLY_POWER"] = { .95, .90, .60 },
 		["MAELSTROM"] = { 0, .5, 1 },
 		["INSANITY"] = { .4, 0, .8 },
 		["CHI"] = { .71, 1, .92 },
@@ -1037,49 +1036,78 @@ local UnitSpecific = {
 
 			self.Stagger = staggerBar
 			self.SpecialPowerBar = staggerBar
-		elseif class == "PALADIN" and C.classmod.paladinHP then
-			local UpdateHoly = function(self, event, unit, powerType)
-				if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
+		-- elseif class == "PALADIN" and C.classmod.paladinHP then
+		-- 	local UpdateHoly = function(self, event, unit, powerType)
+		-- 		if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 
-				local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
+		-- 		local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
 
-				if(num == UnitPowerMax("player", SPELL_POWER_HOLY_POWER)) then
-					self.glow:SetAlpha(1)
-					F.CreatePulse(self.glow)
-					self.count:SetText(num)
-					self.count:SetTextColor(1, 1, 0)
-					F.SetFS(self.count, 40)
-				elseif num == 0 then
-					self.glow:SetScript("OnUpdate", nil)
-					self.glow:SetAlpha(0)
-					self.count:SetText("")
+		-- 		if(num == UnitPowerMax("player", SPELL_POWER_HOLY_POWER)) then
+		-- 			self.glow:SetAlpha(1)
+		-- 			F.CreatePulse(self.glow)
+		-- 			self.count:SetText(num)
+		-- 			self.count:SetTextColor(1, 1, 0)
+		-- 			F.SetFS(self.count, 40)
+		-- 		elseif num == 0 then
+		-- 			self.glow:SetScript("OnUpdate", nil)
+		-- 			self.glow:SetAlpha(0)
+		-- 			self.count:SetText("")
+		-- 		else
+		-- 			self.glow:SetScript("OnUpdate", nil)
+		-- 			self.glow:SetAlpha(0)
+		-- 			self.count:SetText(num)
+		-- 			self.count:SetTextColor(1, 1, 1)
+		-- 			F.SetFS(self.count, 24)
+		-- 		end
+		-- 	end
+
+		-- 	local glow = CreateFrame("Frame", nil, self)
+		-- 	glow:SetBackdrop({
+		-- 		edgeFile = C.media.glow,
+		-- 		edgeSize = 5,
+		-- 	})
+		-- 	glow:SetPoint("TOPLEFT", self, -6, 6)
+		-- 	glow:SetPoint("BOTTOMRIGHT", self, 6, -6)
+		-- 	glow:SetBackdropBorderColor(228/255, 225/255, 16/255)
+
+		-- 	self.glow = glow
+
+		-- 	local count = F.CreateFS(self, 24)
+		-- 	count:SetPoint("LEFT", self, "RIGHT", 10, 0)
+
+		-- 	self.count = count
+
+		-- 	self.HolyPower = glow
+		-- 	glow.Override = UpdateHoly
+
+		elseif class == "PALADIN" then
+			local bars = CreateFrame("Frame", nil, self)
+			bars:SetWidth(playerWidth)
+			bars:SetHeight(2)
+			bars:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
+
+			for i = 1, UnitPowerMax("player", SPELL_POWER_HOLY_POWER) do
+				bars[i] = CreateFrame("StatusBar", nil, bars)
+				bars[i]:SetHeight(2)
+				bars[i]:SetStatusBarTexture(C.media.texture)
+
+				local bbd = CreateFrame("Frame", nil, bars[i])
+				bbd:SetPoint("TOPLEFT", bars[i], -1, 1)
+				bbd:SetPoint("BOTTOMRIGHT", bars[i], 1, -1)
+				bbd:SetFrameLevel(bars[i]:GetFrameLevel()-1)
+				F.CreateBD(bbd)
+
+				if i == 1 then
+					bars[i]:SetPoint("LEFT", bars)
+					bars[i]:SetWidth(playerWidth/5)
 				else
-					self.glow:SetScript("OnUpdate", nil)
-					self.glow:SetAlpha(0)
-					self.count:SetText(num)
-					self.count:SetTextColor(1, 1, 1)
-					F.SetFS(self.count, 24)
+					bars[i]:SetPoint("LEFT", bars[i-1], "RIGHT", 1, 0)
+					bars[i]:SetWidth((playerWidth/5)-1)
 				end
 			end
 
-			local glow = CreateFrame("Frame", nil, self)
-			glow:SetBackdrop({
-				edgeFile = C.media.glow,
-				edgeSize = 5,
-			})
-			glow:SetPoint("TOPLEFT", self, -6, 6)
-			glow:SetPoint("BOTTOMRIGHT", self, 6, -6)
-			glow:SetBackdropBorderColor(228/255, 225/255, 16/255)
-
-			self.glow = glow
-
-			local count = F.CreateFS(self, 24)
-			count:SetPoint("LEFT", self, "RIGHT", 10, 0)
-
-			self.count = count
-
-			self.HolyPower = glow
-			glow.Override = UpdateHoly
+			self.HolyPowerBars = bars
+			self.SpecialPowerBar = bars
 		elseif class == "WARLOCK" and C.classmod.warlock then
 			local bars = CreateFrame("Frame", nil, self)
 			bars:SetWidth(playerWidth)

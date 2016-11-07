@@ -20,6 +20,9 @@ LSM:Register("font", "pixel_condensed", 		[[Interface\Addons\FreeUI\media\pixel_
 LSM:Register("font", "SempliceRegular", 		[[Interface\Addons\FreeUI\media\SempliceRegular.ttf]], zhCN + zhTW + western)
 LSM:Register("font", "visitor1", 				[[Fonts\pixel\visitor1.ttf]], zhCN + zhTW + western)
 LSM:Register("font", "visitor2", 				[[Fonts\pixel\visitor2.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "Hooge0655", 				[[Interface\Addons\FreeUI\media\Hooge0655.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "BitOnX", 					[[Interface\Addons\FreeUI\media\BitOnX.ttf]], zhCN + zhTW + western)
+LSM:Register("font", "Pixelway_Baseline", 		[[Interface\Addons\FreeUI\media\Pixelway_Baseline.ttf]], zhCN + zhTW + western)
 
 LSM:Register("font", "pixfontCN", 				[[Fonts\pixfontCN.ttf]], zhCN + zhTW + western)
 LSM:Register("font", "Hiragino", 				[[Fonts\Hiragino.ttf]], zhCN + zhTW + western)

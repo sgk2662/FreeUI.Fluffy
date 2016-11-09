@@ -1,8 +1,8 @@
 local F, C, L = unpack(select(2, ...))
 
-----------------------------------------------------------------------------------------
---	Improved ColorPicker(ColorPickerPlus by Jaslm)
-----------------------------------------------------------------------------------------
+
+-- Improved ColorPicker(ColorPickerPlus by Jaslm)
+
 local initialized = nil
 local colorBuffer = {}
 local editingText

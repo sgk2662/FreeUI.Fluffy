@@ -6,7 +6,6 @@
 	<Script file="tweaks\bags.lua"/>
 	<Script file="tweaks\BGSpamFix.lua"/>
 	<Script file="tweaks\BgSpecIcon.lua"/>
-	<Script file="tweaks\ColorPicker.lua"/>
 	<Script file="tweaks\colours.lua"/>
 	<Script file="tweaks\disable.lua"/>
 	<Script file="tweaks\DragEmAll.lua"/>

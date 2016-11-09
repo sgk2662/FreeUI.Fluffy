@@ -36,10 +36,13 @@ local createAuraIcon = function(icons, index)
 
 	local icon = button:CreateTexture(nil, "BORDER")
 	icon:SetAllPoints(button)
-	icon:SetTexCoord(.08, .92, .08, .92)
+	icon:SetTexCoord( .08, .92, .25, .85 )
 
-	local count = F.CreateFS(button, 8, "CENTER")
-	count:SetPoint("TOPLEFT", button, "TOPLEFT", 2, -2)
+	local count = button:CreateFontString(nil, "OVERLAY")
+	local numFont = { "Interface\\AddOns\\FreeUI\\media\\visitor1.ttf", 9, "OUTLINEMONOCHROME" }
+	count:SetPoint("TOP", button, "TOP", 1, 1)
+	count:SetFont(unpack(numFont))
+	count:SetVertexColor(1, 1, 1)
 
 	local overlay = button:CreateTexture(nil, "OVERLAY")
 	overlay:SetTexture"Interface\\Buttons\\UI-Debuff-Overlays"
@@ -64,7 +67,6 @@ local createAuraIcon = function(icons, index)
 	button.UpdateTooltip = UpdateTooltip
 	button:SetScript("OnEnter", OnEnter)
 	button:SetScript("OnLeave", OnLeave)
-
 
 	button.icon = icon
 	button.count = count
@@ -168,15 +170,7 @@ local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visibl
 			icon.count:SetText((count > 1 and count))
 
 			local size = icons.size or 16
---			icon:SetSize(size, size)
-
-			if C.unitframes.rectangleAura then
-				icon:SetSize(size, size*0.7)
-			else
-
-				icon:SetSize(size, size)
-			end
-
+			icon:SetSize(size, size*0.7)
 			icon:EnableMouse(true)
 			icon:SetID(index)
 			icon.bg:Show()

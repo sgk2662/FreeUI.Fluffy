@@ -170,29 +170,28 @@ C["quests"] = {
 	["questRewardHighlight"] = true,				-- highlights the quest reward with highest vendor price
 	["rememberObjectiveTrackerState"] = true,		-- saves objective tracker expanded/collapsed state per character
  		["alwaysCollapseObjectiveTracker"] = false,	-- always collapses objective tracker on login
- 	["position"] = {"TOPRIGHT", UIParent, "TOPRIGHT", -20, -260}
+ 	["position"] = {"TOPRIGHT", UIParent, "TOPRIGHT", -20, -260},
+ 	["height"] = 600,
 }
 
 C["unitframes"] = {
 	["enable"] = true, 						-- enable the unit frames and their included modules
 
 	["healerClasscolours"] = false,
-	["spellRange"] = true,					
-	["shadow"] = true,						-- add shadow border around unit frames
 	["gradient"] = false,					-- gradient mode
-	["rectangleAura"] = false,
 
 	["enableGroup"] = true,					-- enable party/raid frames
 		["limitRaidSize"] = false, 					-- show a maximum of 25 players in a raid
 		["showRaidFrames"] = true, 					-- show the raid frames
-		["partyNameAlways"] = false,				-- show name on party/raid frames in dps/tank layout
+		["partyNameAlways"] = false,				-- show name on party/raid frames
+		["partyMissingHealth"] = true,				-- show missing health
 	["enableArena"] = false,					-- enable arena/flag carrier frames
 
 	["absorb"] = true, 							-- absorb bar/over absorb glow
-	["healthClassColor"] = true,				-- 血量条损血使用职业染色
-	["powerTypeColor"] = false,					-- 能量条染色按照能量类型
-	["castbar"] = true,							-- 启用施法条
-	["castbarSeparate"] = false,				-- 施法条分离
+	["healthClassColor"] = true,
+
+	["castbar"] = true,
+	["castbarSeparate"] = false,
 	["pvp"] = true, 							-- show pvp icon on player frame
 	["statusIndicator"] = true,					-- show combat/resting status on player frame
 		["statusIndicatorCombat"] = true,				-- show combat status (else: only resting)
@@ -204,9 +203,9 @@ C["unitframes"] = {
 	["focus"] = {"LEFT", 'oUF_FreePlayer', "RIGHT", 26, -40},					-- focus unitframe position
 	["focustarget"] = {"LEFT", "oUF_FreeFocus", "RIGHT", 5, 0},							-- focus target unitframe position
 	["party"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -20, 20},			-- party unitframe position
-	["raid"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -20, 20},			-- raid unitframe position		
+	["raid"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -20, 20},			-- raid unitframe position
 	["boss"] = {a='LEFT', b='oUF_FreeTarget', c="RIGHT", x=10, y=80},			-- boss unitframe position
-	["arena"] = {a='LEFT', b='UIParent', c="LEFT", x=20, y=100},				-- arena unitframe position		
+	["arena"] = {a='LEFT', b='UIParent', c="LEFT", x=20, y=100},				-- arena unitframe position
 
 	["player_castbar"] = {"CENTER", 'oUF_FreePlayer', "CENTER", 0, -90},		-- player castbar position
 	["player_castbar_width"] = 229,
@@ -217,13 +216,13 @@ C["unitframes"] = {
 	["focus_castbar"] = {"LEFT", 'oUF_FreeFocus', "LEFT", 0, -40},				-- focus castbar position
 	["focus_castbar_width"] = 229,
 
-
-	["castbarColorInterrupt"] = {241/255, 80/255, 241/255},
-	["castbarColorNormal"] = {89/255, 216/255, 237/255},
+	["castbarColorInterrupt"] = {241/255, 23/255, 45/255},
+	["castbarColorNormal"] = {113/255, 178/255, 237/255},
 	["castbarHeight"] = 6,
 
 	["power_height"] = 2,
 	["altpower_height"] = 2,
+	["classPower_height"] = 2,
 
 	["player_width"] = 229,
 	["player_height"] = 12,
@@ -249,7 +248,6 @@ C["unitframes"] = {
 	["num_player_debuffs"] = 8,
 	["num_target_debuffs"] = 16,
 	["num_target_buffs"] = 16,
-	["num_boss_buffs"] = 5,
 	["num_arena_buffs"] = 8,
 	["num_focus_debuffs"] = 4,
 
@@ -279,7 +277,7 @@ C["performance"] = {
 -- camera stuff
 C["camera"] = {
 	["speed"] = 50,
-	["increment"] = 5,
+	["increment"] = 3,
 	["distance"] = 50,
 }
 
@@ -543,7 +541,7 @@ C["dangerousBuffs"] = {
 	[108978] = true, -- Alter Time
 	[170856] = true, -- Nature's Grasp
 	[110959] = true, -- Greater Invisibility
-	[18499]  = true, -- Berserker Rage	
+	[18499]  = true, -- Berserker Rage
 	[111397] = true, -- Blood Horror (Buff)
 	[114896] = true, -- Windwalk Totem
 }

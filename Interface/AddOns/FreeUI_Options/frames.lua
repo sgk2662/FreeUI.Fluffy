@@ -392,7 +392,7 @@ do
 
 	local hotKey = ns.CreateCheckBox(actionbars, "hotKey")
 	hotKey:SetPoint("TOPLEFT", enableStyle, "BOTTOMLEFT", 0, -8)
-	
+
 	local macroName = ns.CreateCheckBox(actionbars, "macroName", true, true)
 	macroName:SetPoint("TOPLEFT", hotKey, "BOTTOMLEFT", 0, -8)
 
@@ -409,7 +409,7 @@ do
 
 	-- local bar3Fold = ns.CreateCheckBox(actionbars, "bar3Fold", true, true)
 	-- bar3Fold:SetPoint("TOPLEFT", petbar_mouseover, "BOTTOMLEFT", 0, -8)
-	
+
 	local function toggleActionBarsOptions()
 		local shown = enable:GetChecked()
 		enableStyle:SetShown(shown)
@@ -420,7 +420,7 @@ do
 		-- petbar_mouseover:SetShown(shown)
 		-- stancebar_mouseover:SetShown(shown)
 	end
-	
+
 	enable:HookScript("OnClick", toggleActionBarsOptions)
 	actionbars:HookScript("OnShow", toggleActionBarsOptions)
 end
@@ -433,34 +433,34 @@ do
 
 	local general = ns.addSubCategory(bags, ns.localization.bagsGeneral)
 	general:SetPoint("TOPLEFT", bags.subText, "BOTTOMLEFT", 0, -8)
-	
+
 	local style = ns.CreateRadioButtonGroup(bags, "style", 3, false, true)
 	style.buttons[1]:SetPoint("TOPLEFT", general, "BOTTOMLEFT", 0, -41)
-	
+
 	local styleSpecific, styleSpecificLine = ns.addSubCategory(bags, ns.localization.bagsStyleSpecific)
 	styleSpecific:SetPoint("TOPLEFT", style.buttons[3], "BOTTOMLEFT", 0, -30)
-	
+
 	local slotsShowAlways = ns.CreateCheckBox(bags, "slotsShowAlways", true)
 	slotsShowAlways:SetPoint("TOPLEFT", styleSpecific, "BOTTOMLEFT", 0, -20)
-	
+
 	local size = ns.CreateNumberSlider(bags, "size", SMALL, LARGE, 8, 100, 1)
 	size:SetPoint("TOPLEFT", slotsShowAlways, "BOTTOMLEFT", 8, -42)
-	
+
 	local hideSlots = ns.CreateCheckBox(bags, "hideSlots", true)
 	hideSlots:SetPoint("TOPLEFT", styleSpecific, "BOTTOMLEFT", 0, -20)
-	
+
 	local function toggleBagsOptions()
 		local isAllInOne = style.buttons[1]:GetChecked()
-	
+
 		slotsShowAlways:SetShown(isAllInOne)
 		size:SetShown(isAllInOne)
 		hideSlots:SetShown(not isAllInOne)
 	end
-	
+
 	for _, button in pairs(style.buttons) do
 		button:HookScript("OnClick", toggleBagsOptions)
 	end
-	
+
 	bags:HookScript("OnShow", toggleBagsOptions)
 end
 
@@ -555,23 +555,11 @@ do
 	local healerClasscolours = ns.CreateCheckBox(unitframes, "healerClasscolours", true, true)
 	healerClasscolours:SetPoint("TOPLEFT", enable, "BOTTOMLEFT", 16, -8)
 
-	local shadow = ns.CreateCheckBox(unitframes, "shadow", true, true)
-	shadow:SetPoint("TOPLEFT", healerClasscolours, "BOTTOMLEFT", 0, -8)
-
 	local gradient = ns.CreateCheckBox(unitframes, "gradient", true, true)
-	gradient:SetPoint("TOPLEFT", shadow, "BOTTOMLEFT", 0, -8)
-
-	local rectangleAura = ns.CreateCheckBox(unitframes, "rectangleAura", true, true)
-	rectangleAura:SetPoint("TOPLEFT", gradient, "BOTTOMLEFT", 0, -8)
-
-	local spellRange = ns.CreateCheckBox(unitframes, "spellRange", true, true)
-	spellRange:SetPoint("TOPLEFT", rectangleAura, "BOTTOMLEFT", 0, -8)
-
-	local powerTypeColor = ns.CreateCheckBox(unitframes, "powerTypeColor", true, true)
-	powerTypeColor:SetPoint("TOPLEFT", spellRange, "BOTTOMLEFT", 0, -8)
+	gradient:SetPoint("TOPLEFT", healerClasscolours, "BOTTOMLEFT", 0, -8)
 
 	local castbar = ns.CreateCheckBox(unitframes, "castbar", true, true)
-	castbar:SetPoint("TOPLEFT", powerTypeColor, "BOTTOMLEFT", 0, -8)
+	castbar:SetPoint("TOPLEFT", gradient, "BOTTOMLEFT", 0, -8)
 
 	local castbarSeparate = ns.CreateCheckBox(unitframes, "castbarSeparate", true, true)
 	castbarSeparate:SetPoint("TOPLEFT", castbar, "BOTTOMLEFT", 16, -8)
@@ -580,7 +568,7 @@ do
 
 	local absorb = ns.CreateCheckBox(unitframes, "absorb", true, true)
 	absorb:SetPoint("TOPLEFT", castbarSeparate, "BOTTOMLEFT", -16, -8)
-	
+
 	local pvp = ns.CreateCheckBox(unitframes, "pvp", true, true)
 	pvp:SetPoint("TOPLEFT", absorb, "BOTTOMLEFT", 0, -8)
 
@@ -599,29 +587,34 @@ do
 	showRaidFrames:SetPoint("TOPLEFT", enableGroup, "BOTTOMLEFT", 16, -8)
 	tinsert(ns.protectOptions, showRaidFrames)
 
-	local partyNameAlways = ns.CreateCheckBox(unitframes, "partyNameAlways", true, true)
-	partyNameAlways:SetPoint("TOPLEFT", showRaidFrames, "BOTTOMLEFT", 0, -8)
+	local limitRaidSize = ns.CreateCheckBox(unitframes, "limitRaidSize", true)
+	limitRaidSize:SetPoint("TOPLEFT", showRaidFrames, "BOTTOMLEFT", 16, -8)
+	tinsert(ns.protectOptions, limitRaidSize)
 
-	enableGroup.children = {showRaidFrames, partyNameAlways}
+	local partyNameAlways = ns.CreateCheckBox(unitframes, "partyNameAlways", true, true)
+	partyNameAlways:SetPoint("TOPLEFT", limitRaidSize, "BOTTOMLEFT", 0, -8)
+
+	local partyMissingHealth = ns.CreateCheckBox(unitframes, "partyMissingHealth", true, true)
+	partyMissingHealth:SetPoint("TOPLEFT", partyNameAlways, "BOTTOMLEFT", 0, -8)
+
+	enableGroup.children = {showRaidFrames, limitRaidSize, partyNameAlways, partyMissingHealth}
 
 	local enableArena = ns.CreateCheckBox(unitframes, "enableArena", true, true)
-	enableArena:SetPoint("TOPLEFT", partyNameAlways, "BOTTOMLEFT", -16, -8)
+	enableArena:SetPoint("TOPLEFT", partyMissingHealth, "BOTTOMLEFT", -32, -8)
 
 	local function toggleUFOptions()
 		local shown = enable:GetChecked()
 
 		healerClasscolours:SetShown(shown)
-		shadow:SetShown(shown)
 		gradient:SetShown(shown)
-		spellRange:SetShown(shown)
-		rectangleAura:SetShown(shown)
 		enableGroup:SetShown(shown)
 		showRaidFrames:SetShown(shown)
+		limitRaidSize:SetShown(shown)
 		partyNameAlways:SetShown(shown)
+		partyMissingHealth:SetShown(shown)
 		castbarSeparate:SetShown(shown)
 		absorb:SetShown(shown)
 		pvp:SetShown(shown)
-		powerTypeColor:SetShown(shown)
 		statusIndicator:SetShown(shown)
 		statusIndicatorCombat:SetShown(shown)
 		castbar:SetShown(shown)
@@ -648,11 +641,11 @@ do
 	local rememberObjectiveTrackerState = ns.CreateCheckBox(quests, "rememberObjectiveTrackerState", true)
 	rememberObjectiveTrackerState:SetPoint("TOPLEFT", questRewardHighlight, "BOTTOMLEFT", 0, -8)
 --	tinsert(ns.newOptions, rememberObjectiveTrackerState)
- 
+
 	local alwaysCollapseObjectiveTracker = ns.CreateCheckBox(quests, "alwaysCollapseObjectiveTracker")
 	alwaysCollapseObjectiveTracker:SetPoint("TOPLEFT", rememberObjectiveTrackerState, "BOTTOMLEFT", 16, -8)
 --	tinsert(ns.newOptions, alwaysCollapseObjectiveTracker)
- 
+
 	rememberObjectiveTrackerState.children = {alwaysCollapseObjectiveTracker}
 end
 

@@ -76,3 +76,19 @@ end
 f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("PLAYER_LEVEL_UP")
 f:SetScript("OnEvent", f.OnEvent)
+
+
+--get the current set farclip
+local farclip = GetCVar("farclip")
+--set farclip to min value
+SetCVar("farclip",185)
+--ResetFarclip
+local function ResetFarclip()
+  SetCVar("farclip",farclip)
+end
+--OnLogin
+local function OnLogin()
+  C_Timer.After(3, ResetFarclip)
+end
+--callback
+rLib:RegisterCallback("PLAYER_LOGIN", OnLogin)

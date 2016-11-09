@@ -776,34 +776,6 @@ F.ReskinIcon = function(icon)
 end
 
 
-
-local function StripTextures(object, kill)
-	for i = 1, object:GetNumRegions() do
-		local region = select(i, object:GetRegions())
-		if region and region:GetObjectType() == "Texture" then
-			if kill then
-				region:Kill()
-			else
-				region:SetTexture(nil)
-			end
-		end
-	end
-end
-
-
-local HiddenFrame = CreateFrame("Frame")
-HiddenFrame:Hide()
-local function Kill(object)
-	if object.UnregisterAllEvents then
-		object:UnregisterAllEvents()
-		object:SetParent(HiddenFrame)
-	else
-		object.Show = F.dummy
-	end
-	object:Hide()
-end
-
-
 local Skin = CreateFrame("Frame", nil, _G.UIParent)
 Skin:RegisterEvent("ADDON_LOADED")
 Skin:SetScript("OnEvent", function(self, event, addon)

@@ -178,7 +178,7 @@ C["unitframes"] = {
 	["enable"] = true, 						-- enable the unit frames and their included modules
 
 	["healerClasscolours"] = false,
-	["gradient"] = false,					-- gradient mode
+	["gradient"] = true,					-- gradient mode
 
 	["enableGroup"] = true,					-- enable party/raid frames
 		["limitRaidSize"] = false, 					-- show a maximum of 25 players in a raid

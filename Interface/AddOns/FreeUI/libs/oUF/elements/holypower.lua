@@ -7,62 +7,64 @@ if(select(2, UnitClass('player')) ~= 'PALADIN') then return end
 local parent, ns = ...
 local oUF = ns.oUF
 
-local Colors = { 231/255, 211/255, 117/255}
+local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
+local Colors = { 255/255, 199/255, 48/255}
 
 local Update = function(self, event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= "HOLY_POWER")) then return end
 
-	local hpb = self.HolyPowerBars
-	if(hpb.PreUpdate) then hpb:PreUpdate(unit) end
+	local hp = self.HolyPower
+	if(hp.PreUpdate) then hp:PreUpdate(unit) end
 
-	local numShards = UnitPower("player", SPELL_POWER_HOLY_POWER)
-	local maxShards = UnitPowerMax("player", SPELL_POWER_HOLY_POWER)
+	local num = UnitPower("player", SPELL_POWER_HOLY_POWER)
+	local maxHolyPower = UnitPowerMax("player", SPELL_POWER_HOLY_POWER)
 
-	for i = 1, maxShards do
-		if i <= numShards then
-			hpb[i]:GetStatusBarTexture():SetAlpha(1)
+	for i = 1, maxHolyPower do
+		if i <= num then
+			hp[i]:GetStatusBarTexture():SetAlpha(1)
 		else
-			hpb[i]:GetStatusBarTexture():SetAlpha(.2)
+			hp[i]:GetStatusBarTexture():SetAlpha(.2)
 		end
 	end
 
-	if(hpb.PostUpdate) then
-		return hpb:PostUpdate(spec)
+	if(hp.PostUpdate) then
+		return hp:PostUpdate(num)
 	end
 end
 
 local init = true
 
 local function Visibility(self, event, unit)
-	local hpb = self.HolyPowerBars
-	local spacing = select(4, hpb[4]:GetPoint())
-	local w = hpb:GetWidth()
+	local hp = self.HolyPower
+	local spec = GetSpecialization()
+	local spacing = select(4, hp[4]:GetPoint())
+	local w = hp:GetWidth()
 	local s = 0
 
-	if not hpb:IsShown() then
-		hpb:Show()
+	if not hp:IsShown() then
+		hp:Show()
 	end
 
 	if init then
 		for i = 1, UnitPowerMax("player", SPELL_POWER_HOLY_POWER) do
-			local max = select(2, hpb[i]:GetMinMaxValues())
-			hpb[i]:SetValue(max)
-			hpb[i]:GetStatusBarTexture():SetAlpha(1)
-			hpb[i]:Show()
+			local max = select(2, hp[i]:GetMinMaxValues())
+			hp[i]:SetValue(max)
+			hp[i]:GetStatusBarTexture():SetAlpha(1)
+			hp[i]:Show()
 		end
 		init = false
 	end
 
-	local maxShards = UnitPowerMax("player", SPELL_POWER_HOLY_POWER)
+	local maxHolyPower = UnitPowerMax("player", SPELL_POWER_HOLY_POWER)
 
-	for i = 1, maxShards do
-		if i ~= maxShards then
-			hpb[i]:SetWidth(w / maxShards - spacing)
-			s = s + (w / maxShards)
+	for i = 1, maxHolyPower do
+		if i ~= maxHolyPower then
+			hp[i]:SetWidth(w / maxHolyPower - spacing)
+			s = s + (w / maxHolyPower)
 		else
-			hpb[i]:SetWidth(w - s)
+			hp[i]:SetWidth(w - s)
 		end
-		hpb[i]:SetStatusBarColor(unpack(Colors))
+		hp[i]:SetStatusBarColor(unpack(Colors))
 	end
 
 	-- force an update each time we respec
@@ -70,7 +72,7 @@ local function Visibility(self, event, unit)
 end
 
 local Path = function(self, ...)
-	return (self.HolyPowerBars.Override or Update) (self, ...)
+	return (self.HolyPower.Override or Update) (self, ...)
 end
 
 local ForceUpdate = function(element)
@@ -78,35 +80,35 @@ local ForceUpdate = function(element)
 end
 
 local function Enable(self)
-	local hpb = self.HolyPowerBars
-	if(hpb) then
-		hpb.__owner = self
-		hpb.ForceUpdate = ForceUpdate
+	local hp = self.HolyPower
+	if(hp) then
+		hp.__owner = self
+		hp.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent("UNIT_POWER", Path)
 		self:RegisterEvent("UNIT_DISPLAYPOWER", Path)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Visibility)
 		self:RegisterEvent("PLAYER_TALENT_UPDATE", Visibility)
 
-		for i = 1, 4 do
-			local Point = hpb[i]
+		for i = 1, 5 do
+			local Point = hp[i]
 			if not Point:GetStatusBarTexture() then
 				Point:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])
 			end
 
-			Point:SetFrameLevel(hpb:GetFrameLevel() + 1)
+			Point:SetFrameLevel(hp:GetFrameLevel() + 1)
 			Point:GetStatusBarTexture():SetHorizTile(false)
 		end
 
-		hpb:Hide()
+		hp:Hide()
 
 		return true
 	end
 end
 
 local function Disable(self)
-	local hpb = self.HolyPowerBars
-	if(hpb) then
+	local hp = self.HolyPower
+	if(hp) then
 		self:UnregisterEvent("UNIT_POWER", Path)
 		self:UnregisterEvent("UNIT_DISPLAYPOWER", Path)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Visibility)
@@ -114,4 +116,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('HolyPowerBars', Path, Enable, Disable)
+oUF:AddElement('HolyPower', Path, Enable, Disable)

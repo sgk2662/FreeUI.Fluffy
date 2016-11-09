@@ -377,6 +377,7 @@ local PostUpdatePower = function(Power, unit, cur, max, min)
 		Power.Text:SetTextColor(Power:GetStatusBarColor())
 	end
 
+	-- NPC's power bar always colored by reaction
 	if not UnitIsPlayer(unit) then
 		local r, g, b
 		local reaction = C.reactioncolours[UnitReaction(unit, "player") or 5]
@@ -503,21 +504,18 @@ local Shared = function(self, unit, isSingle)
 	Power.bg:SetPoint("LEFT")
 	Power.bg:SetPoint("RIGHT")
 	Power.bg:SetTexture(C.media.backdrop)
-	Power.bg:SetVertexColor(0, 0, 0, .2)
+
+	if C.unitframes.healerClasscolours then
+		Power.bg:SetVertexColor(0, 0, 0, 0)
+	else
+		Power.bg:SetVertexColor(0, 0, 0, .2)
+	end
 
 	if C.unitframes.healerClasscolours or unit == "player" then
 		Power.colorPower = true
-		Power.bg:SetVertexColor(0, 0, 0, .25)
 	else
 		Power.colorClass = true
 	end
-
-	-- if unit == "player" then
-	-- 	Power.colorPower = true
-	-- 	Power.bg:SetVertexColor(0, 0, 0, .25)
-	-- else
-	-- 	Power.colorClass = true
-	-- end
 
 	--[[ Alt Power ]]
 

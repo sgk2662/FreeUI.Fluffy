@@ -1052,7 +1052,7 @@ local UnitSpecific = {
 			self.Stagger = staggerBar
 			self.SpecialPowerBar = staggerBar
 		elseif class == "PALADIN" then
-			local bars = CreateFrame("Frame", nil, self)
+			--[[local bars = CreateFrame("Frame", nil, self)
 			bars:SetWidth(playerWidth)
 			bars:SetHeight(C.unitframes.classPower_height)
 			bars:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
@@ -1078,7 +1078,7 @@ local UnitSpecific = {
 			end
 
 			self.HolyPower = bars
-			self.SpecialPowerBar = bars
+			self.SpecialPowerBar = bars]]
 		elseif class == "WARLOCK" and C.classmod.warlock then
 			local bars = CreateFrame("Frame", nil, self)
 			bars:SetWidth(playerWidth)

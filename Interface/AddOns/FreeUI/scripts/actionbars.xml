@@ -7,4 +7,5 @@
 	<Script file="actionbars\style.lua"/>
 	<Script file="actionbars\rangecolor.lua"/>
 	<Script file="actionbars\ncHoverBind.lua"/>
+	<Script file="actionbars\clickcast.lua"/>
 </Ui>

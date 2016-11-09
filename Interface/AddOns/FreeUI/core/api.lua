@@ -371,11 +371,11 @@ F.ReskinDropDown = function(f)
 	bg:SetPoint("BOTTOMRIGHT", -12, 8)
 	bg:SetFrameLevel(f:GetFrameLevel()-1)
 	F.CreateBD(bg, 0)
-  
+
 	local gradient = F.CreateGradient(f)
 	gradient:SetPoint("TOPLEFT", bg, 1, -1)
 	gradient:SetPoint("BOTTOMRIGHT", bg, -1, 1)
- 
+
 	local down = _G[frame.."Button"]
 
 	down:SetSize(20, 20)
@@ -773,6 +773,34 @@ end
 F.ReskinIcon = function(icon)
 	icon:SetTexCoord(.08, .92, .08, .92)
 	return F.CreateBG(icon)
+end
+
+
+
+local function StripTextures(object, kill)
+	for i = 1, object:GetNumRegions() do
+		local region = select(i, object:GetRegions())
+		if region and region:GetObjectType() == "Texture" then
+			if kill then
+				region:Kill()
+			else
+				region:SetTexture(nil)
+			end
+		end
+	end
+end
+
+
+local HiddenFrame = CreateFrame("Frame")
+HiddenFrame:Hide()
+local function Kill(object)
+	if object.UnregisterAllEvents then
+		object:UnregisterAllEvents()
+		object:SetParent(HiddenFrame)
+	else
+		object.Show = F.dummy
+	end
+	object:Hide()
 end
 
 

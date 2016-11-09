@@ -11,9 +11,9 @@ addonTable.FADEIN = 1;
 
 addonTable.TIMETOFADEOUT = 3.0;
 addonTable.FADEOUT = 0.25;
- 
+
 local addon = CreateFrame("Frame");
- 
+
 addon:SetScript("OnUpdate", function()
 
 	if UnitAffectingCombat("Player")
@@ -21,16 +21,16 @@ addon:SetScript("OnUpdate", function()
 		UIParent:SetAlpha(addonTable.FADEIN); -- UIFrameFadeIn causes access violation in combat
 		return;
 	end;
-	
+
 	if ChatFrame1EditBox:IsShown()
 	or WorldMapFrame:IsShown()
 	or MailFrame:IsShown()
 	or GossipFrame:IsShown()
 	or GameMenuFrame:IsShown()
 	or StaticPopup1:IsShown()
-	or TalkingHeadFrame:IsShown()
-	or GarrisonMissionAlertFrame:IsShown()
-	or WorldQuestCompleteAlertFrame:IsShown()
+	--or TalkingHeadFrame:IsShown()
+	--or GarrisonMissionAlertFrame:IsShown()
+	--or WorldQuestCompleteAlertFrame:IsShown()
 	or LFGDungeonReadyPopup:IsShown()
 	or LFDRoleCheckPopup:IsShown()
 	or LevelUpDisplay:IsShown()
@@ -49,7 +49,7 @@ addon:SetScript("OnUpdate", function()
 		UIFrameFadeIn(UIParent, addonTable.TIMETOFADEIN, UIParent:GetAlpha(), addonTable.FADEIN);
 		return;
 	end;
- 
+
 	if GetMouseFocus() then
 
 		if GetMouseFocus():GetName() ~= "WorldFrame" then

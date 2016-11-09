@@ -21,7 +21,7 @@ f:SetAttribute("type1","macro")
 f:SetAttribute("macrotext","/focus mouseover") 
 SetOverrideBindingClick(FocuserButton,true,modifier.."-BUTTON"..mouseButton,"FocuserButton") 
 
--- Set the keybindings on the default unit frames since we won't get any CreateFrame notification about them 
+-- for default unit frames
 local duf = { 
 	PlayerFrame, 
 	PetFrame, 
@@ -40,3 +40,4 @@ local duf = {
 for i,frame in pairs(duf) do 
 	SetFocusHotkey(frame) 
 end 
+

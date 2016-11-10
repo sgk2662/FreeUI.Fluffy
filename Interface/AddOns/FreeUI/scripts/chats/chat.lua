@@ -45,6 +45,10 @@ ChatTypeInfo.WHISPER.sticky = 1
 ChatTypeInfo.BN_WHISPER.sticky = 1
 ChatTypeInfo.CHANNEL.sticky = 1
 
+
+local eFrame = CreateFrame("frame","ChatEvent_Frame",UIParent)
+eFrame:SetScript("OnEvent", function(self, event, ...) if self[event] then return self[event](self, event, ...) end end)
+
 local function scrollChat(frame, delta)
 	--Faster Scroll
 	if IsControlKeyDown()  then
@@ -70,6 +74,46 @@ local function scrollChat(frame, delta)
 		end
 	end
 end
+
+function eFrame:PLAYER_LOGIN()
+	--turn off profanity filter
+	SetCVar("profanityFilter", 0)
+
+	--sticky channels
+	-- for k, v in pairs(StickyTypeChannels) do
+	--   ChatTypeInfo[k].sticky = v;
+	-- end
+
+	--toggle class colors
+	for i,v in pairs(CHAT_CONFIG_CHAT_LEFT) do
+		ToggleChatColorNamesByClassGroup(true, v.type)
+	end
+
+	--this is to toggle class colors for all the global channels that is not listed under CHAT_CONFIG_CHAT_LEFT
+	for iCh = 1, 15 do
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL"..iCh)
+	end
+
+	for i = 1, NUM_CHAT_WINDOWS do
+		local n = ("ChatFrame%d"):format(i)
+		local f = _G[n]
+
+		if f then
+
+			--add font shadows
+			local font, size = f:GetFont()
+			f:SetFont(chatFont, size, "OUTLINE")
+			f:SetShadowColor(0, 0, 0, 0)
+
+			--few changes
+			f:EnableMouseWheel(true)
+			f:SetScript('OnMouseWheel', scrollChat)
+			f:SetClampRectInsets(0,0,0,0)
+
+		end
+	end
+end
+
 
 local function GetColor(className, isLocal)
 	if isLocal then
@@ -148,7 +192,7 @@ local function toggleDown(f)
 	-- if f:GetCurrentScroll() > 0 then
 	-- 	_G[f:GetName().."ButtonFrameBottomButton"]:Show()
 	-- else
-		_G[f:GetName().."ButtonFrameBottomButton"]:Hide()
+	_G[f:GetName().."ButtonFrameBottomButton"]:Hide()
 	-- end
 end
 
@@ -177,8 +221,8 @@ local function StyleWindow(f)
 
 	frame:SetFading(false)
 
-	frame:SetFont(chatFont, 14, "OUTLINE")
-	frame:SetShadowOffset(0, 0, 0, 0)
+	-- frame:SetFont(chatFont, 14, "OUTLINE")
+	-- frame:SetShadowOffset(0, 0, 0, 0)
 
 	frame:SetMinResize(0,0)
 	frame:SetMaxResize(0,0)
@@ -475,3 +519,5 @@ function Chat_DoCopyName(name)
 	button:ClearAllPoints()
 	button:SetPoint("CENTER", editbox, "CENTER", 0, -30)
 end
+
+if IsLoggedIn() then eFrame:PLAYER_LOGIN() else eFrame:RegisterEvent("PLAYER_LOGIN") end

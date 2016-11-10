@@ -145,11 +145,11 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_CURRENCY", function(self, event, messa
 end)
 
 local function toggleDown(f)
-	if f:GetCurrentScroll() > 0 then
-		_G[f:GetName().."ButtonFrameBottomButton"]:Show()
-	else
+	-- if f:GetCurrentScroll() > 0 then
+	-- 	_G[f:GetName().."ButtonFrameBottomButton"]:Show()
+	-- else
 		_G[f:GetName().."ButtonFrameBottomButton"]:Hide()
-	end
+	-- end
 end
 
 local function reskinMinimize(f)

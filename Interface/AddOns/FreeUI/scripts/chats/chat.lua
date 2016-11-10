@@ -45,6 +45,32 @@ ChatTypeInfo.WHISPER.sticky = 1
 ChatTypeInfo.BN_WHISPER.sticky = 1
 ChatTypeInfo.CHANNEL.sticky = 1
 
+local function scrollChat(frame, delta)
+	--Faster Scroll
+	if IsControlKeyDown()  then
+		--Faster scrolling by triggering a few scroll up in a loop
+		if ( delta > 0 ) then
+			for i = 1,5 do frame:ScrollUp(); end;
+		elseif ( delta < 0 ) then
+			for i = 1,5 do frame:ScrollDown(); end;
+		end
+	elseif IsAltKeyDown() then
+		--Scroll to the top or bottom
+		if ( delta > 0 ) then
+			frame:ScrollToTop();
+		elseif ( delta < 0 ) then
+			frame:ScrollToBottom();
+		end
+	else
+		--Normal Scroll
+		if delta > 0 then
+			frame:ScrollUp()
+		elseif delta < 0 then
+			frame:ScrollDown()
+		end
+	end
+end
+
 local function GetColor(className, isLocal)
 	if isLocal then
 		local found
@@ -118,13 +144,13 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_CURRENCY", function(self, event, messa
 	return false, ("+ |cffffffff|Hcurrency:%d|h%s|h|r%s"):format(currencyID, currencyName, currencyAmount or ""), ...
 end)
 
--- local function toggleDown(f)
--- 	if f:GetCurrentScroll() > 0 then
--- 		_G[f:GetName().."ButtonFrameBottomButton"]:Show()
--- 	else
--- 		_G[f:GetName().."ButtonFrameBottomButton"]:Hide()
--- 	end
--- end
+local function toggleDown(f)
+	if f:GetCurrentScroll() > 0 then
+		_G[f:GetName().."ButtonFrameBottomButton"]:Show()
+	else
+		_G[f:GetName().."ButtonFrameBottomButton"]:Hide()
+	end
+end
 
 local function reskinMinimize(f)
 	f:SetSize(16, 16)
@@ -147,7 +173,7 @@ local function StyleWindow(f)
 	HideForever(_G[f.."ButtonFrameDownButton"])
 
 	--frame:HookScript("OnMessageScrollChanged", toggleDown)
-	--frame:HookScript("OnShow", toggleDown)
+	frame:HookScript("OnShow", toggleDown)
 
 	frame:SetFading(false)
 
@@ -165,7 +191,7 @@ local function StyleWindow(f)
 	frame.editBox.header:SetShadowColor(0, 0, 0, 0)
 	frame.editBox:SetShadowColor(0, 0, 0, 0)
 
-	frame.editBox:SetAltArrowKeyMode(nil)
+	frame.editBox:SetAltArrowKeyMode(false)
 
 	_G[f.."EditBoxFocusLeft"]:SetAlpha(0)
  	_G[f.."EditBoxFocusRight"]:SetAlpha(0)
@@ -391,3 +417,61 @@ end
 
 ChatFrame_AddMessageEventFilter('CHAT_MSG_BN_WHISPER', AddLinkColors)
 ChatFrame_AddMessageEventFilter('CHAT_MSG_BN_WHISPER_INFORM', AddLinkColors)
+
+
+-- CHAT DROPDOWN MENU
+-- special thanks to Tekkub for tekPlayerMenu
+
+StaticPopupDialogs["COPYNAME"] = {
+	text = "COPY NAME",
+	button2 = CANCEL,
+	hasEditBox = true,
+    hasWideEditBox = true,
+	timeout = 0,
+	exclusive = 1,
+	hideOnEscape = 1,
+	EditBoxOnEscapePressed = function(self) self:GetParent():Hide() end,
+	whileDead = 1,
+	maxLetters = 255,
+}
+
+local function insertbefore(t, before, val)
+	for k,v in ipairs(t) do if v == before then return table.insert(t, k, val) end end
+	table.insert(t, val)
+end
+
+local clickers = {["COPYNAME"] = function(a1) Chat_DoCopyName(a1) end, ["WHO"] = SendWho, ["GUILD_INVITE"] = GuildInvite}
+
+UnitPopupButtons["COPYNAME"] = {text = "Copy Name", dist = 0}
+UnitPopupButtons["GUILD_INVITE"] = {text = "Guild Invite", dist = 0}
+UnitPopupButtons["WHO"] = {text = "Who", dist = 0}
+
+insertbefore(UnitPopupMenus["FRIEND"], "GUILD_PROMOTE", "GUILD_INVITE")
+insertbefore(UnitPopupMenus["FRIEND"], "IGNORE", "COPYNAME")
+insertbefore(UnitPopupMenus["FRIEND"], "IGNORE", "WHO")
+
+hooksecurefunc("UnitPopup_HideButtons", function()
+	local dropdownMenu = UIDROPDOWNMENU_INIT_MENU
+	for i,v in pairs(UnitPopupMenus[dropdownMenu.which]) do
+		if v == "GUILD_INVITE" then UnitPopupShown[i] = (not CanGuildInvite() or dropdownMenu.name == UnitName("player")) and 0 or 1
+		elseif clickers[v] then UnitPopupShown[i] = (dropdownMenu.name == UnitName("player") and 0) or 1 end
+	end
+end)
+
+hooksecurefunc("UnitPopup_OnClick", function(self)
+	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU
+	local button = self.value
+	if clickers[button] then clickers[button](dropdownFrame.name) end
+	PlaySound("UChatScrollButton")
+end)
+
+function Chat_DoCopyName(name)
+	local dialog = StaticPopup_Show("COPYNAME")
+	local editbox = _G[dialog:GetName().."EditBox"]
+	editbox:SetText(name or "")
+	editbox:SetFocus()
+	editbox:HighlightText()
+	local button = _G[dialog:GetName().."Button2"]
+	button:ClearAllPoints()
+	button:SetPoint("CENTER", editbox, "CENTER", 0, -30)
+end

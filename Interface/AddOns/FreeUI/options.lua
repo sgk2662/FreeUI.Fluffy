@@ -177,8 +177,18 @@ C["quests"] = {
 C["unitframes"] = {
 	["enable"] = true, 						-- enable the unit frames and their included modules
 
-	["healerClasscolours"] = false,
+	["transMode"] = true,
+		["healthClassColor"] = false,
+		["powerTypeColor"] = false,
+
 	["gradient"] = true,					-- gradient mode
+
+	["absorb"] = true, 							-- absorb bar/over absorb glow
+	["castbar"] = true,
+	["castbarSeparate"] = false,
+	["pvp"] = true, 							-- show pvp icon on player frame
+	["statusIndicator"] = true,					-- show combat/resting status on player frame
+		["statusIndicatorCombat"] = true,				-- show combat status (else: only resting)
 
 	["enableGroup"] = true,					-- enable party/raid frames
 		["limitRaidSize"] = false, 					-- show a maximum of 25 players in a raid
@@ -186,15 +196,6 @@ C["unitframes"] = {
 		["partyNameAlways"] = false,				-- show name on party/raid frames
 		["partyMissingHealth"] = true,				-- show missing health
 	["enableArena"] = false,					-- enable arena/flag carrier frames
-
-	["absorb"] = true, 							-- absorb bar/over absorb glow
-	["healthClassColor"] = true,
-
-	["castbar"] = true,
-	["castbarSeparate"] = false,
-	["pvp"] = true, 							-- show pvp icon on player frame
-	["statusIndicator"] = true,					-- show combat/resting status on player frame
-		["statusIndicatorCombat"] = true,				-- show combat status (else: only resting)
 
 	["player"] = {"BOTTOM", UIParent, "BOTTOM", 0, 200},						-- player unitframe position
 	["pet"] = {"RIGHT", "oUF_FreePlayer", "LEFT", -5, 0},									-- pet unitframe position
@@ -210,7 +211,7 @@ C["unitframes"] = {
 	["player_castbar"] = {"CENTER", 'oUF_FreePlayer', "CENTER", 0, -90},		-- player castbar position
 	["player_castbar_width"] = 229,
 
-	["target_castbar"] = {"CENTER", 'oUF_FreeTarget', "CENTER", 0, 40},			-- target castbar position
+	["target_castbar"] = {"BOTTOM", 'oUF_FreeTarget', "TOP", 0, 20},			-- target castbar position
 	["target_castbar_width"] = 229,
 
 	["focus_castbar"] = {"LEFT", 'oUF_FreeFocus', "LEFT", 0, -40},				-- focus castbar position

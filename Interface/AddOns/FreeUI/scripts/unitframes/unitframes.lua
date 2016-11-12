@@ -291,17 +291,21 @@ local PostUpdateHealth = function(Health, unit, min, max)
 		Health.value:SetTextColor(unpack(reaction))
 	end
 
-	if not C.unitframes.healerClasscolours then
+	if C.unitframes.transMode then
 		if offline or UnitIsDead(unit) or UnitIsGhost(unit) then
 			self.Healthdef:Hide()
 		else
 			self.Healthdef:SetMinMaxValues(0, max)
 			self.Healthdef:SetValue(max-min)
 
-			if C.unitframes.healthClassColor then
-				self.Healthdef:GetStatusBarTexture():SetVertexColor(r, g, b)
+			if UnitIsPlayer(unit) then
+				if C.unitframes.healthClassColor then
+					self.Healthdef:GetStatusBarTexture():SetVertexColor(r, g, b)
+				else
+					self.Healthdef:GetStatusBarTexture():SetVertexColor(.63, 0, 0)
+				end
 			else
-				self.Healthdef:GetStatusBarTexture():SetVertexColor(self.ColorGradient(min, max, unpack(self.colors.smooth)))
+				self.Healthdef:GetStatusBarTexture():SetVertexColor(unpack(reaction))
 			end
 
 			self.Healthdef:Show()
@@ -365,10 +369,11 @@ local PostUpdateIcon = function(_, unit, icon, index, _, filter)
 end
 
 
---[[ Update power value ]]
+--[[ Update power ]]
 
 local PostUpdatePower = function(Power, unit, cur, max, min)
 	local Health = Power:GetParent().Health
+	local self = Power:GetParent()
 	if max == 0 or not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 		Power:SetValue(0)
 	end
@@ -377,13 +382,35 @@ local PostUpdatePower = function(Power, unit, cur, max, min)
 		Power.Text:SetTextColor(Power:GetStatusBarColor())
 	end
 
-	-- NPC's power bar always colored by reaction
-	if not UnitIsPlayer(unit) then
+	if C.unitframes.transMode then
 		local r, g, b
 		local reaction = C.reactioncolours[UnitReaction(unit, "player") or 5]
-		r, g, b = unpack(reaction)
-		Power:SetStatusBarColor(r, g, b)
-		Power.bg:SetVertexColor(r/2, g/2, b/2)
+
+		local offline = not UnitIsConnected(unit)
+		local tapped = not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)
+
+		if tapped or offline then
+			r, g, b = .6, .6, .6
+		elseif unit == "pet" then
+			local _, class = UnitClass("player")
+			r, g, b = C.classcolours[class].r, C.classcolours[class].g, C.classcolours[class].b
+		elseif UnitIsPlayer(unit) then
+			local _, class = UnitClass(unit)
+			if class then r, g, b = C.classcolours[class].r, C.classcolours[class].g, C.classcolours[class].b else r, g, b = 1, 1, 1 end
+		-- elseif unit:find("boss%d") then
+		-- 	r, g, b = self.ColorGradient(min, max, unpack(self.colors.smooth))
+		else
+			r, g, b = unpack(reaction)
+		end
+
+		if C.unitframes.powerTypeColor and unit == "player" then
+			self.Power.colorPower = true
+			self.Power.bg:SetVertexColor(0, 0, 0, .2)
+		else
+			self.Power:SetStatusBarColor(r, g, b)
+			self.Power.bg:SetVertexColor(r/2, g/2, b/2)
+		end
+
 	end
 end
 
@@ -443,7 +470,7 @@ local Shared = function(self, unit, isSingle)
 
 	--[[ Gradient ]]
 
-	if not C.unitframes.healerClasscolours then
+	if C.unitframes.transMode then
 		local gradient = Health:CreateTexture(nil, "BACKGROUND")
 		gradient:SetPoint("TOPLEFT")
 		gradient:SetPoint("BOTTOMRIGHT")
@@ -464,7 +491,7 @@ local Shared = function(self, unit, isSingle)
 
 	--[[ Health deficit colour ]]
 
-	if not C.unitframes.healerClasscolours then
+	if C.unitframes.transMode then
 		local Healthdef = CreateFrame("StatusBar", nil, self)
 		Healthdef:SetFrameStrata("LOW")
 		Healthdef:SetAllPoints(Health)
@@ -506,18 +533,13 @@ local Shared = function(self, unit, isSingle)
 	Power.bg:SetPoint("LEFT")
 	Power.bg:SetPoint("RIGHT")
 	Power.bg:SetTexture(C.media.backdrop)
+	Power.bg:SetVertexColor(0, 0, 0, .5)
 
-	if C.unitframes.healerClasscolours then
-		Power.bg:SetVertexColor(0, 0, 0, 0)
-	else
-		Power.bg:SetVertexColor(0, 0, 0, .2)
-	end
-
-	if C.unitframes.healerClasscolours or unit == "player" then
+	if not C.unitframes.transMode then
 		Power.colorPower = true
-	else
-		Power.colorClass = true
+		Power.bg:SetVertexColor(0, 0, 0, .25)
 	end
+
 
 	--[[ Alt Power ]]
 
@@ -1288,7 +1310,7 @@ local UnitSpecific = {
 		self:Tag(Name, '[name]')
 		self.Name = Name
 
-		local Auras = CreateFrame("Frame", nil, self)
+		--[[local Auras = CreateFrame("Frame", nil, self)
 		Auras:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -4)
 		Auras.initialAnchor = "TOPLEFT"
 		Auras["growth-x"] = "RIGHT"
@@ -1308,7 +1330,40 @@ local UnitSpecific = {
 
 		Auras.showStealableBuffs = true
 		Auras.PostCreateIcon = PostCreateIcon
-		Auras.PostUpdateIcon = PostUpdateIcon
+		Auras.PostUpdateIcon = PostUpdateIcon]]
+
+		local Buffs = CreateFrame("Frame", nil, self)
+		Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -4)
+		Buffs.initialAnchor = "TOPLEFT"
+		Buffs["growth-x"] = "RIGHT"
+		Buffs["growth-y"] = "DOWN"
+		Buffs['spacing-x'] = 3
+		Buffs['spacing-y'] = -5
+
+		Buffs:SetHeight(60)
+		Buffs:SetWidth(targetWidth)
+		Buffs.num = 16
+		Buffs.size = 26
+
+		self.Buffs = Buffs
+		Buffs.showStealableBuffs = true
+		Buffs.PostUpdateIcon = PostUpdateIcon
+
+		local Debuffs = CreateFrame("Frame", nil, self)
+		Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 46)
+		Debuffs.initialAnchor = "BOTTOMLEFT"
+		Debuffs["growth-x"] = "RIGHT"
+		Debuffs["growth-y"] = "UP"
+		Debuffs['spacing-x'] = 3
+		Debuffs['spacing-y'] = 5
+
+		Debuffs:SetHeight(60)
+		Debuffs:SetWidth(targetWidth)
+		Debuffs.num = 16
+		Debuffs.size = 26
+
+		self.Debuffs = Debuffs
+		Debuffs.PostUpdateIcon = PostUpdateIcon
 
 
 		-- complicated filter is complicated
@@ -1322,7 +1377,7 @@ local UnitSpecific = {
 			vehicle = true,
 		}
 
-		Auras.CustomFilter = function(_, unit, icon, _, _, _, _, _, _, _, caster, _, _, spellID)
+		Debuffs.CustomFilter = function(_, unit, icon, _, _, _, _, _, _, _, caster, _, _, spellID)
 			if(icon.isDebuff and not UnitIsFriend("player", unit) and not playerUnits[icon.owner] and icon.owner ~= self.unit and not C.debuffFilter[spellID])
 			or(not icon.isDebuff and UnitIsPlayer(unit) and not UnitIsFriend("player", unit) and not C.dangerousBuffs[spellID]) then
 				return false
@@ -1640,9 +1695,6 @@ local UnitSpecific = {
 		local Castbar = self.Castbar
 		local Spark = Castbar.Spark
 
-		Power.colorPower = false
-		Power.colorClass = true
-
 		self:SetAttribute('initial-height', arenaHeight)
 		self:SetAttribute('initial-width', arenaWidth)
 
@@ -1724,9 +1776,6 @@ do
 		self.disallowVehicleSwap = false
 
 		local Health, Power = self.Health, self.Power
-
-		Power.colorPower = false
-		Power.colorClass = true
 
 		local Text = F.CreateFS(Health, C.FONT_SIZE_NORMAL, "CENTER")
 		Text:SetPoint("CENTER", 1, 0)

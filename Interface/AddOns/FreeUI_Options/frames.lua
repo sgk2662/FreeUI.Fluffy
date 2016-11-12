@@ -552,11 +552,19 @@ do
 	local enable = ns.CreateCheckBox(unitframes, "enable", true, true)
 	enable:SetPoint("TOPLEFT", unitframes.subText, "BOTTOMLEFT", 0, -16)
 
-	local healerClasscolours = ns.CreateCheckBox(unitframes, "healerClasscolours", true, true)
-	healerClasscolours:SetPoint("TOPLEFT", enable, "BOTTOMLEFT", 16, -8)
+	local transMode = ns.CreateCheckBox(unitframes, "transMode", true, true)
+	transMode:SetPoint("TOPLEFT", enable, "BOTTOMLEFT", 16, -8)
+
+	local healthClassColor = ns.CreateCheckBox(unitframes, "healthClassColor", true, true)
+	healthClassColor:SetPoint("TOPLEFT", transMode, "BOTTOMLEFT", 16, -8)
+
+	local powerTypeColor = ns.CreateCheckBox(unitframes, "powerTypeColor", true, true)
+	powerTypeColor:SetPoint("TOPLEFT", healthClassColor, "BOTTOMLEFT", 0, -8)
+
+	transMode.children = {healthClassColor, powerTypeColor}
 
 	local gradient = ns.CreateCheckBox(unitframes, "gradient", true, true)
-	gradient:SetPoint("TOPLEFT", healerClasscolours, "BOTTOMLEFT", 0, -8)
+	gradient:SetPoint("TOPLEFT", powerTypeColor, "BOTTOMLEFT", -16, -8)
 
 	local castbar = ns.CreateCheckBox(unitframes, "castbar", true, true)
 	castbar:SetPoint("TOPLEFT", gradient, "BOTTOMLEFT", 0, -8)
@@ -604,8 +612,9 @@ do
 
 	local function toggleUFOptions()
 		local shown = enable:GetChecked()
-
-		healerClasscolours:SetShown(shown)
+		transMode:SetShown(shown)
+		healthClassColor:SetShown(shown)
+		powerTypeColor:SetShown(shown)
 		gradient:SetShown(shown)
 		enableGroup:SetShown(shown)
 		showRaidFrames:SetShown(shown)

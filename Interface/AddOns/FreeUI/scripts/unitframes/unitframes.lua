@@ -381,37 +381,6 @@ local PostUpdatePower = function(Power, unit, cur, max, min)
 	if Power.Text then
 		Power.Text:SetTextColor(Power:GetStatusBarColor())
 	end
-
-	if C.unitframes.transMode then
-		local r, g, b
-		local reaction = C.reactioncolours[UnitReaction(unit, "player") or 5]
-
-		local offline = not UnitIsConnected(unit)
-		local tapped = not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)
-
-		if tapped or offline then
-			r, g, b = .6, .6, .6
-		elseif unit == "pet" then
-			local _, class = UnitClass("player")
-			r, g, b = C.classcolours[class].r, C.classcolours[class].g, C.classcolours[class].b
-		elseif UnitIsPlayer(unit) then
-			local _, class = UnitClass(unit)
-			if class then r, g, b = C.classcolours[class].r, C.classcolours[class].g, C.classcolours[class].b else r, g, b = 1, 1, 1 end
-		-- elseif unit:find("boss%d") then
-		-- 	r, g, b = self.ColorGradient(min, max, unpack(self.colors.smooth))
-		else
-			r, g, b = unpack(reaction)
-		end
-
-		if C.unitframes.powerTypeColor and unit == "player" then
-			self.Power.colorPower = true
-			self.Power.bg:SetVertexColor(0, 0, 0, .2)
-		else
-			self.Power:SetStatusBarColor(r, g, b)
-			self.Power.bg:SetVertexColor(r/2, g/2, b/2)
-		end
-
-	end
 end
 
 -- [[ Threat update (party) ]]
@@ -533,11 +502,18 @@ local Shared = function(self, unit, isSingle)
 	Power.bg:SetPoint("LEFT")
 	Power.bg:SetPoint("RIGHT")
 	Power.bg:SetTexture(C.media.backdrop)
-	Power.bg:SetVertexColor(0, 0, 0, .5)
+	Power.bg:SetVertexColor(0, 0, 0, .25)
 
-	if not C.unitframes.transMode then
+	Power.colorReaction = true
+
+	if C.unitframes.transMode then
+		if unit == "player" and C.unitframes.powerTypeColor then
+			Power.colorPower = true
+		else
+			Power.colorClass = true
+		end
+	else
 		Power.colorPower = true
-		Power.bg:SetVertexColor(0, 0, 0, .25)
 	end
 
 
@@ -769,17 +745,6 @@ local UnitSpecific = {
 		Castbar.Width = self:GetWidth()
 
 		Spark:SetHeight(self.Health:GetHeight())
-
-		local Name = F.CreateFS(self, 8)
-		Name:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 1)
-		Name:SetWidth(80)
-		Name:SetHeight(12)
-		Name:SetJustifyH"LEFT"
-		Name:SetFont(unpack(unitframeFont))
-		Name:SetTextColor(1, 1, 1)
-
-		self:Tag(Name, '[name]')
-		self.Name = Name
 	end,
 
 	player = function(self, ...)
@@ -1277,13 +1242,13 @@ local UnitSpecific = {
 
 		local tt = CreateFrame("Frame", nil, self)
 		tt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 7 + C.appearance.fontSizeNormal + (C.unitframes.targettarget and 10 or 0))
-		tt:SetWidth(C.unitframes.targettarget_width)
+		tt:SetWidth(80)
 		tt:SetHeight(12)
 
 		local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "RIGHT")
 		ttt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", C.unitframes.targettarget_width + 5, 2)
 		ttt:SetFont(unpack(unitframeFont))
-		ttt:SetWidth(C.unitframes.targettarget_width)
+		ttt:SetWidth(80)
 		ttt:SetHeight(12)
 
 		tt:RegisterEvent("UNIT_TARGET")
@@ -1303,6 +1268,7 @@ local UnitSpecific = {
 		Name:SetPoint("BOTTOMLEFT", PowerText, "BOTTOMRIGHT")
 		Name:SetPoint("RIGHT", self)
 		Name:SetFont(unpack(unitframeFont))
+		Name:SetWidth(80)
 		Name:SetJustifyH("RIGHT")
 		Name:SetTextColor(1, 1, 1)
 		Name:SetWordWrap(false)
@@ -1310,7 +1276,7 @@ local UnitSpecific = {
 		self:Tag(Name, '[name]')
 		self.Name = Name
 
-		--[[local Auras = CreateFrame("Frame", nil, self)
+		local Auras = CreateFrame("Frame", nil, self)
 		Auras:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -4)
 		Auras.initialAnchor = "TOPLEFT"
 		Auras["growth-x"] = "RIGHT"
@@ -1330,40 +1296,7 @@ local UnitSpecific = {
 
 		Auras.showStealableBuffs = true
 		Auras.PostCreateIcon = PostCreateIcon
-		Auras.PostUpdateIcon = PostUpdateIcon]]
-
-		local Buffs = CreateFrame("Frame", nil, self)
-		Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -4)
-		Buffs.initialAnchor = "TOPLEFT"
-		Buffs["growth-x"] = "RIGHT"
-		Buffs["growth-y"] = "DOWN"
-		Buffs['spacing-x'] = 3
-		Buffs['spacing-y'] = -5
-
-		Buffs:SetHeight(60)
-		Buffs:SetWidth(targetWidth)
-		Buffs.num = 16
-		Buffs.size = 26
-
-		self.Buffs = Buffs
-		Buffs.showStealableBuffs = true
-		Buffs.PostUpdateIcon = PostUpdateIcon
-
-		local Debuffs = CreateFrame("Frame", nil, self)
-		Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 46)
-		Debuffs.initialAnchor = "BOTTOMLEFT"
-		Debuffs["growth-x"] = "RIGHT"
-		Debuffs["growth-y"] = "UP"
-		Debuffs['spacing-x'] = 3
-		Debuffs['spacing-y'] = 5
-
-		Debuffs:SetHeight(60)
-		Debuffs:SetWidth(targetWidth)
-		Debuffs.num = 16
-		Debuffs.size = 26
-
-		self.Debuffs = Debuffs
-		Debuffs.PostUpdateIcon = PostUpdateIcon
+		Auras.PostUpdateIcon = PostUpdateIcon
 
 
 		-- complicated filter is complicated
@@ -1377,7 +1310,7 @@ local UnitSpecific = {
 			vehicle = true,
 		}
 
-		Debuffs.CustomFilter = function(_, unit, icon, _, _, _, _, _, _, _, caster, _, _, spellID)
+		Auras.CustomFilter = function(_, unit, icon, _, _, _, _, _, _, _, caster, _, _, spellID)
 			if(icon.isDebuff and not UnitIsFriend("player", unit) and not playerUnits[icon.owner] and icon.owner ~= self.unit and not C.debuffFilter[spellID])
 			or(not icon.isDebuff and UnitIsPlayer(unit) and not UnitIsFriend("player", unit) and not C.dangerousBuffs[spellID]) then
 				return false
@@ -1529,11 +1462,12 @@ local UnitSpecific = {
 		Debuffs["spacing-x"] = 3
 		Debuffs:SetHeight(18)
 		Debuffs:SetWidth(focusWidth)
-		Debuffs.size = 18
-		Debuffs.num = C.unitframes.num_focus_debuffs
+		Debuffs.size = 26
+		Debuffs.num = 3
 		self.Debuffs = Debuffs
 		self.Debuffs.onlyShowPlayer = true
 
+		Debuffs.PostCreateIcon = PostCreateIcon
 		Debuffs.PostUpdateIcon = PostUpdateIcon
 	end,
 
@@ -1554,7 +1488,6 @@ local UnitSpecific = {
 
 		self.RaidIcon:ClearAllPoints()
 		self.RaidIcon:SetPoint("LEFT", self, "RIGHT", 3, 0)
-
 	end,
 
 

@@ -89,3 +89,27 @@ Garbage:SetScript("OnEvent", function(self, event)
 		eventcount = 0
 	end
 end)
+
+
+do --[[Artifact Frame]]--
+    -- original code by Gnarfoz
+    --C_ArtifactUI.GetTotalPurchasedRanks() shenanigans
+    local oldOnShow
+    local newOnShow
+
+    local function newOnShow(self)
+        if C_ArtifactUI.GetTotalPurchasedRanks() then
+            oldOnShow(self)
+        else
+            ArtifactFrame:Hide()
+        end
+    end
+
+    local function artifactHook()
+        if not oldOnShow then
+            oldOnShow = ArtifactFrame:GetScript("OnShow")
+            ArtifactFrame:SetScript("OnShow", newOnShow)
+        end
+    end
+    hooksecurefunc("ArtifactFrame_LoadUI", artifactHook)
+end

@@ -178,8 +178,8 @@ C["unitframes"] = {
 	["enable"] = true, 						-- enable the unit frames and their included modules
 
 	["transMode"] = true,
-		["healthClassColor"] = false,
-		["powerTypeColor"] = false,
+		["healthClassColor"] = true,
+		["powerTypeColor"] = true,
 
 	["gradient"] = true,					-- gradient mode
 
@@ -614,6 +614,10 @@ C["myBuffs"] = {
 	[116849] = true, -- Life Cocoon
 	[124682] = true, -- Enveloping Mist
 	[124081] = true, -- Zen Sphere
+
+	[203528] = true, -- 力量祝福
+	[203539] = true, -- 智慧
+	[203538] = true, -- 王者
 }
 
 -- Buffs cast by anyone that healers want to see on raid frames

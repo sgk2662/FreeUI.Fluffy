@@ -35,7 +35,7 @@ Minimap:SetScale(Scale)
 
 BorderFrame = CreateFrame("Frame", nil, Minimap)
 BorderFrame:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -1, -(32*Scale))
-BorderFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 1, (32*Scale))	
+BorderFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 1, (32*Scale))
 BorderFrame:SetBackdrop(backdrop)
 BorderFrame:SetBackdropBorderColor(unpack(brdcolor))
 BorderFrame:SetBackdropColor(unpack(backdropcolor))
@@ -401,6 +401,3 @@ for _, ticketButton in pairs({HelpOpenTicketButton, HelpOpenWebTicketButton}) do
 	ticketButton:HookScript("OnShow", positionTicketButtons)
 	ticketButton:HookScript("OnHide", positionTicketButtons)
 end
-
-
-

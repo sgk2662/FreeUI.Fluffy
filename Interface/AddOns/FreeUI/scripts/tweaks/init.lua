@@ -3,10 +3,10 @@
 C_Timer.After(.1, function() -- need to wait a bit
 	if not InCombatLockdown() then
 		-- 血条最远显示距离，7.0默认是60，7.0以前是40
-		SetCVar("nameplateMaxDistance", 60)
+		SetCVar("nameplateMaxDistance", 40)
 		-- 禁止显示不在屏幕内单位的血条(血条贴在屏幕边缘)
-		SetCVar("nameplateOtherTopInset", -1)
-		SetCVar("nameplateOtherBottomInset", -1)
+		-- SetCVar("nameplateOtherTopInset", -1)
+		-- SetCVar("nameplateOtherBottomInset", -1)
 		-- tab的行为改回7.0以前，优先tab最近的单位
 		--SetCVar("TargetPriorityAllowAnyOnScreen", 0)
 		SetCVar("Targetnearestuseold", 1)
@@ -28,44 +28,7 @@ C_Timer.After(.1, function() -- need to wait a bit
 end)
 
 
-local function SetupChat()
-
-	local channels = {
-		"SAY",
-		"EMOTE",
-		"YELL",
-		"GUILD",
-		"OFFICER",
-		"GUILD_ACHIEVEMENT",
-		"ACHIEVEMENT",
-		"WHISPER",
-		"PARTY",
-		"PARTY_LEADER",
-		"INSTANCE_CHAT",
-		"INSTANCE_CHAT_LEADER",
-		"RAID",
-		"RAID_LEADER",
-		"RAID_WARNING",
-		"BATTLEGROUND",
-		"BATTLEGROUND_LEADER",
-		"CHANNEL1",
-		"CHANNEL2",
-		"CHANNEL3",
-		"CHANNEL4",
-		"CHANNEL5",
-		"CHANNEL6",
-		"CHANNEL7",
-		"CHANNEL8",
-		"CHANNEL9",
-		"CHANNEL10",
-	}
-
-	for _, channel in next, channels do
-		ToggleChatColorNamesByClassGroup(true, channel)
-	end
-end
-
-
+-- disable new talent alert
 local f = CreateFrame("Frame")
 function f:OnEvent(event)
 	hooksecurefunc("MainMenuMicroButton_ShowAlert", function(alert)
@@ -76,19 +39,3 @@ end
 f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("PLAYER_LEVEL_UP")
 f:SetScript("OnEvent", f.OnEvent)
-
-
---get the current set farclip
-local farclip = GetCVar("farclip")
---set farclip to min value
-SetCVar("farclip",185)
---ResetFarclip
-local function ResetFarclip()
-  SetCVar("farclip",farclip)
-end
---OnLogin
-local function OnLogin()
-  C_Timer.After(3, ResetFarclip)
-end
---callback
-rLib:RegisterCallback("PLAYER_LOGIN", OnLogin)

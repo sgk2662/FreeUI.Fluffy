@@ -12,6 +12,7 @@
 	<Script file="tweaks\errors.lua"/>
 	<Script file="tweaks\expbar.lua"/>
 	<Script file="tweaks\fastercamera.lua"/>
+	<Script file="tweaks\flashCursor.lua"/>
 	<Script file="tweaks\fonts.lua"/>
 	<Script file="tweaks\globals.lua"/>
 	<Script file="tweaks\init.lua"/>

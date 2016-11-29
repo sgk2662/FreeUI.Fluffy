@@ -3,6 +3,7 @@
 	<Script file="chats\bubbles.lua"/>
 	<Script file="chats\chat.lua"/>
 	<Script file="chats\chattabs.lua"/>
+	<Script file="chats\ChatItemLevel.lua"/>
 	<Script file="chats\SpamageMeters.lua"/>
 	<Script file="chats\WhisperSound.lua"/>
 	<Script file="chats\ChatFilter\localization.lua"/>

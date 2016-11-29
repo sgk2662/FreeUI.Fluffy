@@ -30,27 +30,47 @@ local cargBags = ns.cargBags
 local function noop() end
 
 -- Upgrade Level retrieval
-local ItemUpgradeInfo = LibStub("LibItemUpgradeInfo-1.0")
---[[
-local S_UPGRADE_LEVEL = "^" .. gsub(ITEM_UPGRADE_TOOLTIP_FORMAT, "%%d", "(%%d+)")	-- Search pattern
-local scantip = CreateFrame("GameTooltip", "ItemUpgradeScanTooltip", nil, "GameTooltipTemplate")
-scantip:SetOwner(UIParent, "ANCHOR_NONE")
+local ScanTip, lvlPattern
+local function GetItemLevel(itemLink)
+	if not lvlPattern then
+		lvlPattern = gsub(ITEM_LEVEL, '%%d', '(%%d+)')
+	end
 
-local function GetItemUpgradeLevel(itemLink)
-	scantip:SetOwner(UIParent, "ANCHOR_NONE")
-	scantip:SetHyperlink(itemLink)
-	for i = 2, scantip:NumLines() do -- Line 1 = name so skip
-		local text = _G["ItemUpgradeScanTooltipTextLeft"..i]:GetText()
-		if text and text ~= "" then
-			local currentUpgradeLevel, maxUpgradeLevel = strmatch(text, S_UPGRADE_LEVEL)
-			if currentUpgradeLevel then
-				return currentUpgradeLevel, maxUpgradeLevel
-			end
+	if not ScanTip then
+		ScanTip = CreateFrame("GameTooltip","ScanTip",nil,"GameTooltipTemplate")
+		ScanTip:SetOwner(UIParent,"ANCHOR_NONE")
+	end
+	ScanTip:ClearLines()
+	ScanTip:SetHyperlink(itemLink)
+
+	for i = 2, min(5, ScanTip:NumLines()) do
+		local line = _G["ScanTipTextLeft"..i]:GetText()
+		local itemLevel = strmatch(line, lvlPattern)
+		if itemLevel then
+			return tonumber(itemLevel)
 		end
 	end
-	scantip:Hide()
 end
-]]
+
+-- local S_UPGRADE_LEVEL = "^" .. gsub(ITEM_UPGRADE_TOOLTIP_FORMAT, "%%d", "(%%d+)")	-- Search pattern
+-- local scantip = CreateFrame("GameTooltip", "ItemUpgradeScanTooltip", nil, "GameTooltipTemplate")
+-- scantip:SetOwner(UIParent, "ANCHOR_NONE")
+--
+-- local function GetItemUpgradeLevel(itemLink)
+-- 	scantip:SetOwner(UIParent, "ANCHOR_NONE")
+-- 	scantip:SetHyperlink(itemLink)
+-- 	for i = 2, scantip:NumLines() do -- Line 1 = name so skip
+-- 		local text = _G["ItemUpgradeScanTooltipTextLeft"..i]:GetText()
+-- 		if text and text ~= "" then
+-- 			local currentUpgradeLevel, maxUpgradeLevel = strmatch(text, S_UPGRADE_LEVEL)
+-- 			if currentUpgradeLevel then
+-- 				return currentUpgradeLevel, maxUpgradeLevel
+-- 			end
+-- 		end
+-- 	end
+-- 	scantip:Hide()
+-- end
+
 local function Round(num, idp)
 	local mult = 10^(idp or 0)
 	return math.floor(num * mult + 0.5) / mult
@@ -92,9 +112,9 @@ local function GetScreenModes()
 	local curResIndex = GetCurrentResolution()
 	local curRes = curResIndex > 0 and select(curResIndex, GetScreenResolutions()) or nil
 	local windowedMode = Display_DisplayModeDropDown:windowedmode()
-	
+
 	local resolution = curRes or (windowedMode and GetCVar("gxWindowedResolution")) or GetCVar("gxFullscreenResolution")
-	
+
 	return resolution
 end
 
@@ -169,7 +189,8 @@ local function ItemButton_Update(self, item)
 	-- Item Level
 	if item.link then
 		if item.type and ilvlTypes[item.type] and item.level > 0 then
-			item.level = ItemUpgradeInfo:GetUpgradedItemLevel(item.link)
+			item.level = GetItemLevel(item.link)
+
 			self.BottomString:SetText(item.level)
 			self.BottomString:SetTextColor(GetItemQualityColor(item.rarity))
 		else

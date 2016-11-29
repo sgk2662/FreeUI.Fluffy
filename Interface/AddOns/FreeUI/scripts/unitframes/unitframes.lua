@@ -453,7 +453,7 @@ local Shared = function(self, unit, isSingle)
 
 		self.gradient = gradient
 
-		F.CreateBD(bd, 0)
+		F.CreateBD(bd, .3)
 	else
 		F.CreateBD(bd)
 	end
@@ -1946,15 +1946,15 @@ oUF:Factory(function(self)
 		'showParty', true,
 		'showPlayer', true,
 		'showSolo', false,
-		'xoffset', 5,
-		'yoffset', 6,
+		'xoffset', 4,
+		'yoffset', 4,
 		'maxColumns', 1,
 		'unitsperColumn', 5,
-		'columnSpacing', 6,
+		'columnSpacing', 4,
 		'point', "BOTTOM",
 		'columnAnchorPoint', "LEFT",
 		'groupBy', 'ASSIGNEDROLE',
-		'groupingOrder', 'TANK,HEALER,DAMAGER',
+		'groupingOrder', 'DAMAGER,HEALER,TANK',
 		'oUF-initialConfigFunction', ([[
 			self:SetHeight(%d)
 			self:SetWidth(%d)

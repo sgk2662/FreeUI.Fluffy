@@ -1,14 +1,17 @@
+local F, C, L = unpack(select(2, ...))
+
+if not C.chat.itemLevel then return end
 
 ----------------------------------------------
--- 聊天超鏈接增加物品等級 (支持大祕境鑰匙等級)
+-- 聊天超鏈接增加物品等級
 -- @Author:M
 ----------------------------------------------
 
 local tooltip = CreateFrame("GameTooltip", "ChatLinkLevelTooltip", UIParent, "GameTooltipTemplate")
 
 local ItemLevelPattern = gsub(ITEM_LEVEL, "%%d", "(%%d+)")
-local ItemPowerPattern = gsub(CHALLENGE_MODE_ITEM_POWER_LEVEL, "%%d", "(%%d+)")
-local ItemNamePattern  = gsub(CHALLENGE_MODE_KEYSTONE_NAME, "%%s", "(.+)")
+-- local ItemPowerPattern = gsub(CHALLENGE_MODE_ITEM_POWER_LEVEL, "%%d", "(%%d+)")
+-- local ItemNamePattern  = gsub(CHALLENGE_MODE_KEYSTONE_NAME, "%%s", "(.+)")
 
 --获取物品实际等级
 local function GetItemLevelAndTexture(ItemLink)
@@ -22,11 +25,11 @@ local function GetItemLevelAndTexture(ItemLink)
 		text = _G[tooltip:GetName().."TextLeft"..i]:GetText() or ""
 		level = string.match(text, ItemLevelPattern)
 		if (level) then break end
-		level = string.match(text, ItemPowerPattern)
-		if (level) then
-			extraname = string.match(_G[tooltip:GetName().."TextLeft1"]:GetText(), ItemNamePattern)
-			break
-		end
+		-- level = string.match(text, ItemPowerPattern)
+		-- if (level) then
+		-- 	extraname = string.match(_G[tooltip:GetName().."TextLeft1"]:GetText(), ItemNamePattern)
+		-- 	break
+		-- end
 	end
 	return level, texture, extraname
 end

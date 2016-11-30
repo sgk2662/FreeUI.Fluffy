@@ -57,6 +57,7 @@ C["general"] = {
 	["undressButton"] = true, 		-- undress button on dressup frame
 	["cooldownpulse"] = true,
 	["combo"] = false,
+	["flashCursor"] = true,
 }
 
 C["appearance"] = {
@@ -110,6 +111,8 @@ C["actionbars"] = {
 	["mainbar_pos"] = { a1 = "BOTTOM", a2 = "BOTTOM", af = "UIParent", x = 0, y = 8 },		-- mainbar(bar1) position
 	["rightbar_pos"] = { a1 = "RIGHT", a2 = "RIGHT", af = "UIParent", x = -6, y = -200 },	-- rightbar(bar4) position
 	["extra_pos"] = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 0, y = 100 },
+
+	["vehicleexitbar_pos"] = { "LEFT", "oUF_FreePlayer", "RIGHT", 5, 0 },
 }
 
 C["minimap"] = {
@@ -256,6 +259,10 @@ C["unitframes"] = {
 
 C["buff"] = {
 	["position"] = {"TOPRIGHT", UIParent, "TOPRIGHT", -290, -36}
+}
+
+C["chat"] = {
+	["itemLevel"] = true,
 }
 
 C["classmod"] = {

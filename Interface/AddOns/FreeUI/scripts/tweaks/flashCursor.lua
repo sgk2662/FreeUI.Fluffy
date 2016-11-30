@@ -1,3 +1,7 @@
+local F, C, L = unpack(select(2, ...))
+
+if not C.general.flashCursor then return end
+
 local frame = CreateFrame("Frame", nil, UIParent);
 frame:SetFrameStrata("TOOLTIP");
 

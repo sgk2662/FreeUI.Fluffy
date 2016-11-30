@@ -99,7 +99,7 @@ end
 
 do
 	local header = BONUS_OBJECTIVE_TRACKER_MODULE.Header
-	
+
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
 		header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
 	else
@@ -202,6 +202,11 @@ hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddObjective", function(_, block)
 
 		itemButton.styled = true
 	end
+
+	local line = block.currentLine
+
+	local p1, a, p2, x, y = line:GetPoint()
+	line:SetPoint(p1, a, p2, x, y - 4)
 end)
 
 hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddObjective", function(self, block)
@@ -330,6 +335,31 @@ hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(self, bloc
 
 	bar.IconBG:Hide()
 	bar.newIconBg:SetShown(icon:IsShown())
+end)
+
+-- [[ scenario progress bar ]]
+
+hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddProgressBar", function(self, block, line)
+	local progressBar = line.ProgressBar
+	local bar = progressBar.Bar
+	if not progressBar.styled then
+		local bg = F.CreateBDFrame(bar)
+		bg:SetPoint("TOPLEFT", -1, 1)
+		bg:SetPoint("BOTTOMRIGHT", 0, -2)
+		F.CreateSD(bg)
+
+		bar.BarBG:Hide()
+		bar.BarFrame:Hide()
+		bar:SetStatusBarTexture(C.media.backdrop)
+		bar:SetStatusBarColor(207/255, 0/255, 31/255)
+		bar:SetHeight(14)
+
+		bar.Label:ClearAllPoints()
+		bar.Label:SetPoint("CENTER")
+		F.SetFS(bar.Label)
+
+		progressBar.styled = true
+	end
 end)
 
 

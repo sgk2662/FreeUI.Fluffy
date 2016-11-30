@@ -1,7 +1,7 @@
 --[[ Tooltip mods by Alza mostly ]]
 
-ITEM_LEVEL = "|cff00ffffilvl: %d|r"
-ITEM_LEVEL_ALT = "|cff00ffffilvl: %d (%d)|r"
+-- ITEM_LEVEL = "|cff00ffffilvl: %d|r"
+-- ITEM_LEVEL_ALT = "|cff00ffffilvl: %d (%d)|r"
 
 if GetLocale() == "enUS" or GetLocale() == "enGB" then
 	ITEM_BIND_ON_EQUIP = "BoE"

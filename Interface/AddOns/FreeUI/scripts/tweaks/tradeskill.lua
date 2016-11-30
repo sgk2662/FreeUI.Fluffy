@@ -18,7 +18,7 @@ local function InitDB()
 		CTradeSkillDB['Unlock'] = false
 		CTradeSkillDB['Fade'] = true
 		CTradeSkillDB['Level'] = true
-		CTradeSkillDB['Tooltip'] = true
+		CTradeSkillDB['Tooltip'] = false
 		CTradeSkillDB['Drag'] = false
 	end
 	if not CTradeSkillDB['Tabs'] then CTradeSkillDB['Tabs'] = {} end

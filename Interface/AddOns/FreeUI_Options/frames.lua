@@ -292,7 +292,7 @@ do
 	fontUseAlternativeFont:SetPoint("TOPLEFT", fonts, "BOTTOMLEFT", 0, -20)
 
 	local fontUseChinesePixelFont = ns.CreateCheckBox(appearance, "fontUseChinesePixelFont", true, true)
-	fontUseChinesePixelFont:SetPoint("TOPLEFT", fontUseAlternativeFont, "BOTTOMLEFT", 0, -20)
+	fontUseChinesePixelFont:SetPoint("TOPLEFT", fontUseAlternativeFont, "BOTTOMLEFT", 0, -8)
 
 	local fontSizeNormal = ns.CreateNumberSlider(appearance, "fontSizeNormal", 5, 32, 5, 32, 1, true)
 	fontSizeNormal:SetPoint("TOPLEFT", fontUseChinesePixelFont, "BOTTOMLEFT", 16, -26)
@@ -599,16 +599,16 @@ do
 	limitRaidSize:SetPoint("TOPLEFT", showRaidFrames, "BOTTOMLEFT", 16, -8)
 	tinsert(ns.protectOptions, limitRaidSize)
 
-	local partyNameAlways = ns.CreateCheckBox(unitframes, "partyNameAlways", true, true)
-	partyNameAlways:SetPoint("TOPLEFT", limitRaidSize, "BOTTOMLEFT", 0, -8)
-
 	local partyMissingHealth = ns.CreateCheckBox(unitframes, "partyMissingHealth", true, true)
-	partyMissingHealth:SetPoint("TOPLEFT", partyNameAlways, "BOTTOMLEFT", 0, -8)
+	partyMissingHealth:SetPoint("TOPLEFT", limitRaidSize, "BOTTOMLEFT", 0, -8)
+
+	local partyNameAlways = ns.CreateCheckBox(unitframes, "partyNameAlways", true, true)
+	partyNameAlways:SetPoint("TOPLEFT", partyMissingHealth, "BOTTOMLEFT", 0, -8)
 
 	enableGroup.children = {showRaidFrames, limitRaidSize, partyNameAlways, partyMissingHealth}
 
 	local enableArena = ns.CreateCheckBox(unitframes, "enableArena", true, true)
-	enableArena:SetPoint("TOPLEFT", partyMissingHealth, "BOTTOMLEFT", -32, -8)
+	enableArena:SetPoint("TOPLEFT", partyNameAlways, "BOTTOMLEFT", -32, -8)
 
 	local function toggleUFOptions()
 		local shown = enable:GetChecked()

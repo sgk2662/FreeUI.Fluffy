@@ -4,7 +4,7 @@
 ## Author: Haleth/Lightsword (Modified by Dostoyevsky@烈焰峰)
 ## Version: 70100.02
 ## OptionalDeps: Clique, FreeUI_Options, MyRolePlay, oUF
-## SavedVariables: FreeUIGlobalConfig, SavedBindings
+## SavedVariables: FreeUIGlobalConfig, SavedBindings, CTradeSkillDB
 ## SavedVariablesPerCharacter: FreeUIConfig
 
 core\core.lua

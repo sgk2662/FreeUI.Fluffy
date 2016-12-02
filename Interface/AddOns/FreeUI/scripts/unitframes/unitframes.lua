@@ -248,8 +248,6 @@ oUF.Tags.Methods['free:missinghealth'] = function(unit)
 		return "Ghost"
 	elseif min ~= max then
 		return siValue(max-min)
-	else
-		return shortName(unit)
 	end
 end
 oUF.Tags.Events['free:missinghealth'] = oUF.Tags.Events.missinghp
@@ -1718,16 +1716,13 @@ do
 
 		self:Tag(Text, '[dead][offline]')
 
-		if C.unitframes.partyMissingHealth then
-			Health:SetHeight(partyHeight - powerHeight - 1)
+		Health:SetHeight(partyHeight - powerHeight - 1)
+		if C.unitframes.partyNameAlways then
+			self:Tag(Text, '[free:name]')
+		elseif C.unitframes.partyMissingHealth then
 			self:Tag(Text, '[free:missinghealth]')
 		else
-			Health:SetHeight(partyHeight - powerHeight - 1)
-			if C.unitframes.partyNameAlways then
-				self:Tag(Text, '[free:name]')
-			else
-				self:Tag(Text, '[dead][offline]')
-			end
+			self:Tag(Text, '[dead][offline]')
 		end
 
 		self.ResurrectIcon = self:CreateTexture(nil, "OVERLAY")

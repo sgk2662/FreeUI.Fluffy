@@ -6,7 +6,4 @@
 	<Script file="chats\ChatItemLevel.lua"/>
 	<Script file="chats\SpamageMeters.lua"/>
 	<Script file="chats\WhisperSound.lua"/>
-	<Script file="chats\ChatFilter\localization.lua"/>
-	<Script file="chats\ChatFilter\config.lua"/>
-	<Script file="chats\ChatFilter\core.lua"/>
 </Ui>

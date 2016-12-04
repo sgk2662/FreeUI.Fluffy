@@ -22,20 +22,20 @@ local hiddenFrame = CreateFrame("Frame")
 hiddenFrame:Hide()
 
 local scripts = {
-  "OnShow", "OnHide", "OnEvent", "OnEnter", "OnLeave", "OnUpdate", "OnValueChanged", "OnClick", "OnMouseDown", "OnMouseUp",
+	"OnShow", "OnHide", "OnEvent", "OnEnter", "OnLeave", "OnUpdate", "OnValueChanged", "OnClick", "OnMouseDown", "OnMouseUp",
 }
 
 local framesToHide = {
-  MainMenuBar,
-  OverrideActionBar,
+	MainMenuBar,
+	OverrideActionBar,
 }
 
 local framesToDisable = {
-  MainMenuBar,
-  ActionBarDownButton, ActionBarUpButton, MainMenuBarVehicleLeaveButton, ExhaustionTick,
-  ReputationWatchBar, ArtifactWatchBar, HonorWatchBar, MainMenuExpBar, MainMenuBarMaxLevelBar,
-  OverrideActionBar,
-  OverrideActionBarExpBar, OverrideActionBarHealthBar, OverrideActionBarPowerBar, OverrideActionBarPitchFrame,
+	MainMenuBar,
+	ActionBarDownButton, ActionBarUpButton, MainMenuBarVehicleLeaveButton, ExhaustionTick,
+	ReputationWatchBar, ArtifactWatchBar, HonorWatchBar, MainMenuExpBar, MainMenuBarMaxLevelBar,
+	OverrideActionBar,
+	OverrideActionBarExpBar, OverrideActionBarHealthBar, OverrideActionBarPowerBar, OverrideActionBarPitchFrame,
 }
 
 -----------------------------
@@ -43,21 +43,20 @@ local framesToDisable = {
 -----------------------------
 
 local function DisableAllScripts(frame)
-  for i, script in next, scripts do
-    if frame:HasScript(script) then
-      frame:SetScript(script,nil)
-    end
-  end
+	for i, script in next, scripts do
+		if frame:HasScript(script) then
+			frame:SetScript(script,nil)
+		end
+	end
 end
 
 --hide main menu bar
 function L:HideMainMenuBar()
-  for i, frame in next, framesToHide do
-    frame:SetParent(hiddenFrame)
-  end
-  for i, frame in next, framesToDisable do
-    frame:UnregisterAllEvents()
-    DisableAllScripts(frame)
-  end
+	for i, frame in next, framesToHide do
+		frame:SetParent(hiddenFrame)
+	end
+	for i, frame in next, framesToDisable do
+		frame:UnregisterAllEvents()
+		DisableAllScripts(frame)
+	end
 end
-

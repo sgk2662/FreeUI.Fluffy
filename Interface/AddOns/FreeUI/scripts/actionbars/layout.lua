@@ -15,22 +15,14 @@ local A, L = ...
 -- Fader
 -----------------------------
 
-local fader_1 = {
-  fadeInAlpha = 1,
-  fadeInDuration = 0.3,
-  fadeInSmooth = "OUT",
-  fadeOutAlpha = 0.3,
-  fadeOutDuration = 0.9,
-  fadeOutSmooth = "OUT",
-}
-
-local fader_2 = {
-  fadeInAlpha = 1,
-  fadeInDuration = 0.3,
-  fadeInSmooth = "OUT",
-  fadeOutAlpha = 0,
-  fadeOutDuration = 0.9,
-  fadeOutSmooth = "OUT",
+local fader = {
+	fadeInAlpha = 1,
+	fadeInDuration = 0.3,
+	fadeInSmooth = "OUT",
+	fadeOutAlpha = 0,
+	fadeOutDuration = 0.9,
+	fadeOutSmooth = "OUT",
+	fadeOutDelay = 0,
 }
 
 -----------------------------
@@ -38,16 +30,16 @@ local fader_2 = {
 -----------------------------
 
 local bagbar = {
-  framePoint      = { "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -5, 5 },
-  frameScale      = 1,
-  framePadding    = 5,
-  buttonWidth     = 32,
-  buttonHeight    = 32,
-  buttonMargin    = 2,
-  numCols         = 6, --number of buttons per column
-  startPoint      = "BOTTOMRIGHT", --start postion of first button: BOTTOMLEFT, TOPLEFT, TOPRIGHT, BOTTOMRIGHT
-  fader           = nil,
-  frameVisibility = "hide"
+	framePoint      = { "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -5, 5 },
+	frameScale      = 1,
+	framePadding    = 5,
+	buttonWidth     = 32,
+	buttonHeight    = 32,
+	buttonMargin    = 2,
+	numCols         = 6, --number of buttons per column
+	startPoint      = "BOTTOMRIGHT", --start postion of first button: BOTTOMLEFT, TOPLEFT, TOPRIGHT, BOTTOMRIGHT
+	fader           = nil,
+	frameVisibility = "hide"
 }
 --create
 rActionBar:CreateBagBar(A, bagbar)
@@ -57,16 +49,16 @@ rActionBar:CreateBagBar(A, bagbar)
 -----------------------------
 
 local micromenubar = {
-  framePoint      = { "TOP", UIParent, "TOP", 0, 0 },
-  frameScale      = 0.8,
-  framePadding    = 5,
-  buttonWidth     = 28,
-  buttonHeight    = 58,
-  buttonMargin    = 0,
-  numCols         = 12,
-  startPoint      = "BOTTOMLEFT",
-  fader           = nil,
-  frameVisibility = "hide"
+	framePoint      = { "TOP", UIParent, "TOP", 0, 0 },
+	frameScale      = 0.8,
+	framePadding    = 5,
+	buttonWidth     = 28,
+	buttonHeight    = 58,
+	buttonMargin    = 0,
+	numCols         = 12,
+	startPoint      = "BOTTOMLEFT",
+	fader           = nil,
+	frameVisibility = "hide"
 }
 --create
 rActionBar:CreateMicroMenuBar(A, micromenubar)
@@ -76,15 +68,15 @@ rActionBar:CreateMicroMenuBar(A, micromenubar)
 -----------------------------
 
 local bar1 = {
-  framePoint      = { "BOTTOM", UIParent, "BOTTOM", 0, 6 },
-  frameScale      = 1,
-  framePadding    = 0,
-  buttonWidth     = 30,
-  buttonHeight    = 30,
-  buttonMargin    = 4,
-  numCols         = 12,
-  startPoint      = "BOTTOMLEFT",
-  fader           = nil,
+	framePoint      = { "BOTTOM", UIParent, "BOTTOM", 0, 6 },
+	frameScale      = 1,
+	framePadding    = 0,
+	buttonWidth     = 30,
+	buttonHeight    = 30,
+	buttonMargin    = 4,
+	numCols         = 12,
+	startPoint      = "BOTTOMLEFT",
+	fader           = nil,
 }
 --create
 rActionBar:CreateActionBar1(A, bar1)
@@ -94,15 +86,15 @@ rActionBar:CreateActionBar1(A, bar1)
 -----------------------------
 
 local bar2 = {
-  framePoint      = { "BOTTOM", A.."Bar1", "TOP", 0, 0 },
-  frameScale      = 1,
-  framePadding    = 4,
-  buttonWidth     = 30,
-  buttonHeight    = 30,
-  buttonMargin    = 4,
-  numCols         = 12,
-  startPoint      = "BOTTOMLEFT",
-  fader           = nil,
+	framePoint      = { "BOTTOM", A.."Bar1", "TOP", 0, 0 },
+	frameScale      = 1,
+	framePadding    = 4,
+	buttonWidth     = 30,
+	buttonHeight    = 30,
+	buttonMargin    = 4,
+	numCols         = 12,
+	startPoint      = "BOTTOMLEFT",
+	fader           = nil,
 }
 --create
 rActionBar:CreateActionBar2(A, bar2)
@@ -112,15 +104,23 @@ rActionBar:CreateActionBar2(A, bar2)
 -----------------------------
 
 local bar3 = {
-  framePoint      = { "BOTTOM", A.."Bar2", "TOP", 0, 0 },
-  frameScale      = 1,
-  framePadding    = 0,
-  buttonWidth     = 30,
-  buttonHeight    = 30,
-  buttonMargin    = 4,
-  numCols         = 12,
-  startPoint      = "BOTTOMLEFT",
-  fader           = nil,
+	framePoint      = { "BOTTOM", A.."Bar2", "TOP", 0, 0 },
+	frameScale      = 1,
+	framePadding    = 0,
+	buttonWidth     = 30,
+	buttonHeight    = 30,
+	buttonMargin    = 4,
+	numCols         = 12,
+	startPoint      = "BOTTOMLEFT",
+	fader = {
+		fadeInAlpha = 1,
+		fadeInDuration = 0.3,
+		fadeInSmooth = "OUT",
+		fadeOutAlpha = 0,
+		fadeOutDuration = 0.3,
+		fadeOutSmooth = "OUT",
+		fadeOutDelay = 0,
+	},
 }
 --create
 rActionBar:CreateActionBar3(A, bar3)
@@ -130,15 +130,23 @@ rActionBar:CreateActionBar3(A, bar3)
 -----------------------------
 
 local bar4 = {
-  framePoint      = { "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 160 },
-  frameScale      = 1,
-  framePadding    = 4,
-  buttonWidth     = 26,
-  buttonHeight    = 26,
-  buttonMargin    = 4,
-  numCols         = 2,
-  startPoint      = "TOPRIGHT",
-  fader           = fader_1,
+	framePoint      = { "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 160 },
+	frameScale      = 1,
+	framePadding    = 4,
+	buttonWidth     = 26,
+	buttonHeight    = 26,
+	buttonMargin    = 4,
+	numCols         = 2,
+	startPoint      = "TOPRIGHT",
+	fader = {
+		fadeInAlpha = 1,
+		fadeInDuration = 0.3,
+		fadeInSmooth = "OUT",
+		fadeOutAlpha = 0.2,
+		fadeOutDuration = 0.3,
+		fadeOutSmooth = "OUT",
+		fadeOutDelay = 0,
+	},
 }
 --create
 rActionBar:CreateActionBar4(A, bar4)
@@ -148,16 +156,16 @@ rActionBar:CreateActionBar4(A, bar4)
 -----------------------------
 
 local bar5 = {
-  framePoint      = { "RIGHT", A.."Bar4", "LEFT", 0, 0 },
-  frameScale      = 1,
-  framePadding    = 0,
-  buttonWidth     = 26,
-  buttonHeight    = 26,
-  buttonMargin    = 4,
-  numCols         = 1,
-  startPoint      = "TOPRIGHT",
-  fader           = fader_1,
-  frameVisibility = "hide"
+	framePoint      = { "RIGHT", A.."Bar4", "LEFT", 0, 0 },
+	frameScale      = 1,
+	framePadding    = 0,
+	buttonWidth     = 26,
+	buttonHeight    = 26,
+	buttonMargin    = 4,
+	numCols         = 1,
+	startPoint      = "TOPRIGHT",
+	fader           = nil,
+	frameVisibility = "hide"
 }
 --create
 rActionBar:CreateActionBar5(A, bar5)
@@ -167,16 +175,16 @@ rActionBar:CreateActionBar5(A, bar5)
 -----------------------------
 
 local stancebar = {
-  framePoint      = { "BOTTOM", A.."Bar3", "TOP", 0, 0 },
-  frameScale      = 1,
-  framePadding    = 5,
-  buttonWidth     = 32,
-  buttonHeight    = 32,
-  buttonMargin    = 5,
-  numCols         = 12,
-  startPoint      = "BOTTOMLEFT",
-  fader           = nil,
-  frameVisibility = "hide",
+	framePoint      = { "BOTTOM", A.."Bar3", "TOP", 0, 0 },
+	frameScale      = 1,
+	framePadding    = 5,
+	buttonWidth     = 32,
+	buttonHeight    = 32,
+	buttonMargin    = 5,
+	numCols         = 12,
+	startPoint      = "BOTTOMLEFT",
+	fader           = nil,
+	frameVisibility = "hide",
 }
 --create
 rActionBar:CreateStanceBar(A, stancebar)
@@ -187,15 +195,23 @@ rActionBar:CreateStanceBar(A, stancebar)
 
 --petbar
 local petbar = {
-  framePoint      = { "BOTTOM", A.."Bar2", "TOP", 0, 0 },
-  frameScale      = 1,
-  framePadding    = 2,
-  buttonWidth     = 24,
-  buttonHeight    = 24,
-  buttonMargin    = 8,
-  numCols         = 12,
-  startPoint      = "BOTTOMLEFT",
-  fader           = fader_2,
+	framePoint      = { "BOTTOM", A.."Bar2", "TOP", 0, 0 },
+	frameScale      = 1,
+	framePadding    = 2,
+	buttonWidth     = 24,
+	buttonHeight    = 24,
+	buttonMargin    = 8,
+	numCols         = 12,
+	startPoint      = "BOTTOMLEFT",
+	fader = {
+		fadeInAlpha = 1,
+		fadeInDuration = 0.3,
+		fadeInSmooth = "OUT",
+		fadeOutAlpha = 0.2,
+		fadeOutDuration = 0.3,
+		fadeOutSmooth = "OUT",
+		fadeOutDelay = 0,
+	},
 }
 --create
 rActionBar:CreatePetBar(A, petbar)
@@ -205,15 +221,15 @@ rActionBar:CreatePetBar(A, petbar)
 -----------------------------
 
 local extrabar = {
-  framePoint      = { "BOTTOM", UIParent, "BOTTOM", 0, 250 },
-  frameScale      = 1,
-  framePadding    = 4,
-  buttonWidth     = 44,
-  buttonHeight    = 44,
-  buttonMargin    = 4,
-  numCols         = 1,
-  startPoint      = "BOTTOMLEFT",
-  fader           = nil,
+	framePoint      = { "BOTTOM", UIParent, "BOTTOM", 0, 180 },
+	frameScale      = 1,
+	framePadding    = 4,
+	buttonWidth     = 44,
+	buttonHeight    = 44,
+	buttonMargin    = 4,
+	numCols         = 1,
+	startPoint      = "BOTTOMLEFT",
+	fader           = nil,
 }
 --create
 rActionBar:CreateExtraBar(A, extrabar)
@@ -223,15 +239,15 @@ rActionBar:CreateExtraBar(A, extrabar)
 -----------------------------
 
 local vehicleexitbar = {
-  framePoint      = { "BOTTOM", UIParent, "BOTTOM", 126, 194 },
-  frameScale      = 1,
-  framePadding    = 4,
-  buttonWidth     = 16,
-  buttonHeight    = 16,
-  buttonMargin    = 4,
-  numCols         = 1,
-  startPoint      = "BOTTOMLEFT",
-  fader           = nil,
+	framePoint      = { "BOTTOM", UIParent, "BOTTOM", 126, 254 },
+	frameScale      = 1,
+	framePadding    = 4,
+	buttonWidth     = 16,
+	buttonHeight    = 16,
+	buttonMargin    = 4,
+	numCols         = 1,
+	startPoint      = "BOTTOMLEFT",
+	fader           = nil,
 }
 --create
 rActionBar:CreateVehicleExitBar(A, vehicleexitbar)

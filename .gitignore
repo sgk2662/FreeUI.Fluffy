@@ -1,5 +1,8 @@
-## AddOns ##
-_dev*/
-_dev*
-Blizzard_*/
-profiles.lua
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# AddOns:
+_dev/
+Profiles.lua

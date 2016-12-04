@@ -7,33 +7,19 @@
 ## SavedVariables: FreeUIGlobalConfig, SavedBindings, CTradeSkillDB
 ## SavedVariablesPerCharacter: FreeUIConfig
 
-core\core.lua
+Core\core.lua
 
-options.lua
-profiles.lua
+Config\Options.lua
+Config\Profiles.lua
 
-core\gui.lua
-core\api.lua
-core\slash.lua
-core\notifications.lua
+Core\gui.lua
+Core\api.lua
+Core\slash.lua
+Core\notifications.lua
 
-libs\oUF\oUF.xml
-libs\load_libs.xml
+Libraries\oUF\oUF.xml
+Libraries\load_libs.xml
 
-scripts\actionbars.xml
-scripts\automation.xml
-scripts\blizzard.xml
-scripts\buffs.xml
-scripts\chats.xml
-scripts\combat.xml
-scripts\maps.xml
-scripts\quests.xml
-scripts\skins.xml
-scripts\tooltips.xml
-scripts\tweaks.xml
-scripts\unitframes.xml
+Modules\load_modules.xml
 
-class\paladin.lua
-
-
-scripts\_dev\test.lua
+Modules\_dev\test.lua

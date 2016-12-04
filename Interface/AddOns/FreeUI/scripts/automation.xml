@@ -1,9 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\..\FrameXML\UI.xsd">
-	<Script file="automation\events.lua"/>
-	<Script file="automation\rarealert.lua"/>
-	<Script file="automation\automation.lua"/>
-	<Script file="automation\hiddenraidnames.lua"/>
-	<Script file="automation\saySapped.lua"/>
-	<Script file="automation\autoscreenshot.lua"/>
-</Ui>

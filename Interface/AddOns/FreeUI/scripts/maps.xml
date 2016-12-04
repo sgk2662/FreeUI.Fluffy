@@ -1,8 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\..\FrameXML\UI.xsd">
-	<Script file="maps\map.lua"/>
-	<Script file="maps\minimap.lua"/>
-	<Script file="maps\rest.lua"/>
-	<Script file="maps\worldmarker.lua"/>
-	<Script file="maps\Foglight.lua"/>
-</Ui>

@@ -132,7 +132,7 @@ C["bags"] = {
 
 C["menubar"] = {
 	["enable"] = true,
-	["topPosition"] = false,
+	["topPosition"] = true,
 
 	["enableButtons"] = true,			-- show buttons for quick access on the menu bar
 		["buttons_mouseover"] = true,			-- only on mouseover
@@ -200,14 +200,14 @@ C["unitframes"] = {
 		["partyMissingHealth"] = true,				-- show missing health
 	["enableArena"] = false,					-- enable arena/flag carrier frames
 
-	["player"] = {"BOTTOM", UIParent, "BOTTOM", 0, 200},						-- player unitframe position
+	["player"] = {"BOTTOM", UIParent, "BOTTOM", 0, 260},						-- player unitframe position
 	["pet"] = {"RIGHT", "oUF_FreePlayer", "LEFT", -5, 0},									-- pet unitframe position
 	["target"] = {"LEFT", 'oUF_FreePlayer', "RIGHT", 26, 120},					-- target unitframe position
 	["targettarget"] = {"LEFT", "oUF_FreeTarget", "RIGHT", 5, 0},							-- target target unitframe position
 	["focus"] = {"LEFT", 'oUF_FreePlayer', "RIGHT", 26, -40},					-- focus unitframe position
 	["focustarget"] = {"LEFT", "oUF_FreeFocus", "RIGHT", 5, 0},							-- focus target unitframe position
-	["party"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -20, 20},			-- party unitframe position
-	["raid"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -20, 20},			-- raid unitframe position
+	["party"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -100, 20},			-- party unitframe position
+	["raid"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -60, 30},			-- raid unitframe position
 	["boss"] = {a='LEFT', b='oUF_FreeTarget', c="RIGHT", x=10, y=80},			-- boss unitframe position
 	["arena"] = {a='LEFT', b='UIParent', c="LEFT", x=20, y=100},				-- arena unitframe position
 
@@ -244,8 +244,8 @@ C["unitframes"] = {
 	["boss_height"] = 16,
 	["arena_width"] = 229,
 	["arena_height"] = 12,
-	["party_width"] = 70,
-	["party_height"] = 30,
+	["party_width"] = 90,
+	["party_height"] = 34,
 	["raid_width"] = 70,
 	["raid_height"] = 30,
 

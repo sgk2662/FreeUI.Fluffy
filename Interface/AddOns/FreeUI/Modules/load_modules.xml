@@ -90,7 +90,6 @@
 	<Script file="Miscellaneous\FasterCamera.lua"/>
 	<Script file="Miscellaneous\FlashCursor.lua"/>
 	<Script file="Miscellaneous\MerchantItemlevel.lua"/>
-	<Script file="Miscellaneous\myMedia.lua"/>
 	<Script file="Miscellaneous\ncShadow.lua"/>
 	<Script file="Miscellaneous\QueueTimer.lua"/>
 	<Script file="Miscellaneous\reputation.lua"/>

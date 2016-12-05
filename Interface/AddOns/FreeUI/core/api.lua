@@ -18,21 +18,6 @@ F.AddOptionsCallback("appearance", "fontUseAlternativeFont", function()
 	end
 end)
 
--- C.classcolours = {
--- 	["DEATHKNIGHT"] = {r = 196/255, g = 30/255,  b = 59/255},
--- 	["DEMONHUNTER"] = {r = 77/255,  g = 216/255, b = 39/255},
--- 	["DRUID"]       = {r = 255/255, g = 124/255, b = 10/255},
--- 	["HUNTER"]      = {r = 170/255, g = 211/255, b = 114/255},
--- 	["MAGE"]        = {r = 104/255, g = 204/255, b = 239/255},
--- 	["MONK"]        = {r = 0/255,   g = 255/255, b = 186/255},
--- 	["PALADIN"]     = {r = 244/255, g = 140/255, b = 186/255},
--- 	["PRIEST"]      = {r = 240/255, g = 235/255, b = 224/255},
--- 	["ROGUE"]       = {r = 255/255, g = 244/255, b = 104/255},
--- 	["SHAMAN"]      = {r = 35/255,  g = 89/255,  b = 255/255},
--- 	["WARLOCK"]     = {r = 147/255, g = 130/255, b = 201/255},
--- 	["WARRIOR"]     = {r = 196/255, g = 155/255, b = 109/255},
--- }
-
 C.classcolours = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
 FACTION_BAR_COLORS = {

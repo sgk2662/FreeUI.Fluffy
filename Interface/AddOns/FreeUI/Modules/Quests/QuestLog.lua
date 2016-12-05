@@ -1,5 +1,7 @@
 local F, C, L = unpack(select(2, ...))
 
+local hooksecurefunc = hooksecurefunc
+local IsAltKeyDown, IsControlKeyDown = IsAltKeyDown, IsControlKeyDown
 
 -- Ctrl+Click to abandon a quest or Alt+Click to share a quest(by Suicidal Katt)
 hooksecurefunc("QuestMapLogTitleButton_OnClick", function(self)

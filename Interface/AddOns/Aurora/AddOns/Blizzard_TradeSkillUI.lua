@@ -128,7 +128,7 @@ C.themes["Blizzard_TradeSkillUI"] = function()
 	end)
 	for i = 1, #contents.Reagents do
 		local reagent = contents.Reagents[i]
-		F.ReskinIcon(reagent.Icon)
+		--F.ReskinIcon(reagent.Icon)
 		reagent.NameFrame:Hide()
 		local bg = F.CreateBDFrame(reagent.NameFrame, .2)
 		bg:SetPoint("TOPLEFT", reagent.Icon, "TOPRIGHT", 2, 0)

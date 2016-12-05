@@ -2,7 +2,7 @@
 ## Title: |cffF5FFFAFreeUI|r.|cffFF34B3Fluffy|r |cff00AFFFAurora|r
 ## Notes: Minimalistic window theme.
 ## Author: Haleth/Lightsword (Modified by Dostoyevsky@烈焰峰)
-## Version: 70100.03
+## Version: 70100.04
 
 aurora.lua
 #gui.lua

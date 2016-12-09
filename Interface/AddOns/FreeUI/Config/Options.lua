@@ -227,7 +227,7 @@ C["unitframes"] = {
 	["arena"] = {a='LEFT', b='UIParent', c="LEFT", x=20, y=100},				-- arena unitframe position
 
 	["player_castbar"] = {"CENTER", 'oUF_FreePlayer', "CENTER", 0, -90},		-- player castbar position
-	["player_castbar_width"] = 229,
+	["player_castbar_width"] = 224,
 
 	["target_castbar"] = {"BOTTOM", 'oUF_FreeTarget', "TOP", 0, 20},			-- target castbar position
 	["target_castbar_width"] = 229,
@@ -243,7 +243,7 @@ C["unitframes"] = {
 	["altpower_height"] = 2,
 	["classPower_height"] = 2,
 
-	["player_width"] = 229,
+	["player_width"] = 224,
 	["player_height"] = 12,
 	["target_width"] = 229,
 	["target_height"] = 12,

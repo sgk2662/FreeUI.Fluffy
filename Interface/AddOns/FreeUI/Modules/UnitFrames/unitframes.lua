@@ -399,6 +399,64 @@ local UpdateThreat = function(self, event, unit)
 	end
 end
 
+-- [[ update class power ]]
+
+local function PostUpdateClassIcon(element, cur, max, diff, powerType, event)
+	if(diff or event == 'ClassPowerEnable') then
+		element:UpdateTexture()
+
+		for index = 1, max do
+			local ClassIcon = element[index]
+			if(max == 3) then
+				ClassIcon:SetWidth(74)
+			elseif(max == 4) then
+				ClassIcon:SetWidth(index > 2 and 54 or 54)
+			elseif(max == 5 or max == 8) then
+				ClassIcon:SetWidth(index == 5 and 44 or 44)
+			elseif(max == 6) then
+				ClassIcon:SetWidth(35)
+			end
+
+			if(max == 8) then
+				-- Rogue anticipation
+				if(index == 6) then
+					ClassIcon:ClearAllPoints()
+					ClassIcon:SetPoint('LEFT', element[index - 5])
+				end
+
+				if(index > 5) then
+					ClassIcon.Texture:SetColorTexture(1, 0, 0)
+				end
+			else
+				if(index > 1) then
+					ClassIcon:ClearAllPoints()
+					ClassIcon:SetPoint('LEFT', element[index - 1], 'RIGHT', 1, 0)
+				end
+			end
+		end
+	end
+end
+
+local function UpdateClassIconTexture(element)
+	local r, g, b = 1, 1, 2/5
+	if(not UnitHasVehicleUI('player')) then
+		if(class == 'MONK') then
+			r, g, b = 0, 4/5, 3/5
+		elseif(class == 'WARLOCK') then
+			r, g, b = 97/255, 61/255, 181/255
+		elseif(class == 'PALADIN') then
+			r, g, b = 211/255, 196/255, 75/255
+		elseif(class == 'MAGE') then
+			r, g, b = 5/6, 1/2, 5/6
+		end
+	end
+
+	for index = 1, 8 do
+		local ClassIcon = element[index]
+		ClassIcon.Texture:SetColorTexture(r, g, b)
+	end
+end
+
 
 
 --[[ Global ]]
@@ -852,31 +910,14 @@ local UnitSpecific = {
 			PvP.Override = UpdatePvP
 		end
 
-		-- Debuffs
 
-		-- We position these later on
-		local Debuffs = CreateFrame("Frame", nil, self)
-		Debuffs.initialAnchor = "TOPRIGHT"
-		Debuffs["growth-x"] = "LEFT"
-		Debuffs["growth-y"] = "DOWN"
-		Debuffs['spacing-x'] = 3
-		Debuffs['spacing-y'] = 3
-
-		Debuffs:SetHeight(60)
-		Debuffs:SetWidth(playerWidth)
-		Debuffs.num = 16
-		Debuffs.size = 26
-
-		self.Debuffs = Debuffs
-		Debuffs.PostUpdateIcon = PostUpdateIcon
-
-		-- Class specific
+		-- DK runes
 
 		if class == "DEATHKNIGHT" and C.classmod.deathknight then
 			local runes = CreateFrame("Frame", nil, self)
 			runes:SetWidth(playerWidth)
 			runes:SetHeight(2)
-			runes:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
+			runes:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
 
 			F.CreateBDFrame(runes)
 
@@ -906,219 +947,40 @@ local UnitSpecific = {
 
 			self.Runes = runes
 			self.SpecialPowerBar = runes
-		elseif class == "DRUID" and C.classmod.druidMana then
-			local druidMana
+		end
 
-			local function moveAuraAnchors()
-				if druidMana and druidMana:IsShown() then
-					local offset
-					if (druidMana and druidMana:IsShown()) then
-						offset = 1
-					else
-						offset = 2
-					end
-					if self.AltPowerBar:IsShown() then
-						self.Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(7 + offset + altPowerHeight))
-					else
-						self.Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(6 + offset))
-					end
-				else
-					if self.AltPowerBar:IsShown() then
-						self.Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(4 + altPowerHeight))
-					else
-						self.Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
-					end
-				end
-			end
+		-- class icons
+		local ClassIcons = {}
+		ClassIcons.UpdateTexture = UpdateClassIconTexture
+		ClassIcons.PostUpdate = PostUpdateClassIcon
 
-			if C.classmod.druidMana then
-				druidMana = CreateFrame("StatusBar", nil, self)
-				druidMana:SetStatusBarTexture(C.media.backdrop)
-				druidMana:SetStatusBarColor(0, 0.76, 1)
-				druidMana:SetSize(playerWidth, 1)
-				druidMana:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
+		for index = 1, 8 do
+			local ClassIcon = CreateFrame('Frame', nil, self)
+			ClassIcon:SetHeight(2)
 
-				F.CreateBDFrame(druidMana, .25)
-
-				self.DruidMana = druidMana
-
-				druidMana.PostUpdate = moveAuraAnchors
-			end
-
-			self.AltPowerBar:HookScript("OnShow", moveAuraAnchors)
-			self.AltPowerBar:HookScript("OnHide", moveAuraAnchors)
-		elseif class == "MAGE" and C.classmod.mage then
-			local rp = CreateFrame("Frame", nil, self)
-			rp:SetSize(playerWidth, 2)
-			rp:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
-
-			for i = 1, 2 do
-				rp[i] = CreateFrame("StatusBar", nil, rp)
-				rp[i]:SetHeight(2)
-				rp[i]:SetStatusBarTexture(C.media.texture)
-
-				F.CreateBDFrame(rp[i])
-
-				if i == 1 then
-					rp[i]:SetPoint("LEFT", rp)
-					rp[i]:SetWidth(playerWidth/2)
-				else
-					rp[i]:SetPoint("LEFT", rp[i-1], "RIGHT", 1, 0)
-					rp[i]:SetWidth((playerWidth/2)-1)
-				end
-			end
-
-			self.RunePower = rp
-			self.SpecialPowerBar = rp
-		elseif class == "MONK" and C.classmod.monk then
-			local pulsating = false
-
-			local r, g, b = PowerBarColor["CHI"].r, PowerBarColor["CHI"].g, PowerBarColor["CHI"].b
-
-			local UpdateOrbs = function(self, event, unit, powerType)
-				if unit ~= "player" then return end
-				if event == "UNIT_POWER_FREQUENT" then
-					if not (powerType == "CHI" or powerType == "DARK_FORCE") then
-						return
-					end
-				end
-
-				local chi = UnitPower(unit, SPELL_POWER_CHI)
-
-				if chi == UnitPowerMax(unit, SPELL_POWER_CHI) then
-					if not pulsating then
-						pulsating = true
-						self.glow:SetAlpha(1)
-						F.CreatePulse(self.glow)
-						self.count:SetText(chi)
-						self.count:SetTextColor(r, g, b)
-						F.SetFS(self.count, 40)
-					end
-				elseif chi == 0 then
-					self.glow:SetScript("OnUpdate", nil)
-					self.glow:SetAlpha(0)
-					self.count:SetText("")
-					pulsating = false
-				else
-					self.glow:SetScript("OnUpdate", nil)
-					self.glow:SetAlpha(0)
-					self.count:SetText(chi)
-					self.count:SetTextColor(1, 1, 1)
-					F.SetFS(self.count, 24)
-					pulsating = false
-				end
-			end
-
-			local glow = CreateFrame("Frame", nil, self)
-			glow:SetBackdrop({
-				edgeFile = C.media.glow,
-				edgeSize = 5,
+			local bd = CreateFrame("Frame", nil, ClassIcon)
+			bd:SetBackdrop({
+				edgeFile = C.media.backdrop,
+				edgeSize = 1,
 			})
-			glow:SetPoint("TOPLEFT", self, -6, 6)
-			glow:SetPoint("BOTTOMRIGHT", self, 6, -6)
-			glow:SetBackdropBorderColor(r, g, b)
+			bd:SetBackdropBorderColor(0, 0, 0)
+			bd:SetPoint("TOPLEFT", ClassIcon, -1, 1)
+			bd:SetPoint("BOTTOMRIGHT", ClassIcon, 1, -1)
 
-			self.glow = glow
-
-			local count = F.CreateFS(self, 24)
-			count:SetPoint("LEFT", self, "RIGHT", 10, 0)
-
-			self.count = count
-
-			self.Harmony = glow
-			glow.Override = UpdateOrbs
-
-			-- Brewmaster stagger bar
-
-			local staggerBar = CreateFrame("StatusBar", nil, self)
-			staggerBar:SetSize(playerWidth, 2)
-			staggerBar:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
-			staggerBar:SetStatusBarTexture(C.media.texture)
-			F.CreateBDFrame(staggerBar)
-
-			self.Stagger = staggerBar
-			self.SpecialPowerBar = staggerBar
-		elseif class == "PALADIN" then
-			local bars = CreateFrame("Frame", nil, self)
-			bars:SetWidth(playerWidth)
-			bars:SetHeight(C.unitframes.classPower_height)
-			bars:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
-
-			for i = 1, UnitPowerMax("player", SPELL_POWER_HOLY_POWER) do
-				bars[i] = CreateFrame("StatusBar", nil, bars)
-				bars[i]:SetHeight(C.unitframes.classPower_height)
-				bars[i]:SetStatusBarTexture(C.media.texture)
-
-				local bbd = CreateFrame("Frame", nil, bars[i])
-				bbd:SetPoint("TOPLEFT", bars[i], -1, 1)
-				bbd:SetPoint("BOTTOMRIGHT", bars[i], 1, -1)
-				bbd:SetFrameLevel(bars[i]:GetFrameLevel()-1)
-				F.CreateBD(bbd)
-
-				if i == 1 then
-					bars[i]:SetPoint("LEFT", bars)
-					bars[i]:SetWidth(playerWidth/5)
-				else
-					bars[i]:SetPoint("LEFT", bars[i-1], "RIGHT", 1, 0)
-					bars[i]:SetWidth((playerWidth/5)-1)
-				end
-			end
-
-			self.HolyPower = bars
-			self.SpecialPowerBar = bars
-		elseif class == "WARLOCK" and C.classmod.warlock then
-			local bars = CreateFrame("Frame", nil, self)
-			bars:SetWidth(playerWidth)
-			bars:SetHeight(2)
-			bars:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
-
-			for i = 1, UnitPowerMax("player", SPELL_POWER_SOUL_SHARDS) do
-				bars[i] = CreateFrame("StatusBar", nil, bars)
-				bars[i]:SetHeight(2)
-				bars[i]:SetStatusBarTexture(C.media.texture)
-
-				local bbd = CreateFrame("Frame", nil, bars[i])
-				bbd:SetPoint("TOPLEFT", bars[i], -1, 1)
-				bbd:SetPoint("BOTTOMRIGHT", bars[i], 1, -1)
-				bbd:SetFrameLevel(bars[i]:GetFrameLevel()-1)
-				F.CreateBD(bbd)
-
-				if i == 1 then
-					bars[i]:SetPoint("LEFT", bars)
-					bars[i]:SetWidth(playerWidth/4)
-				else
-					bars[i]:SetPoint("LEFT", bars[i-1], "RIGHT", 1, 0)
-					bars[i]:SetWidth((playerWidth/4)-1)
-				end
-			end
-
-			self.WarlockSpecBars = bars
-			self.SpecialPowerBar = bars
-		end
-
-		local function moveAuraAnchors()
-			if self.SpecialPowerBar and self.SpecialPowerBar:IsShown() then
-				if self.AltPowerBar:IsShown() then
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(9 + altPowerHeight))
-				else
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -8)
-				end
+			if(index > 1) then
+				ClassIcon:SetPoint('LEFT', ClassIcons[index - 1], 'RIGHT', 1, 0)
 			else
-				if self.AltPowerBar:IsShown() then
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(4 + altPowerHeight))
-				else
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
-				end
+				ClassIcon:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
 			end
-		end
 
-		self.AltPowerBar:HookScript("OnShow", moveAuraAnchors)
-		self.AltPowerBar:HookScript("OnHide", moveAuraAnchors)
-		if self.SpecialPowerBar then
-			self.SpecialPowerBar:HookScript("OnShow", moveAuraAnchors)
-			self.SpecialPowerBar:HookScript("OnHide", moveAuraAnchors)
+			local Texture = ClassIcon:CreateTexture(nil, 'BORDER', nil, index > 5 and 1 or 0)
+			Texture:SetAllPoints()
+			ClassIcon.Texture = Texture
+
+			ClassIcons[index] = ClassIcon
 		end
-		moveAuraAnchors()
+		self.ClassIcons = ClassIcons
+
 
 		-- Status indicator
 

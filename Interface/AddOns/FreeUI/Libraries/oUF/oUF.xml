@@ -23,20 +23,16 @@
 	<Script file='elements\runebar.lua' />
 	<Script file='elements\lfdrole.lua' />
 	<Script file='elements\healprediction.lua' />
-	<Script file='elements\holypower.lua' />
 	<Script file='elements\readycheck.lua' />
 	<Script file='elements\qicon.lua' />
 	<Script file='elements\altpowerbar.lua' />
 	<Script file='elements\resurrect.lua' />
 	<Script file='elements\druidmana.lua' />
-	<Script file='elements\harmonyorbs.lua' />
-	<Script file='elements\stagger.lua' />
 	<Script file='elements\powerprediction.lua' />
+	<Script file='elements\classicons.lua' />
 
-	<Script file='oUF_CounterBar\oUF_CounterBar.lua' />
-	<Script file='oUF_WarlockSpecBars\oUF_WarlockSpecBars.lua' />
-	<Script file='oUF_RuneOfPower\oUF_RuneOfPower.lua' />
-	<Script file='oUF_SpellRange\oUF_SpellRange.lua' />
+	<Script file='plugins\oUF_CounterBar.lua' />
+	<Script file='plugins\oUF_SpellRange.lua' />
 
 	<!-- Clique support -->
 	<Button name="oUF_ClickCastUnitTemplate" virtual="true" inherits="SecureUnitButtonTemplate,SecureHandlerEnterLeaveTemplate">

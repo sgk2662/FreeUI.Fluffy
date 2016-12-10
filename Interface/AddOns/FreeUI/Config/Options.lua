@@ -278,13 +278,7 @@ C["chat"] = {
 }
 
 C["classmod"] = {
-	["deathknight"] = true, 	-- runes
-	["druidMana"] = true, 		-- shapeshift mana bar
-	["mage"] = true, 			-- rune of power
-	["monk"] = true, 			-- chi, stagger bar
-	["paladinHP"] = true, 		-- holy power
-	["paladinRF"] = true, 		-- righteous fury
-	["warlock"] = true, 		-- spec bar
+	["classResource"] = true, 		-- class resource
 }
 
 -- lower = smoother = more CPU usage

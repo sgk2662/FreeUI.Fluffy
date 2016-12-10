@@ -913,7 +913,7 @@ local UnitSpecific = {
 
 		-- DK runes
 
-		if class == "DEATHKNIGHT" and C.classmod.deathknight then
+		if class == "DEATHKNIGHT" and C.classmod.classResource then
 			local runes = CreateFrame("Frame", nil, self)
 			runes:SetWidth(playerWidth)
 			runes:SetHeight(2)
@@ -949,37 +949,39 @@ local UnitSpecific = {
 			self.SpecialPowerBar = runes
 		end
 
-		-- class icons
-		local ClassIcons = {}
-		ClassIcons.UpdateTexture = UpdateClassIconTexture
-		ClassIcons.PostUpdate = PostUpdateClassIcon
+		-- class resource
+		if C.classmod.classResource then
+			local ClassIcons = {}
+			ClassIcons.UpdateTexture = UpdateClassIconTexture
+			ClassIcons.PostUpdate = PostUpdateClassIcon
 
-		for index = 1, 8 do
-			local ClassIcon = CreateFrame('Frame', nil, self)
-			ClassIcon:SetHeight(2)
+			for index = 1, 8 do
+				local ClassIcon = CreateFrame('Frame', nil, self)
+				ClassIcon:SetHeight(2)
 
-			local bd = CreateFrame("Frame", nil, ClassIcon)
-			bd:SetBackdrop({
-				edgeFile = C.media.backdrop,
-				edgeSize = 1,
-			})
-			bd:SetBackdropBorderColor(0, 0, 0)
-			bd:SetPoint("TOPLEFT", ClassIcon, -1, 1)
-			bd:SetPoint("BOTTOMRIGHT", ClassIcon, 1, -1)
+				local bd = CreateFrame("Frame", nil, ClassIcon)
+				bd:SetBackdrop({
+					edgeFile = C.media.backdrop,
+					edgeSize = 1,
+				})
+				bd:SetBackdropBorderColor(0, 0, 0)
+				bd:SetPoint("TOPLEFT", ClassIcon, -1, 1)
+				bd:SetPoint("BOTTOMRIGHT", ClassIcon, 1, -1)
 
-			if(index > 1) then
-				ClassIcon:SetPoint('LEFT', ClassIcons[index - 1], 'RIGHT', 1, 0)
-			else
-				ClassIcon:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
+				if(index > 1) then
+					ClassIcon:SetPoint('LEFT', ClassIcons[index - 1], 'RIGHT', 1, 0)
+				else
+					ClassIcon:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
+				end
+
+				local Texture = ClassIcon:CreateTexture(nil, 'BORDER', nil, index > 5 and 1 or 0)
+				Texture:SetAllPoints()
+				ClassIcon.Texture = Texture
+
+				ClassIcons[index] = ClassIcon
 			end
-
-			local Texture = ClassIcon:CreateTexture(nil, 'BORDER', nil, index > 5 and 1 or 0)
-			Texture:SetAllPoints()
-			ClassIcon.Texture = Texture
-
-			ClassIcons[index] = ClassIcon
+			self.ClassIcons = ClassIcons
 		end
-		self.ClassIcons = ClassIcons
 
 
 		-- Status indicator

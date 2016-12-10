@@ -242,15 +242,8 @@ for class, localized in pairs(classes) do
 	ns.localization["classmod"..strlower(class)] = localized
 end
 
-ns.localization.classmoddeathknight = ns.localization.classmoddeathknight..":|cffffffff 死骑符文条"
-ns.localization.classmoddruidMana = ns.localization.classmoddruid..":|cffffffff 德鲁伊变形法力条"
-ns.localization.classmoddruidEclipse = ns.localization.classmoddruid..":|cffffffff 鸟德月蚀条"
-ns.localization.classmodmage = ns.localization.classmodmage..":|cffffffff 法师资源监视"
-ns.localization.classmodmonk = ns.localization.classmodmonk..":|cffffffff 武僧真气条"
-ns.localization.classmodpaladinHP = ns.localization.classmodpaladin..":|cffffffff 圣骑豆子监视"
-ns.localization.classmodpaladinRF = ns.localization.classmodpaladin..":|cffffffff 防骑正义之怒提示"
-ns.localization.classmodpriest = ns.localization.classmodpriest..":|cffffffff 牧师宝珠条"
-ns.localization.classmodwarlock = ns.localization.classmodwarlock..":|cffffffff 术士资源条"
+ns.localization.classmodclassResource = "|cffffffff 特殊资源"
+ns.localization.classmodclassResourceTooltip = "显示特定职业专精的特殊资源\n例如术士碎片惩戒骑圣能\n禁用此项如果你想使用其他提供类似功能的插件。"
 
 ns.localization.credits = "Credits"
 ns.localization.thankYou = "Thank you:"

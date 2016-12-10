@@ -714,40 +714,11 @@ do
 
 	ns.classOptions = {}
 
-	local deathknight = ns.CreateCheckBox(classmod, "deathknight", false, true)
-	deathknight:SetPoint("TOPLEFT", classmod.subText, "BOTTOMLEFT", -2, -8)
-	deathknight.className = "DEATHKNIGHT"
-	tinsert(ns.classOptions, deathknight)
+	local classResource = ns.CreateCheckBox(classmod, "classResource", true, true)
+	classResource:SetPoint("TOPLEFT", classmod.subText, "BOTTOMLEFT", -2, -8)
+	classResource.className = "DEATHKNIGHT"
+	tinsert(ns.classOptions, classResource)
 
-	local druidMana = ns.CreateCheckBox(classmod, "druidMana", false, true)
-	druidMana:SetPoint("TOPLEFT", deathknight, "BOTTOMLEFT", 0, -8)
-	druidMana.className = "DRUID"
-	tinsert(ns.classOptions, druidMana)
-
-	local mage = ns.CreateCheckBox(classmod, "mage", false, true)
-	mage:SetPoint("TOPLEFT", druidMana, "BOTTOMLEFT", 0, -8)
-	mage.className = "MAGE"
-	tinsert(ns.classOptions, mage)
-
-	local monk = ns.CreateCheckBox(classmod, "monk", false, true)
-	monk:SetPoint("TOPLEFT", mage, "BOTTOMLEFT", 0, -8)
-	monk.className = "MONK"
-	tinsert(ns.classOptions, monk)
-
-	local paladinHP = ns.CreateCheckBox(classmod, "paladinHP", false, true)
-	paladinHP:SetPoint("TOPLEFT", monk, "BOTTOMLEFT", 0, -8)
-	paladinHP.className = "PALADIN"
-	tinsert(ns.classOptions, paladinHP)
-
-	local paladinRF = ns.CreateCheckBox(classmod, "paladinRF", false, true)
-	paladinRF:SetPoint("TOPLEFT", paladinHP, "BOTTOMLEFT", 0, -8)
-	paladinRF.className = "PALADIN"
-	tinsert(ns.classOptions, paladinRF)
-
-	local warlock = ns.CreateCheckBox(classmod, "warlock", false, true)
-	warlock:SetPoint("TOPLEFT", paladinRF, "BOTTOMLEFT", 0, -8)
-	warlock.className = "WARLOCK"
-	tinsert(ns.classOptions, warlock)
 end
 
 -- [[ Credits ]]

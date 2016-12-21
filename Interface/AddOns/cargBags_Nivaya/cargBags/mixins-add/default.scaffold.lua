@@ -29,6 +29,27 @@ local cargBags = ns.cargBags
 
 local function noop() end
 
+-- Upgrade Level retrieval
+local LibItemLevel = LibStub:GetLibrary("LibItemLevel.7000")
+
+local S_UPGRADE_LEVEL = "^" .. gsub(ITEM_UPGRADE_TOOLTIP_FORMAT, "%%d", "(%%d+)")	-- Search pattern
+local scantip = CreateFrame("GameTooltip", "ItemUpgradeScanTooltip", nil, "GameTooltipTemplate")
+scantip:SetOwner(UIParent, "ANCHOR_NONE")
+
+local function GetItemUpgradeLevel(itemLink)
+	scantip:SetOwner(UIParent, "ANCHOR_NONE")
+	scantip:SetHyperlink(itemLink)
+	for i = 2, scantip:NumLines() do -- Line 1 = name so skip
+		local text = _G["ItemUpgradeScanTooltipTextLeft"..i]:GetText()
+		if text and text ~= "" then
+			local currentUpgradeLevel, maxUpgradeLevel = strmatch(text, S_UPGRADE_LEVEL)
+			if currentUpgradeLevel then
+				return currentUpgradeLevel, maxUpgradeLevel
+			end
+		end
+	end
+	scantip:Hide()
+end
 local function Round(num, idp)
 	local mult = 10^(idp or 0)
 	return math.floor(num * mult + 0.5) / mult
@@ -62,7 +83,10 @@ local function CreateInfoString(button, position)
 		F.SetFS(str)
 	else
 		str:SetFont(unpack(ns.options.fonts.itemCount))
+		str:SetShadowOffset(0, 0) 
+		str:SetShadowColor(0, 0, 0, 1) 
 	end
+
 	return str
 end
 
@@ -70,9 +94,9 @@ local function GetScreenModes()
 	local curResIndex = GetCurrentResolution()
 	local curRes = curResIndex > 0 and select(curResIndex, GetScreenResolutions()) or nil
 	local windowedMode = Display_DisplayModeDropDown:windowedmode()
-
+	
 	local resolution = curRes or (windowedMode and GetCVar("gxWindowedResolution")) or GetCVar("gxFullscreenResolution")
-
+	
 	return resolution
 end
 
@@ -106,8 +130,8 @@ end
 	@param item <table> The itemTable holding information, see Implementation:GetItemInfo()
 	@callback OnUpdate(item)
 ]]
-local L = cargBags:GetLocalizedTypes()
-local ilvlTypes = {[L.ItemClass["Armor"]] = true, [L.ItemClass["Weapon"]] = true}
+
+local ItemInfo = {}
 local function ItemButton_Update(self, item)
 	if item.texture then
 		local tex = item.texture or (cBnivCfg.CompressEmpty and self.bgTex)
@@ -144,14 +168,27 @@ local function ItemButton_Update(self, item)
 		self.TopString:SetText("")
 	end
 
-	-- Item Level
-	if item.link then
-		if item.type and ilvlTypes[item.type] and item.level > 0 then
+--[[!Item Level
+	local _,_,_,_,_,_,itemLink = GetContainerItemInfo(item.bagID, item.slotID)
+	if itemLink then
+		local _,_,itemRarity,itemLevel,_,itemType = GetItemInfo(itemLink)
 
-			itemLevel = GetDetailedItemLevelInfo(item.link)
+		if itemType and itemLevel and ilvlTypes[itemType] and itemLevel > 0 then
+			local currentUpgradeLevel, maxUpgradeLevel = GetItemUpgradeLevel(itemLink)
+			if (currentUpgradeLevel and maxUpgradeLevel) then
+				if itemRarity <= 3 then
+					itemLevel = itemLevel + (tonumber(currentUpgradeLevel) * 8)
+				else
+					itemLevel = itemLevel + (tonumber(currentUpgradeLevel) * 4)
+				end
+			end
 
 			self.BottomString:SetText(itemLevel)
-			self.BottomString:SetTextColor(GetItemQualityColor(item.rarity))
+			if ns.options.itemTextColor == 0 then
+			  self.BottomString:SetTextColor(GetItemQualityColor(item.rarity) )
+			else
+			  self.BottomString:SetTextColor(GetItemQualityColor(item.rarity) + ns.options.itemTextColor)
+			end
 		else
 			self.BottomString:SetText("")
 		end
@@ -159,6 +196,39 @@ local function ItemButton_Update(self, item)
 		self.BottomString:SetText("")
 	end
 
+	self:UpdateCooldown(item)
+	self:UpdateLock(item)
+	self:UpdateQuest(item)
+
+	if(self.OnUpdate) then self:OnUpdate(item) end
+end
+]] 
+   -- and (not Cache[itemLink]) 
+	local _,_,_,_,_,_,itemLink = GetContainerItemInfo(item.bagID, item.slotID)
+	--if not ItemInfo[itemLink] then
+		--ItemInfo[itemLink] = {}
+	--end
+	local L = cBnivL
+	if itemLink and item.type == L.Armor or item.type == L.Weapon or item.type == L.Gem then
+		local i ={}
+		if not ItemInfo[itemLink] then
+		  i.count, i.level = LibItemLevel:GetItemInfo(itemLink)
+		  ItemInfo[itemLink] = i
+		end
+		if (ItemInfo[itemLink].count == 0 and ItemInfo[itemLink].level > 0) then
+			self.BottomString:SetText(ItemInfo[itemLink].level)
+			if ns.options.itemTextColor == 0 then
+			  self.BottomString:SetTextColor(GetItemQualityColor(item.rarity))
+			else
+			  self.BottomString:SetTextColor(ns.options.itemTextColor)
+			end
+		else
+			self.BottomString:SetText("")
+		end
+	else
+		self.BottomString:SetText("")
+	end
+	
 	self:UpdateCooldown(item)
 	self:UpdateLock(item)
 	self:UpdateQuest(item)

@@ -7,8 +7,10 @@
 ## SavedVariables: cBnivCfg, cB_CustomBags, cBniv_CatInfo
 ## SavedVariablesPerCharacter: cB_KnownItems, cBniv
 
+
 config.lua
 
+libs\lib.xml
 cargBags\embed.xml
 localization.lua
 filters.lua

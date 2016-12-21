@@ -226,7 +226,7 @@ C["unitframes"] = {
 	["boss"] = {a='LEFT', b='oUF_FreeTarget', c="RIGHT", x=10, y=80},			-- boss unitframe position
 	["arena"] = {a='LEFT', b='UIParent', c="LEFT", x=20, y=100},				-- arena unitframe position
 
-	["player_castbar"] = {"CENTER", 'oUF_FreePlayer', "CENTER", 0, -90},		-- player castbar position
+	["player_castbar"] = {"CENTER", 'oUF_FreePlayer', "CENTER", 0, -80},		-- player castbar position
 	["player_castbar_width"] = 224,
 
 	["target_castbar"] = {"BOTTOM", 'oUF_FreeTarget', "TOP", 0, 20},			-- target castbar position

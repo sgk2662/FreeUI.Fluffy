@@ -580,7 +580,7 @@ local Shared = function(self, unit, isSingle)
 		AltPowerBar:SetWidth(playerWidth)
 		AltPowerBar:SetHeight(altPowerHeight)
 		AltPowerBar:SetStatusBarTexture(C.media.texture)
-		AltPowerBar:SetPoint("BOTTOM", oUF_FreePlayer, 0, -C.unitframes.power_height-1)
+		AltPowerBar:SetPoint("BOTTOM", oUF_FreePlayer, 0, -C.unitframes.power_height-2)
 
 		local abd = CreateFrame("Frame", nil, AltPowerBar)
 		abd:SetPoint("TOPLEFT", -1, 1)
@@ -971,7 +971,7 @@ local UnitSpecific = {
 				if(index > 1) then
 					ClassIcon:SetPoint('LEFT', ClassIcons[index - 1], 'RIGHT', 1, 0)
 				else
-					ClassIcon:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
+					ClassIcon:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -5)
 				end
 
 				local Texture = ClassIcon:CreateTexture(nil, 'BORDER', nil, index > 5 and 1 or 0)

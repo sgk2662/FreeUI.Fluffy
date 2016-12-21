@@ -74,6 +74,7 @@
 	<Script file="Tooltip\IDCard.lua"/>
 	<Script file="Tooltip\IDTip.lua"/>
 	<Script file="Tooltip\ilvlSpec.lua"/>
+	<Script file="Tooltip\KeystoneAffix.lua"/>
 
 	<!-- InfoBar -->
 	<Script file="InfoBar\MenuBar.lua"/>

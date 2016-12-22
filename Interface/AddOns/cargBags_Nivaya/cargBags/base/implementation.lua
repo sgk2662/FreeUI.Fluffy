@@ -498,7 +498,7 @@ function Implementation:BAG_UPDATE_COOLDOWN(event, bagID)
 	else
 		for id, container in next, self.contByID do
 			for i, button in next, container.buttons do
-				local item = self:GetItemInfo(button.bagID, button.slotID)
+				local item = self:GetItemInfo(button.bagID, button.slotID, true)
 				button:UpdateCooldown(item)
 			end
 		end

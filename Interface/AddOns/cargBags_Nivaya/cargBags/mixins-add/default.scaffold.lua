@@ -223,6 +223,7 @@ end
 			  self.BottomString:SetTextColor(ns.options.itemTextColor)
 			end
 		else
+			ItemInfo[itemLink] = nil
 			self.BottomString:SetText("")
 		end
 	else

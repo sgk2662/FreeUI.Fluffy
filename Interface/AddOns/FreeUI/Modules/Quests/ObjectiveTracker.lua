@@ -379,10 +379,10 @@ end
 
 ScenarioStageBlock:HookScript("OnShow", function()
 	if not ScenarioStageBlock.skinned then
-		ScenarioStageBlock.NormalBG:SetAlpha(.6)
-	--	ScenarioStageBlock.NormalBG:SetTexture([[Interface\Tooltips\UI-Tooltip-Background]])
-	--	ScenarioStageBlock.NormalBG:SetVertexColor(0, 0, 0, 1)
-		ScenarioStageBlock.FinalBG:SetAlpha(.6)
+		ScenarioStageBlock.NormalBG:SetAlpha(.4)
+		ScenarioStageBlock.NormalBG:SetTexture([[Interface\Addons\FreeUI\Media\HalBackgroundA]])
+		ScenarioStageBlock.NormalBG:SetVertexColor(0, 0, 0, 1)
+		ScenarioStageBlock.FinalBG:SetAlpha(.4)
 		ScenarioStageBlock.GlowTexture:SetTexture(nil)
 		ScenarioStageBlock.Stage:SetFont(C.media.font.normal, 15, "OUTLINE")
 		ScenarioStageBlock.Stage:SetTextColor(1, 1, 1)

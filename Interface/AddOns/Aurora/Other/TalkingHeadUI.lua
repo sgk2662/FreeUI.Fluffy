@@ -13,16 +13,7 @@ local F, C = _G.unpack(private.Aurora)
 
 C.themes["Blizzard_TalkingHeadUI"] = function()
 
-	-- TalkingHeadFrame = F.dummy
-	-- TalkingHeadFrame.MainFrame = F.dummy
-	-- TalkingHeadFrame.PortraitFrame = F.dummy
-	-- TalkingHeadFrame.MainFrame.Model.PortraitBg:Hide()
-	--
-	-- F.ReskinClose(TalkingHeadFrame.MainFrame.CloseButton)
 	TalkingHeadFrame.MainFrame.CloseButton:Hide()
-
-	-- TalkingHeadFrame.NameFrame.Name:SetFont(STANDARD_TEXT_FONT, 22, "OUTLINE")
-	-- TalkingHeadFrame.TextFrame.Text:SetFont(STANDARD_TEXT_FONT, 16, "OUTLINE")
 
 	local scale = .65
 

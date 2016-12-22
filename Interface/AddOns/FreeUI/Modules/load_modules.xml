@@ -14,6 +14,7 @@
 	<Script file="Blizzard\Marking.lua"/>
 	<Script file="Blizzard\MirrorBars.lua"/>
 	<Script file="Blizzard\MoveBlizzFrames.lua"/>
+	<Script file="Blizzard\OrderHallCommandBar.lua"/>
 	<Script file="Blizzard\PaperDollFrame.lua"/>
 	<Script file="Blizzard\PetBattles.lua"/>
 	<Script file="Blizzard\TradeSkill.lua"/>

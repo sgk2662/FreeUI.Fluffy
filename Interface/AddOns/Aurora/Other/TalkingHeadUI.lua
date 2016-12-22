@@ -16,12 +16,15 @@ C.themes["Blizzard_TalkingHeadUI"] = function()
 	-- TalkingHeadFrame = F.dummy
 	-- TalkingHeadFrame.MainFrame = F.dummy
 	-- TalkingHeadFrame.PortraitFrame = F.dummy
-	TalkingHeadFrame.MainFrame.Model.PortraitBg:Hide()
-	
-	F.ReskinClose(TalkingHeadFrame.MainFrame.CloseButton)
+	-- TalkingHeadFrame.MainFrame.Model.PortraitBg:Hide()
+	--
+	-- F.ReskinClose(TalkingHeadFrame.MainFrame.CloseButton)
 	TalkingHeadFrame.MainFrame.CloseButton:Hide()
 
-	local scale = .8
+	-- TalkingHeadFrame.NameFrame.Name:SetFont(STANDARD_TEXT_FONT, 22, "OUTLINE")
+	-- TalkingHeadFrame.TextFrame.Text:SetFont(STANDARD_TEXT_FONT, 16, "OUTLINE")
+
+	local scale = .65
 
 	--Sanitize
 	if scale < 0.5 then	scale = 0.5
@@ -38,11 +41,11 @@ C.themes["Blizzard_TalkingHeadUI"] = function()
 	TalkingHeadFrame:SetScale(scale)
 
 	--Reset Model Camera
-	-- local model = TalkingHeadFrame.MainFrame.Model
-	-- if model.uiCameraID then
-	-- 	model:RefreshCamera()
-	-- 	Model_ApplyUICamera(model, model.uiCameraID)
-	-- end
+	local model = TalkingHeadFrame.MainFrame.Model
+	if model.uiCameraID then
+		model:RefreshCamera()
+		Model_ApplyUICamera(model, model.uiCameraID)
+	end
 
 	--Use this to prevent the frame from auto closing, so you have time to test things.
 	-- TalkingHeadFrame:UnregisterEvent("SOUNDKIT_FINISHED")
@@ -56,7 +59,7 @@ C.themes["Blizzard_TalkingHeadUI"] = function()
 	--Set default position
 	TalkingHeadFrame:ClearAllPoints()
 	TalkingHeadFrame:SetPoint("TOP", 0, -100)
-	
+
 	--Iterate through all alert subsystems in order to find the one created for TalkingHeadFrame, and then remove it.
 	--We do this to prevent alerts from anchoring to this frame when it is shown.
 	for index, alertFrameSubSystem in ipairs(AlertFrame.alertFrameSubSystems) do

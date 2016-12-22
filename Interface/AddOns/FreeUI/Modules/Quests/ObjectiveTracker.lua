@@ -381,7 +381,7 @@ ScenarioStageBlock:HookScript("OnShow", function()
 	if not ScenarioStageBlock.skinned then
 		ScenarioStageBlock.NormalBG:SetAlpha(.4)
 		ScenarioStageBlock.NormalBG:SetTexture([[Interface\Addons\FreeUI\Media\HalBackgroundA]])
-		ScenarioStageBlock.NormalBG:SetVertexColor(0, 0, 0, 1)
+		ScenarioStageBlock.NormalBG:SetVertexColor(0, 0, 0, .4)
 		ScenarioStageBlock.FinalBG:SetAlpha(.4)
 		ScenarioStageBlock.GlowTexture:SetTexture(nil)
 		ScenarioStageBlock.Stage:SetFont(C.media.font.normal, 15, "OUTLINE")

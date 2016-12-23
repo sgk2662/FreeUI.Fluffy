@@ -1406,7 +1406,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 				local statusbar = _G["ReputationBar"..i.."ReputationBar"]
 
 				if statusbar then
-					statusbar:SetStatusBarTexture(C.media.backdrop)
+					statusbar:SetStatusBarTexture(C.media.texture)
 
 					if not statusbar.reskinned then
 						F.CreateBD(statusbar, .25)

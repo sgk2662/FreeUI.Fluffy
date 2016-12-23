@@ -11,6 +11,7 @@ local firstLines = {
 	"^(.*) 의 Skada 보고 (.*):$", -- Skada koKR
 	"^Отчёт Skada: (.*), с (.*):$", -- Skada ruRU
 	"^Skada战斗报告：(.*)的(.*), (.*)到(.*):$", -- Skada zhCN
+	"^Skada：(.*)的(.*), (.*)到(.*):$", -- Skada zhCN
 	"^Skada:(.*)來自(.*):$", -- Skada zhTW
 	"^(.*) Done for (.*)$", -- TinyDPS
 	"^Numeration: (.*)$", -- Numeration

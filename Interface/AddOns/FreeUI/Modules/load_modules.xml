@@ -55,7 +55,7 @@
 	<Script file="Chat\bubbles.lua"/>
 	<Script file="Chat\chat.lua"/>
 	<Script file="Chat\chattabs.lua"/>
-	<Script file="Chat\ChatItemLevel.lua"/>
+	<!-- <Script file="Chat\ChatItemLevel.lua"/> -->
 	<Script file="Chat\SpamageMeters.lua"/>
 	<Script file="Chat\WhisperSound.lua"/>
 

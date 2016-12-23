@@ -414,14 +414,12 @@ local function PostUpdateClassIcon(element, cur, max, diff, powerType, event)
 
 		for index = 1, max do
 			local ClassIcon = element[index]
-			if(max == 3) then
-				ClassIcon:SetWidth(74)
-			elseif(max == 4) then
-				ClassIcon:SetWidth(index > 2 and 54 or 54)
-			elseif(max == 5 or max == 8) then
-				ClassIcon:SetWidth(index == 5 and 44 or 44)
-			elseif(max == 6) then
-				ClassIcon:SetWidth(35)
+			local maxWidth, gap = playerWidth, 1
+
+			if(max == 5 or max == 8) then
+				ClassIcon:SetWidth(((maxWidth / 5) - ((4 * gap) / 5)))
+			else
+				ClassIcon:SetWidth(((maxWidth / max) - (((max-1) * gap) / max)))
 			end
 
 			if(max == 8) then
@@ -463,8 +461,6 @@ local function UpdateClassIconTexture(element)
 		ClassIcon.Texture:SetColorTexture(r, g, b)
 	end
 end
-
-
 
 --[[ Global ]]
 
@@ -978,7 +974,7 @@ local UnitSpecific = {
 
 			for index = 1, 8 do
 				local ClassIcon = CreateFrame('Frame', nil, self)
-				ClassIcon:SetHeight(2)
+				ClassIcon:SetHeight(C.unitframes.classPower_height)
 
 				local bd = CreateFrame("Frame", nil, ClassIcon)
 				bd:SetBackdrop({

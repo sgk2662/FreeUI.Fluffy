@@ -384,7 +384,7 @@ end
 -- [[  Update Portrait ]]
 
 local function PostUpdatePortrait(element, unit)
-	element:SetModelAlpha(0.1)
+	-- element:SetModelAlpha(0.1)
 	element:SetDesaturation(1)
 end
 
@@ -622,6 +622,7 @@ local Shared = function(self, unit, isSingle)
 		Portrait:SetFrameLevel(1)
 		Portrait:SetPoint("TOPLEFT", 1, 0)
 		Portrait:SetPoint("BOTTOMRIGHT", -1, 1)
+		Portrait:SetAlpha(.1)
 		Portrait.PostUpdate = PostUpdatePortrait
 		self.Portrait = Portrait
 	end

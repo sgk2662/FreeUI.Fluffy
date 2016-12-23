@@ -29,6 +29,7 @@
 	<Script file='elements\resurrect.lua' />
 	<Script file='elements\druidmana.lua' />
 	<Script file='elements\powerprediction.lua' />
+	<Script file='elements\portraits.lua' />
 	<Script file='elements\classicons.lua' />
 
 	<Script file='plugins\oUF_CounterBar.lua' />

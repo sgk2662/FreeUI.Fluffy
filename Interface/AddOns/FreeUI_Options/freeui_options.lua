@@ -617,7 +617,7 @@ init:SetScript("OnEvent", function()
 
 	local FreeUIOptionsPanel = FreeUIOptionsPanel
 
-	if C.unitframes.enable then
+	--[[if C.unitframes.enable then -- cause portrait issue, disable it for now
 		FreeUIOptionsPanel:HookScript("OnShow", function()
 			oUF_FreePlayer:SetAlpha(0)
 			oUF_FreeTarget:SetAlpha(0)
@@ -635,7 +635,7 @@ init:SetScript("OnEvent", function()
 			oUF_FreeFocus:SetAlpha(1)
 			oUF_FreeFocusTarget:SetAlpha(1)
 		end)
-	end
+	end]]
 
 	local resetFrame = FreeUIOptionsPanel.resetFrame
 	local layout = FreeUIOptionsPanel.unitframes.Layout

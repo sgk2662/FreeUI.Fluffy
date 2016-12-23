@@ -55,8 +55,6 @@ ns.localization.generaluiScaleAuto = "Force optimal UI scale"
 ns.localization.generaluiScaleAutoTooltip = "Automatically apply the best UI scale for your resolution."
 ns.localization.generalundressButton = "Undress button"
 ns.localization.generalundressButtonTooltip = "Adds an undress button to the dressup frame. Useful when trying on shirts or chest armour."
-ns.localization.generalcombo = "Combo"
-ns.localization.generalcomboTooltip = "Combo."
 
 ns.localization.appearance = "Appearance"
 ns.localization.appearanceSubText = "You can change the appearance of various aspects of the UI here."

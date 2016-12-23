@@ -243,11 +243,8 @@ do
 	local threatMeter = ns.CreateCheckBox(general, "threatMeter", true, true)
 	threatMeter:SetPoint("LEFT", cooldownpulse, "RIGHT", 240, 0)
 
-	local combo = ns.CreateCheckBox(general, "combo", true, true)
-	combo:SetPoint("TOPLEFT", threatMeter, "BOTTOMLEFT", 0, -8)
-
 	local mailButton = ns.CreateCheckBox(general, "mailButton", true, true)
-	mailButton:SetPoint("TOPLEFT", combo, "BOTTOMLEFT", 0, -8)
+	mailButton:SetPoint("TOPLEFT", threatMeter, "BOTTOMLEFT", 0, -8)
 
 	local rareAlert = ns.CreateCheckBox(general, "rareAlert", true)
 	rareAlert:SetPoint("TOPLEFT", mailButton, "BOTTOMLEFT", 0, -8)

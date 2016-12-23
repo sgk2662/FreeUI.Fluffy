@@ -52,8 +52,6 @@ ns.localization.generalrareAlert_playSound = "声音警报"
 ns.localization.generalrareAlert_playSoundTooltip = "提示的同时播放一个警报声音。"
 ns.localization.generalthreatMeter = "仇恨值"
 ns.localization.generalthreatMeterTooltip = "在目标框体上添加一个仇恨计量条，当你是坦克时显示第二仇恨的名字和仇恨量，当你是输出时显示你和坦克的仇恨对比。"
-ns.localization.generalcombo = "连击点"
-ns.localization.generalcomboTooltip = "显示连击点"
 ns.localization.generaluiScaleAuto = "强制优化界面缩放"
 ns.localization.generaluiScaleAutoTooltip = "自动为你的分辨率使用最优化的界面缩放。"
 

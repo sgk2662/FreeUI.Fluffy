@@ -56,7 +56,6 @@ C["general"] = {
 	["uiScaleAuto"] = true,			-- force the correct UI scale
 	["undressButton"] = true, 		-- undress button on dressup frame
 	["cooldownpulse"] = true,
-	["combo"] = false,
 	["flashCursor"] = true,
 }
 

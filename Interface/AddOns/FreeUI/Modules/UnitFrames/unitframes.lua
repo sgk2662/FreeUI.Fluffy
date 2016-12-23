@@ -381,6 +381,13 @@ local PostUpdatePower = function(Power, unit, cur, max, min)
 	end
 end
 
+-- [[  Update Portrait ]]
+
+local function PostUpdatePortrait(element, unit)
+	element:SetModelAlpha(0.1)
+	element:SetDesaturation(1)
+end
+
 -- [[ Threat update (party) ]]
 
 local UpdateThreat = function(self, event, unit)
@@ -472,7 +479,10 @@ local Shared = function(self, unit, isSingle)
 	bd:SetPoint("BOTTOMRIGHT", 1, -1)
 	bd:SetFrameStrata("BACKGROUND")
 
-	F.CreateSD(bd)
+	-- dark border
+	if C.unitframes.darkBorder then
+		F.CreateSD(bd)
+	end
 
 	self.bd = bd
 
@@ -509,7 +519,7 @@ local Shared = function(self, unit, isSingle)
 
 		self.gradient = gradient
 
-		F.CreateBD(bd, .3)
+		F.CreateBD(bd, C.unitframes.transModeAlpha)
 	else
 		F.CreateBD(bd)
 	end
@@ -607,6 +617,17 @@ local Shared = function(self, unit, isSingle)
 		AltPowerBar:EnableMouse(true)
 
 		self.AltPowerBar = AltPowerBar
+	end
+
+	--[[ Portrait ]]
+
+	if C.unitframes.portrait then
+		local Portrait = CreateFrame('PlayerModel', nil, self)
+		Portrait:SetFrameLevel(1)
+		Portrait:SetPoint("TOPLEFT", 1, 0)
+		Portrait:SetPoint("BOTTOMRIGHT", -1, 1)
+		Portrait.PostUpdate = PostUpdatePortrait
+		self.Portrait = Portrait
 	end
 
 	--[[ Castbar ]]

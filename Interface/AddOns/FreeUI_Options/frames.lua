@@ -563,11 +563,17 @@ do
 
 	transMode.children = {healthClassColor, powerTypeColor}
 
+	local darkBorder = ns.CreateCheckBox(unitframes, "darkBorder", true, true)
+	darkBorder:SetPoint("TOPLEFT", powerTypeColor, "BOTTOMLEFT", -16, -8)
+
 	local gradient = ns.CreateCheckBox(unitframes, "gradient", true, true)
-	gradient:SetPoint("TOPLEFT", powerTypeColor, "BOTTOMLEFT", -16, -8)
+	gradient:SetPoint("TOPLEFT", darkBorder, "BOTTOMLEFT", 0, -8)
+
+	local portrait = ns.CreateCheckBox(unitframes, "portrait", true, true)
+	portrait:SetPoint("TOPLEFT", gradient, "BOTTOMLEFT", 0, -8)
 
 	local castbar = ns.CreateCheckBox(unitframes, "castbar", true, true)
-	castbar:SetPoint("TOPLEFT", gradient, "BOTTOMLEFT", 0, -8)
+	castbar:SetPoint("TOPLEFT", portrait, "BOTTOMLEFT", 0, -8)
 
 	local castbarSeparate = ns.CreateCheckBox(unitframes, "castbarSeparate", true, true)
 	castbarSeparate:SetPoint("TOPLEFT", castbar, "BOTTOMLEFT", 16, -8)
@@ -616,6 +622,8 @@ do
 		healthClassColor:SetShown(shown)
 		powerTypeColor:SetShown(shown)
 		gradient:SetShown(shown)
+		darkBorder:SetShown(shown)
+		portrait:SetShown(shown)
 		enableGroup:SetShown(shown)
 		showRaidFrames:SetShown(shown)
 		limitRaidSize:SetShown(shown)

@@ -196,10 +196,13 @@ C["unitframes"] = {
 	["enable"] = true, 						-- enable the unit frames and their included modules
 
 	["transMode"] = true,
+		["transModeAlpha"] = .3,
 		["healthClassColor"] = true,
 		["powerTypeColor"] = true,
 
 	["gradient"] = true,					-- gradient mode
+	["portrait"] = true,
+	["darkBorder"] = true,
 
 	["absorb"] = true, 							-- absorb bar/over absorb glow
 	["castbar"] = true,

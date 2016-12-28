@@ -928,6 +928,24 @@ local UnitSpecific = {
 			PvP.Override = UpdatePvP
 		end
 
+		-- Debuffs
+
+		-- We position these later on
+		local Debuffs = CreateFrame("Frame", nil, self)
+		Debuffs.initialAnchor = "TOPRIGHT"
+		Debuffs["growth-x"] = "LEFT"
+		Debuffs["growth-y"] = "DOWN"
+		Debuffs['spacing-x'] = 3
+		Debuffs['spacing-y'] = 3
+
+		Debuffs:SetHeight(60)
+		Debuffs:SetWidth(playerWidth)
+		Debuffs.num = 16
+		Debuffs.size = 26
+
+		self.Debuffs = Debuffs
+		Debuffs.PostUpdateIcon = PostUpdateIcon
+
 
 		-- DK runes
 
@@ -935,7 +953,7 @@ local UnitSpecific = {
 			local runes = CreateFrame("Frame", nil, self)
 			runes:SetWidth(playerWidth)
 			runes:SetHeight(2)
-			runes:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
+			runes:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
 
 			F.CreateBDFrame(runes)
 
@@ -989,7 +1007,7 @@ local UnitSpecific = {
 				if(index > 1) then
 					ClassIcon:SetPoint('LEFT', ClassIcons[index - 1], 'RIGHT', 1, 0)
 				else
-					ClassIcon:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -5)
+					ClassIcon:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
 				end
 
 				local Texture = ClassIcon:CreateTexture(nil, 'BORDER', nil, index > 5 and 1 or 0)
@@ -999,7 +1017,33 @@ local UnitSpecific = {
 				ClassIcons[index] = ClassIcon
 			end
 			self.ClassIcons = ClassIcons
+			self.SpecialPowerBar = ClassIcons
 		end
+
+		-- position class icon / alt power / debuff
+		local function moveAuraAnchors()
+			if self.SpecialPowerBar and self.SpecialPowerBar:IsShown() then
+				if self.AltPowerBar:IsShown() then
+					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(9 + altPowerHeight))
+				else
+					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -8)
+				end
+			else
+				if self.AltPowerBar:IsShown() then
+					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(4 + altPowerHeight))
+				else
+					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
+				end
+			end
+		end
+
+		self.AltPowerBar:HookScript("OnShow", moveAuraAnchors)
+		self.AltPowerBar:HookScript("OnHide", moveAuraAnchors)
+		if self.SpecialPowerBar then
+			self.SpecialPowerBar:HookScript("OnShow", moveAuraAnchors)
+			self.SpecialPowerBar:HookScript("OnHide", moveAuraAnchors)
+		end
+		moveAuraAnchors()
 
 
 		-- Status indicator

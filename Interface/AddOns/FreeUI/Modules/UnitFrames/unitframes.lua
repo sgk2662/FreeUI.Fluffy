@@ -1039,6 +1039,11 @@ local UnitSpecific = {
 		self.AltPowerBar:HookScript("OnShow", moveDebuffsAnchors)
 		self.AltPowerBar:HookScript("OnHide", moveDebuffsAnchors)
 
+		if self.SpecialPowerBar then
+			self.SpecialPowerBar:HookScript("OnShow", moveDebuffsAnchors)
+			self.SpecialPowerBar:HookScript("OnHide", moveDebuffsAnchors)
+		end
+
 		moveDebuffsAnchors()
 
 

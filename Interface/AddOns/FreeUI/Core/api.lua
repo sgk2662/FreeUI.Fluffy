@@ -20,16 +20,6 @@ end)
 
 C.classcolours = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
-FACTION_BAR_COLORS = {
-	[1] = {r = 1.0, g = 0, b = 0},	                -- 36000 Hated - Red
-	[2] = {r = 1.0, g = 0.5019608, b = 0},	        -- 3000 Hostile - Orange
-	[3] = {r = 1.0, g = 0.8196079, b = 0},	        -- 3000 Unfriendly - Yellow
-	[4] = {r = 0.8, g = 0.9, b = 0.8},    	        -- 3000 Neutral - Gray
-	[5] = {r = 0.90196, g = 0.8, b = 0.50196},	    -- 6000 Friendly - Tan
-	[6] = {r = 0, g = 0.6, b = 0.1},	            -- 12000 Honored - Green
-	[7] = {r = 0, g = 0, b = 1.0},	                -- 21000 Revered - Blue
-	[8] = {r = 0.5803922, g = 0, b = 0.827451}, 	-- 1000 Exalted - Purple
-};
 
 local _, class = UnitClass("player")
 if C.appearance.colourScheme == 2 then

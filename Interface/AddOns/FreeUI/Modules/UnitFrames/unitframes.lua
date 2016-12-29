@@ -1007,7 +1007,7 @@ local UnitSpecific = {
 				if(index > 1) then
 					ClassIcon:SetPoint('LEFT', ClassIcons[index - 1], 'RIGHT', 1, 0)
 				else
-					ClassIcon:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
+					ClassIcon:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
 				end
 
 				local Texture = ClassIcon:CreateTexture(nil, 'BORDER', nil, index > 5 and 1 or 0)
@@ -1017,12 +1017,11 @@ local UnitSpecific = {
 				ClassIcons[index] = ClassIcon
 			end
 			self.ClassIcons = ClassIcons
-			self.SpecialPowerBar = ClassIcons
 		end
 
 		-- position class icon / alt power / debuff
-		local function moveAuraAnchors()
-			if self.SpecialPowerBar and self.SpecialPowerBar:IsShown() then
+		local function moveDebuffsAnchors()
+			if (self.SpecialPowerBar and self.SpecialPowerBar:IsShown()) or self.ClassIcons then
 				if self.AltPowerBar:IsShown() then
 					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(9 + altPowerHeight))
 				else
@@ -1037,13 +1036,10 @@ local UnitSpecific = {
 			end
 		end
 
-		self.AltPowerBar:HookScript("OnShow", moveAuraAnchors)
-		self.AltPowerBar:HookScript("OnHide", moveAuraAnchors)
-		if self.SpecialPowerBar then
-			self.SpecialPowerBar:HookScript("OnShow", moveAuraAnchors)
-			self.SpecialPowerBar:HookScript("OnHide", moveAuraAnchors)
-		end
-		moveAuraAnchors()
+		self.AltPowerBar:HookScript("OnShow", moveDebuffsAnchors)
+		self.AltPowerBar:HookScript("OnHide", moveDebuffsAnchors)
+
+		moveDebuffsAnchors()
 
 
 		-- Status indicator

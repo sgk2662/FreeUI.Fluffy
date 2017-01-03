@@ -16,9 +16,6 @@ else
 	unitframeFont = C.fontCN.standard
 end
 
-local CBinterrupt = C.unitframes.castbarColorInterrupt
-local CBnormal = C.unitframes.castbarColorNormal
-
 local colors = setmetatable({
 	power = setmetatable({
 		["MANA"] = { 100/255, 149/255, 237/255 },
@@ -67,6 +64,9 @@ local partyWidthHealer = C.unitframes.party_width_healer
 local partyHeightHealer = C.unitframes.party_height_healer
 local raidWidth = C.unitframes.raid_width
 local raidHeight = C.unitframes.raid_height
+
+local CBinterrupt = C.unitframes.castbarColorInterrupt
+local CBnormal = C.unitframes.castbarColorNormal
 
 -- [[ Initialize / load layout option ]]
 
@@ -586,13 +586,13 @@ local Shared = function(self, unit, isSingle)
 		AltPowerBar:SetWidth(playerWidth)
 		AltPowerBar:SetHeight(altPowerHeight)
 		AltPowerBar:SetStatusBarTexture(C.media.texture)
-		AltPowerBar:SetPoint("BOTTOM", oUF_FreePlayer, 0, -C.unitframes.power_height-2)
+		AltPowerBar:SetPoint("BOTTOM", oUF_FreePlayer, 0, -C.unitframes.power_height-3)
 
 		local abd = CreateFrame("Frame", nil, AltPowerBar)
 		abd:SetPoint("TOPLEFT", -1, 1)
 		abd:SetPoint("BOTTOMRIGHT", 1, -1)
 		abd:SetFrameLevel(AltPowerBar:GetFrameLevel()-1)
-		F.CreateBD(abd)
+		F.CreateBD(abd, .5)
 
 		AltPowerBar.Text = F.CreateFS(AltPowerBar, C.FONT_SIZE_NORMAL, "RIGHT")
 		AltPowerBar.Text:SetPoint("BOTTOM", oUF_FreePlayer, "TOP", 0, 3)
@@ -619,7 +619,7 @@ local Shared = function(self, unit, isSingle)
 
 	if C.unitframes.portrait then
 		local Portrait = CreateFrame('PlayerModel', nil, self)
-		Portrait:SetFrameLevel(1)
+		-- Portrait:SetFrameLevel(1)
 		Portrait:SetPoint("TOPLEFT", 1, 0)
 		Portrait:SetPoint("BOTTOMRIGHT", -1, 1)
 		Portrait:SetAlpha(.1)
@@ -932,8 +932,8 @@ local UnitSpecific = {
 
 		-- We position these later on
 		local Debuffs = CreateFrame("Frame", nil, self)
-		Debuffs.initialAnchor = "TOPRIGHT"
-		Debuffs["growth-x"] = "LEFT"
+		Debuffs.initialAnchor = "TOPLEFT"
+		Debuffs["growth-x"] = "RIGHT"
 		Debuffs["growth-y"] = "DOWN"
 		Debuffs['spacing-x'] = 3
 		Debuffs['spacing-y'] = 3
@@ -946,14 +946,24 @@ local UnitSpecific = {
 		self.Debuffs = Debuffs
 		Debuffs.PostUpdateIcon = PostUpdateIcon
 
-
 		-- DK runes
 
 		if class == "DEATHKNIGHT" and C.classmod.classResource then
 			local runes = CreateFrame("Frame", nil, self)
 			runes:SetWidth(playerWidth)
 			runes:SetHeight(2)
-			runes:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
+			-- runes:SetPoint("BOTTOMRIGHT", Debuffs, "TOPRIGHT", 0, 3)
+
+			local function moveAnchor()
+				if self.AltPowerBar:IsShown() then
+					runes:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -7)
+				else
+					runes:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
+				end
+			end
+			self.AltPowerBar:HookScript("OnShow", moveAnchor)
+			self.AltPowerBar:HookScript("OnHide", moveAnchor)
+			moveAnchor()
 
 			F.CreateBDFrame(runes)
 
@@ -1007,7 +1017,16 @@ local UnitSpecific = {
 				if(index > 1) then
 					ClassIcon:SetPoint('LEFT', ClassIcons[index - 1], 'RIGHT', 1, 0)
 				else
-					ClassIcon:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
+					local function moveAnchor()
+						if self.AltPowerBar:IsShown() then
+							ClassIcon:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -7)
+						else
+							ClassIcon:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
+						end
+					end
+					self.AltPowerBar:HookScript("OnShow", moveAnchor)
+					self.AltPowerBar:HookScript("OnHide", moveAnchor)
+					moveAnchor()
 				end
 
 				local Texture = ClassIcon:CreateTexture(nil, 'BORDER', nil, index > 5 and 1 or 0)
@@ -1017,35 +1036,35 @@ local UnitSpecific = {
 				ClassIcons[index] = ClassIcon
 			end
 			self.ClassIcons = ClassIcons
+			
 		end
 
-		-- position class icon / alt power / debuff
-		local function moveDebuffsAnchors()
-			if (self.SpecialPowerBar and self.SpecialPowerBar:IsShown()) or self.ClassIcons then
+		-- position debuffs
+		local function moveDebuffsAnchor()
+			if (self.SpecialPowerBar and self.SpecialPowerBar:IsShown()) or (self.ClassIcons) then
 				if self.AltPowerBar:IsShown() then
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(9 + altPowerHeight))
+					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(11 + altPowerHeight))
 				else
 					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -8)
 				end
 			else
 				if self.AltPowerBar:IsShown() then
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(4 + altPowerHeight))
+					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(7 + altPowerHeight))
 				else
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
+					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -4)
 				end
 			end
 		end
 
-		self.AltPowerBar:HookScript("OnShow", moveDebuffsAnchors)
-		self.AltPowerBar:HookScript("OnHide", moveDebuffsAnchors)
+		self.AltPowerBar:HookScript("OnShow", moveDebuffsAnchor)
+		self.AltPowerBar:HookScript("OnHide", moveDebuffsAnchor)
 
 		if self.SpecialPowerBar then
-			self.SpecialPowerBar:HookScript("OnShow", moveDebuffsAnchors)
-			self.SpecialPowerBar:HookScript("OnHide", moveDebuffsAnchors)
+			self.SpecialPowerBar:HookScript("OnShow", moveDebuffsAnchor)
+			self.SpecialPowerBar:HookScript("OnHide", moveDebuffsAnchor)
 		end
 
-		moveDebuffsAnchors()
-
+		moveDebuffsAnchor()
 
 		-- Status indicator
 

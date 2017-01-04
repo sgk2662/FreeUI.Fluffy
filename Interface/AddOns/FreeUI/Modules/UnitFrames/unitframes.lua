@@ -932,8 +932,8 @@ local UnitSpecific = {
 
 		-- We position these later on
 		local Debuffs = CreateFrame("Frame", nil, self)
-		Debuffs.initialAnchor = "TOPLEFT"
-		Debuffs["growth-x"] = "RIGHT"
+		Debuffs.initialAnchor = "TOPRIGHT"
+		Debuffs["growth-x"] = "LEFT"
 		Debuffs["growth-y"] = "DOWN"
 		Debuffs['spacing-x'] = 3
 		Debuffs['spacing-y'] = 3

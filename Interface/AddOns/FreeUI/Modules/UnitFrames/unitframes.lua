@@ -476,7 +476,7 @@ local Shared = function(self, unit, isSingle)
 	bd:SetFrameStrata("BACKGROUND")
 
 	-- dark border
-	if C.unitframes.darkBorder then
+	if C.unitframes.darkBorder and unit ~= "party" then
 		F.CreateSD(bd)
 	end
 
@@ -1184,35 +1184,35 @@ local UnitSpecific = {
 			F.CreateSD(bg, 5, 0, 0, 0, .8, -2)
 		end
 
-		local tt = CreateFrame("Frame", nil, self)
-		tt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 7 + C.appearance.fontSizeNormal + (C.unitframes.targettarget and 10 or 0))
-		tt:SetWidth(80)
-		tt:SetHeight(12)
+		-- local tt = CreateFrame("Frame", nil, self)
+		-- tt:SetPoint("BOTTOMRIGHT", targettarget, "TOPRIGHT", 0, 4)
+		-- tt:SetWidth(80)
+		-- tt:SetHeight(12)
 
-		local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "RIGHT")
-		ttt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", C.unitframes.targettarget_width + 5, 2)
-		ttt:SetFont(unpack(unitframeFont))
-		ttt:SetWidth(80)
-		ttt:SetHeight(12)
+		-- local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "RIGHT")
+		-- ttt:SetPoint("BOTTOMRIGHT", targettarget, "TOPRIGHT", 0, 4)
+		-- ttt:SetFont(unpack(unitframeFont))
+		-- ttt:SetWidth(80)
+		-- ttt:SetHeight(12)
 
-		tt:RegisterEvent("UNIT_TARGET")
-		tt:RegisterEvent("PLAYER_TARGET_CHANGED")
-		tt:SetScript("OnEvent", function()
-			if(UnitName("targettarget")==UnitName("player")) then
-				ttt:SetText("> YOU <")
-				ttt:SetTextColor(1, 0, 0)
-			else
-				ttt:SetText(UnitName"targettarget")
-				ttt:SetTextColor(1, 1, 1)
-			end
-		end)
+		-- tt:RegisterEvent("UNIT_TARGET")
+		-- tt:RegisterEvent("PLAYER_TARGET_CHANGED")
+		-- tt:SetScript("OnEvent", function()
+		-- 	if(UnitName("targettarget")==UnitName("player")) then
+		-- 		ttt:SetText("> YOU <")
+		-- 		ttt:SetTextColor(1, 0, 0)
+		-- 	else
+		-- 		ttt:SetText(UnitName"targettarget")
+		-- 		ttt:SetTextColor(1, 1, 1)
+		-- 	end
+		-- end)
 
 
 		local Name = F.CreateFS(self)
 		Name:SetPoint("BOTTOMLEFT", PowerText, "BOTTOMRIGHT")
 		Name:SetPoint("RIGHT", self)
 		Name:SetFont(unpack(unitframeFont))
-		Name:SetWidth(80)
+		Name:SetWidth(C.unitframes.targettarget_width)
 		Name:SetJustifyH("RIGHT")
 		Name:SetTextColor(1, 1, 1)
 		Name:SetWordWrap(false)
@@ -1221,10 +1221,10 @@ local UnitSpecific = {
 		self.Name = Name
 
 		local Auras = CreateFrame("Frame", nil, self)
-		Auras:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -4)
-		Auras.initialAnchor = "TOPLEFT"
+		Auras:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 20)
+		Auras.initialAnchor = "BOTTOMLEFT"
 		Auras["growth-x"] = "RIGHT"
-		Auras["growth-y"] = "DOWN"
+		Auras["growth-y"] = "TOP"
 		Auras['spacing-x'] = 3
 		Auras['spacing-y'] = -5
 
@@ -1301,6 +1301,29 @@ local UnitSpecific = {
 
 		self.RaidIcon:ClearAllPoints()
 		self.RaidIcon:SetPoint("LEFT", self, "RIGHT", 3, 0)
+
+		local tt = CreateFrame("Frame", nil, self)
+		tt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 3)
+		tt:SetWidth(C.unitframes.targettarget_width)
+
+		local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "RIGHT")
+		ttt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 3)
+		ttt:SetFont(unpack(unitframeFont))
+		ttt:SetWordWrap(false)
+		ttt:SetWidth(C.unitframes.targettarget_width)
+
+		tt:RegisterEvent("UNIT_TARGET")
+		tt:RegisterEvent("PLAYER_TARGET_CHANGED")
+		tt:SetScript("OnEvent", function()
+			if(UnitName("targettarget")==UnitName("player")) then
+				ttt:SetText("> YOU <")
+				ttt:SetTextColor(1, 0, 0)
+			else
+				ttt:SetText(UnitName"targettarget")
+				ttt:SetTextColor(1, 1, 1)
+			end
+		end)
+
 	end,
 
 	focus = function(self, ...)
@@ -1344,7 +1367,7 @@ local UnitSpecific = {
 			Castbar:SetWidth(C.unitframes.focus_castbar_width)
 			Castbar:SetHeight(C.unitframes.castbarHeight)
 			Castbar:SetPoint(unpack(C.unitframes.focus_castbar))
-			Castbar.Text:SetPoint("TOP", Castbar, "BOTTOM", 0, -4)
+			Castbar.Text:SetPoint("BOTTOM", Castbar, "TOP", 0, 4)
 
 			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
 				Castbar.Text:SetFont(unpack(unitframeFont))
@@ -1364,35 +1387,12 @@ local UnitSpecific = {
 			F.CreateSD(bg, 5, 0, 0, 0, .8, -2)
 		end
 
-		local tt = CreateFrame("Frame", nil, self)
-		tt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 7 + C.appearance.fontSizeNormal + (C.unitframes.focustarget and 10 or 0))
-		tt:SetWidth(C.unitframes.focus_width)
-		tt:SetHeight(12)
-
-		local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "RIGHT")
-		ttt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", C.unitframes.focus_width + 5, 2)
-		ttt:SetFont(unpack(unitframeFont))
-		ttt:SetWidth(C.unitframes.focus_width)
-		ttt:SetHeight(12)
-
-		tt:RegisterEvent("UNIT_TARGET")
-		tt:RegisterEvent("PLAYER_FOCUS_CHANGED")
-		tt:SetScript("OnEvent", function()
-			if(UnitName("focustarget")==UnitName("player")) then
-				ttt:SetText("> YOU <")
-				ttt:SetTextColor(1, 0, 0)
-			else
-				ttt:SetText(UnitName"focustarget")
-				ttt:SetTextColor(1, 1, 1)
-			end
-		end)
-
 		local Name = F.CreateFS(self)
 		Name:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 3)
 		Name:SetFont(unpack(unitframeFont))
 		Name:SetWidth(C.unitframes.focus_width)
-		Name:SetHeight(12)
-		Name:SetJustifyH"LEFT"
+		Name:SetJustifyH"RIGHT"
+		Name:SetWordWrap(false)
 		Name:SetTextColor(1, 1, 1)
 
 		self:Tag(Name, '[name]')
@@ -1432,6 +1432,27 @@ local UnitSpecific = {
 
 		self.RaidIcon:ClearAllPoints()
 		self.RaidIcon:SetPoint("LEFT", self, "RIGHT", 3, 0)
+
+		local tt = CreateFrame("Frame", nil, self)
+		tt:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 3)
+
+		local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "LEFT")
+		ttt:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 3)
+		ttt:SetFont(unpack(unitframeFont))
+		ttt:SetWordWrap(false)
+		ttt:SetWidth(C.unitframes.focustarget_width)
+
+		tt:RegisterEvent("UNIT_TARGET")
+		tt:RegisterEvent("PLAYER_FOCUS_CHANGED")
+		tt:SetScript("OnEvent", function()
+			if(UnitName("focustarget")==UnitName("player")) then
+				ttt:SetText("> YOU <")
+				ttt:SetTextColor(1, 0, 0)
+			else
+				ttt:SetText(UnitName"focustarget")
+				ttt:SetTextColor(1, 1, 1)
+			end
+		end)
 	end,
 
 
@@ -1889,9 +1910,9 @@ oUF:Factory(function(self)
 		'showSolo', false,
 		'xoffset', 4,
 		'yoffset', 4,
-		'maxColumns', 1,
-		'unitsperColumn', 5,
-		'columnSpacing', 4,
+		'maxColumns', 5,
+		'unitsperColumn', 1,
+		'columnSpacing', 3,
 		'point', "BOTTOM",
 		'columnAnchorPoint', "LEFT",
 		'groupBy', 'ASSIGNEDROLE',

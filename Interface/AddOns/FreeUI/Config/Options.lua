@@ -217,26 +217,52 @@ C["unitframes"] = {
 		["partyMissingHealth"] = true,				-- show missing health
 	["enableArena"] = false,					-- enable arena/flag carrier frames
 
-	["player"] = {"BOTTOM", UIParent, "BOTTOM", 0, 260},						-- player unitframe position
+	["player"] = {"BOTTOM", UIParent, "BOTTOM", 0, 200},						-- player unitframe position
+	["player_width"] = 200,
+	["player_height"] = 14,
+	["player_castbar"] = {"CENTER", 'oUF_FreePlayer', "CENTER", 0, -50},		-- player castbar position
+	["player_castbar_width"] = 200,
+
 	["pet"] = {"RIGHT", "oUF_FreePlayer", "LEFT", -5, 0},									-- pet unitframe position
-	["target"] = {"LEFT", 'oUF_FreePlayer', "RIGHT", 26, 120},					-- target unitframe position
+	["pet_width"] = 80,
+	["pet_height"] = 12,
+
+	["target"] = {"LEFT", 'oUF_FreePlayer', "RIGHT", 50, 120},					-- target unitframe position
+	["target_width"] = 262,
+	["target_height"] = 12,
+	["target_castbar"] = {"TOP", 'oUF_FreeTarget', "BOTTOM", 0, -24},			-- target castbar position
+	["target_castbar_width"] = 262,
+
 	["targettarget"] = {"LEFT", "oUF_FreeTarget", "RIGHT", 5, 0},							-- target target unitframe position
-	["focus"] = {"LEFT", 'oUF_FreePlayer', "RIGHT", 26, -40},					-- focus unitframe position
-	["focustarget"] = {"LEFT", "oUF_FreeFocus", "RIGHT", 5, 0},							-- focus target unitframe position
-	["party"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -100, 20},			-- party unitframe position
+	["targettarget_width"] = 80,
+	["targettarget_height"] = 12,
+
+	["focus"] = {"RIGHT", 'oUF_FreePlayer', "LEFT", -26, 40},					-- focus unitframe position
+	["focus_width"] = 80,
+	["focus_height"] = 12,
+	["focus_castbar"] = {"RIGHT", 'oUF_FreeFocus', "RIGHT", 0, 40},				-- focus castbar position
+	["focus_castbar_width"] = 165,
+
+	["focustarget"] = {"RIGHT", "oUF_FreeFocus", "LEFT", -5, 0},							-- focus target unitframe position
+	["focustarget_width"] = 80,
+	["focustarget_height"] = 12,
+
+	["party"] = {"TOPLEFT", 'oUF_FreeTarget', "BOTTOMLEFT", 0, -50},			-- party unitframe position
+	["party_width"] = 50,
+	["party_height"] = 34,
+
 	["raid"] = {"BOTTOMRIGHT", 'oUF_FreePlayer', "TOPLEFT", -60, 30},			-- raid unitframe position
+	["raid_width"] = 70,
+	["raid_height"] = 30,
+
 	["boss"] = {a='LEFT', b='oUF_FreeTarget', c="RIGHT", x=10, y=80},			-- boss unitframe position
+	["boss_width"] = 160,
+	["boss_height"] = 16,
+
 	["arena"] = {a='LEFT', b='UIParent', c="LEFT", x=20, y=100},				-- arena unitframe position
-
-	["player_castbar"] = {"CENTER", 'oUF_FreePlayer', "CENTER", 0, -80},		-- player castbar position
-	["player_castbar_width"] = 224,
-
-	["target_castbar"] = {"BOTTOM", 'oUF_FreeTarget', "TOP", 0, 20},			-- target castbar position
-	["target_castbar_width"] = 229,
-
-	["focus_castbar"] = {"LEFT", 'oUF_FreeFocus', "LEFT", 0, -40},				-- focus castbar position
-	["focus_castbar_width"] = 229,
-
+	["arena_width"] = 229,
+	["arena_height"] = 12,
+	
 	["castbarColorInterrupt"] = {241/255, 23/255, 45/255},
 	["castbarColorNormal"] = {113/255, 178/255, 237/255},
 	["castbarHeight"] = 6,
@@ -245,33 +271,11 @@ C["unitframes"] = {
 	["altpower_height"] = 2,
 	["classPower_height"] = 2,
 
-	["player_width"] = 224,
-	["player_height"] = 12,
-	["target_width"] = 229,
-	["target_height"] = 12,
-	["targettarget_width"] = 80,
-	["targettarget_height"] = 12,
-	["focus_width"] = 112,
-	["focus_height"] = 12,
-	["focustarget_width"] = 112,
-	["focustarget_height"] = 12,
-	["pet_width"] = 80,
-	["pet_height"] = 12,
-	["boss_width"] = 160,
-	["boss_height"] = 16,
-	["arena_width"] = 229,
-	["arena_height"] = 12,
-	["party_width"] = 90,
-	["party_height"] = 34,
-	["raid_width"] = 70,
-	["raid_height"] = 30,
-
 	["num_player_debuffs"] = 8,
 	["num_target_debuffs"] = 16,
 	["num_target_buffs"] = 16,
 	["num_arena_buffs"] = 8,
 	["num_focus_debuffs"] = 4,
-
 }
 
 

@@ -8,6 +8,14 @@ local r, g, b = C.classcolours[class].r, C.classcolours[class].g, C.classcolours
 local ot = ObjectiveTrackerFrame
 local BlocksFrame = ot.BlocksFrame
 
+
+local otFont
+if (GetLocale() == "zhCN" or GetLocale() == "zhTW") and C.appearance.fontUseChinesePixelFont then
+	otFont = C.fontCN.pixel
+else
+	otFont = C.fontCN.standard
+end
+
 -- [[ Positioning ]]
 
 local frame = CreateFrame("Frame", "ObjectiveTrackerAnchor", UIParent)
@@ -65,7 +73,8 @@ end)
 
 -- Header
 
-ot.HeaderMenu.Title:SetFont(C.media.font.header, 16, "OUTLINE")
+--ot.HeaderMenu.Title:SetFont(C.media.font.header, 16, "OUTLINE")
+ot.HeaderMenu.Title:SetFont(unpack(otFont))
 
 -- Minimize button
 
@@ -91,7 +100,11 @@ for _, headerName in pairs({"QuestHeader", "AchievementHeader", "ScenarioHeader"
 	local header = BlocksFrame[headerName]
 
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-		header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
+		if C.appearance.fontUseChinesePixelFont then
+			header.Text:SetFont(unpack(otFont))
+		else
+			header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
+		end
 	else
 		F.SetFS(header.Text)
 	end
@@ -101,7 +114,11 @@ do
 	local header = BONUS_OBJECTIVE_TRACKER_MODULE.Header
 
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-		header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
+		if C.appearance.fontUseChinesePixelFont then
+			header.Text:SetFont(unpack(otFont))
+		else
+			header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
+		end
 	else
 		F.SetFS(header.Text)
 	end
@@ -117,7 +134,11 @@ do
 	bg:SetPoint("BOTTOMLEFT", -30, -4)
 	bg:SetSize(210, 30)
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-		header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
+		if C.appearance.fontUseChinesePixelFont then
+			header.Text:SetFont(unpack(otFont))
+		else
+			header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
+		end
 	else
 		F.SetFS(header.Text)
 	end
@@ -130,8 +151,13 @@ do
 	bg:SetVertexColor(r * 0.7, g * 0.7, b * 0.7)
 	bg:SetPoint("BOTTOMLEFT", -30, -4)
 	bg:SetSize(210, 30)
+
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-		header_bonus.Text:SetFont(C.media.font.header, 16, "OUTLINE")
+		if C.appearance.fontUseChinesePixelFont then
+			header_bonus.Text:SetFont(unpack(otFont))
+		else
+			header_bonus.Text:SetFont(C.media.font.header, 16, "OUTLINE")
+		end
 	else
 		F.SetFS(header_bonus.Text)
 	end
@@ -140,7 +166,11 @@ end
 hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE, "SetBlockHeader", function(_, block)
 	if not block.headerStyled then
 		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-			block.HeaderText:SetFont(C.media.font.normal, 13, "OUTLINE")
+			if C.appearance.fontUseChinesePixelFont then
+				block.HeaderText:SetFont(unpack(otFont))
+			else
+				block.HeaderText:SetFont(C.media.font.normal, 13, "OUTLINE")
+			end
 		else
 			F.SetFS(block.HeaderText)
 		end
@@ -151,7 +181,11 @@ end)
 hooksecurefunc(QUEST_TRACKER_MODULE, "SetBlockHeader", function(_, block)
 	if not block.headerStyled then
 		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-			block.HeaderText:SetFont(C.media.font.normal, 13, "OUTLINE")
+			if C.appearance.fontUseChinesePixelFont then
+				block.HeaderText:SetFont(unpack(otFont))
+			else
+				block.HeaderText:SetFont(C.media.font.normal, 13, "OUTLINE")
+			end
 		else
 			F.SetFS(block.HeaderText)
 		end
@@ -241,7 +275,11 @@ hooksecurefunc("ObjectiveTracker_AddBlock", function(block)
 		for _, line in pairs(block.lines) do
 			if not line.styled then
 				if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-					line.Text:SetFont(C.media.font.normal, 12, "OUTLINE")
+					if C.appearance.fontUseChinesePixelFont then
+						line.Text:SetFont(unpack(otFont))
+					else
+						line.Text:SetFont(C.media.font.normal, 13, "OUTLINE")
+					end
 				else
 					F.SetFS(line.Text)
 				end

@@ -32,6 +32,7 @@ AddOns\Blizzard_ItemSocketingUI.lua
 AddOns\Blizzard_ItemUpgradeUI.lua
 AddOns\Blizzard_LookingForGuildUI.lua
 AddOns\Blizzard_MacroUI.lua
+AddOns\Blizzard_OrderHallUI.lua
 AddOns\Blizzard_PVPUI.lua
 AddOns\Blizzard_QuestChoice.lua
 AddOns\Blizzard_RaidUI.lua

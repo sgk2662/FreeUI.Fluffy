@@ -928,24 +928,6 @@ local UnitSpecific = {
 			PvP.Override = UpdatePvP
 		end
 
-		-- Debuffs
-
-		-- We position these later on
-		local Debuffs = CreateFrame("Frame", nil, self)
-		Debuffs.initialAnchor = "TOPRIGHT"
-		Debuffs["growth-x"] = "LEFT"
-		Debuffs["growth-y"] = "DOWN"
-		Debuffs['spacing-x'] = 3
-		Debuffs['spacing-y'] = 3
-
-		Debuffs:SetHeight(60)
-		Debuffs:SetWidth(playerWidth)
-		Debuffs.num = 16
-		Debuffs.size = 26
-
-		self.Debuffs = Debuffs
-		Debuffs.PostUpdateIcon = PostUpdateIcon
-
 		-- DK runes
 
 		if class == "DEATHKNIGHT" and C.classmod.classResource then
@@ -1038,33 +1020,6 @@ local UnitSpecific = {
 			self.ClassIcons = ClassIcons
 			
 		end
-
-		-- position debuffs
-		local function moveDebuffsAnchor()
-			if (self.SpecialPowerBar and self.SpecialPowerBar:IsShown()) or (self.ClassIcons) then
-				if self.AltPowerBar:IsShown() then
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(11 + altPowerHeight))
-				else
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -8)
-				end
-			else
-				if self.AltPowerBar:IsShown() then
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(7 + altPowerHeight))
-				else
-					Debuffs:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -4)
-				end
-			end
-		end
-
-		self.AltPowerBar:HookScript("OnShow", moveDebuffsAnchor)
-		self.AltPowerBar:HookScript("OnHide", moveDebuffsAnchor)
-
-		if self.SpecialPowerBar then
-			self.SpecialPowerBar:HookScript("OnShow", moveDebuffsAnchor)
-			self.SpecialPowerBar:HookScript("OnHide", moveDebuffsAnchor)
-		end
-
-		moveDebuffsAnchor()
 
 		-- Status indicator
 
@@ -1184,30 +1139,6 @@ local UnitSpecific = {
 			F.CreateSD(bg, 5, 0, 0, 0, .8, -2)
 		end
 
-		-- local tt = CreateFrame("Frame", nil, self)
-		-- tt:SetPoint("BOTTOMRIGHT", targettarget, "TOPRIGHT", 0, 4)
-		-- tt:SetWidth(80)
-		-- tt:SetHeight(12)
-
-		-- local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "RIGHT")
-		-- ttt:SetPoint("BOTTOMRIGHT", targettarget, "TOPRIGHT", 0, 4)
-		-- ttt:SetFont(unpack(unitframeFont))
-		-- ttt:SetWidth(80)
-		-- ttt:SetHeight(12)
-
-		-- tt:RegisterEvent("UNIT_TARGET")
-		-- tt:RegisterEvent("PLAYER_TARGET_CHANGED")
-		-- tt:SetScript("OnEvent", function()
-		-- 	if(UnitName("targettarget")==UnitName("player")) then
-		-- 		ttt:SetText("> YOU <")
-		-- 		ttt:SetTextColor(1, 0, 0)
-		-- 	else
-		-- 		ttt:SetText(UnitName"targettarget")
-		-- 		ttt:SetTextColor(1, 1, 1)
-		-- 	end
-		-- end)
-
-
 		local Name = F.CreateFS(self)
 		Name:SetPoint("BOTTOMLEFT", PowerText, "BOTTOMRIGHT")
 		Name:SetPoint("RIGHT", self)
@@ -1232,7 +1163,7 @@ local UnitSpecific = {
 		Auras.numBuffs = C.unitframes.num_target_buffs
 		Auras:SetHeight(500)
 		Auras:SetWidth(targetWidth)
-		Auras.size = 26
+		Auras.size = 30
 
 		Auras.gap = true
 
@@ -1400,13 +1331,13 @@ local UnitSpecific = {
 
 		local Debuffs = CreateFrame("Frame", nil, self)
 		Debuffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -4)
-		Debuffs.initialAnchor = "BOTTOMLEFT"
+		Debuffs.initialAnchor = "TOPLEFT"
 		Debuffs["growth-x"] = "RIGHT"
-		Debuffs["growth-y"] = "UP"
+		Debuffs["growth-y"] = "DOWN"
 		Debuffs["spacing-x"] = 3
-		Debuffs:SetHeight(18)
+		Debuffs:SetHeight(20)
 		Debuffs:SetWidth(focusWidth)
-		Debuffs.size = 26
+		Debuffs.size = 20
 		Debuffs.num = 3
 		self.Debuffs = Debuffs
 		self.Debuffs.onlyShowPlayer = true

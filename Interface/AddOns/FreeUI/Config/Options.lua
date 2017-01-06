@@ -225,27 +225,27 @@ C["unitframes"] = {
 
 	["pet"] = {"RIGHT", "oUF_FreePlayer", "LEFT", -5, 0},									-- pet unitframe position
 	["pet_width"] = 80,
-	["pet_height"] = 12,
+	["pet_height"] = 14,
 
 	["target"] = {"LEFT", 'oUF_FreePlayer', "RIGHT", 50, 120},					-- target unitframe position
 	["target_width"] = 262,
-	["target_height"] = 12,
+	["target_height"] = 14,
 	["target_castbar"] = {"TOP", 'oUF_FreeTarget', "BOTTOM", 0, -24},			-- target castbar position
 	["target_castbar_width"] = 262,
 
 	["targettarget"] = {"LEFT", "oUF_FreeTarget", "RIGHT", 5, 0},							-- target target unitframe position
 	["targettarget_width"] = 80,
-	["targettarget_height"] = 12,
+	["targettarget_height"] = 14,
 
-	["focus"] = {"RIGHT", 'oUF_FreePlayer', "LEFT", -26, 40},					-- focus unitframe position
+	["focus"] = {"RIGHT", 'oUF_FreePlayer', "LEFT", -5, 40},					-- focus unitframe position
 	["focus_width"] = 80,
-	["focus_height"] = 12,
+	["focus_height"] = 14,
 	["focus_castbar"] = {"RIGHT", 'oUF_FreeFocus', "RIGHT", 0, 40},				-- focus castbar position
 	["focus_castbar_width"] = 165,
 
 	["focustarget"] = {"RIGHT", "oUF_FreeFocus", "LEFT", -5, 0},							-- focus target unitframe position
 	["focustarget_width"] = 80,
-	["focustarget_height"] = 12,
+	["focustarget_height"] = 14,
 
 	["party"] = {"TOPLEFT", 'oUF_FreeTarget', "BOTTOMLEFT", 0, -50},			-- party unitframe position
 	["party_width"] = 50,

@@ -476,7 +476,7 @@ local Shared = function(self, unit, isSingle)
 	bd:SetFrameStrata("BACKGROUND")
 
 	-- dark border
-	if C.unitframes.darkBorder and unit ~= "party" then
+	if C.unitframes.darkBorder then
 		F.CreateSD(bd)
 	end
 
@@ -819,6 +819,27 @@ local UnitSpecific = {
 		Castbar.Width = self:GetWidth()
 
 		Spark:SetHeight(self.Health:GetHeight())
+
+		local Auras = CreateFrame("Frame", nil, self)
+		Auras:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -3)
+		Auras.initialAnchor = "TOPLEFT"
+		Auras["growth-x"] = "RIGHT"
+		Auras["growth-y"] = "DOWN"
+		Auras['spacing-x'] = 3
+		Auras['spacing-y'] = -5
+
+		Auras.numDebuffs = 4
+		Auras.numBuffs = 4
+		Auras:SetHeight(100)
+		Auras:SetWidth(petWidth)
+		Auras.size = 20
+
+		Auras.gap = true
+
+		self.Auras = Auras
+
+		Auras.PostCreateIcon = PostCreateIcon
+		Auras.PostUpdateIcon = PostUpdateIcon
 	end,
 
 	player = function(self, ...)
@@ -1155,7 +1176,7 @@ local UnitSpecific = {
 		Auras:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 20)
 		Auras.initialAnchor = "BOTTOMLEFT"
 		Auras["growth-x"] = "RIGHT"
-		Auras["growth-y"] = "TOP"
+		Auras["growth-y"] = "UP"
 		Auras['spacing-x'] = 3
 		Auras['spacing-y'] = -5
 
@@ -1844,7 +1865,7 @@ oUF:Factory(function(self)
 		'maxColumns', 5,
 		'unitsperColumn', 1,
 		'columnSpacing', 3,
-		'point', "BOTTOM",
+		'point', "LEFT",
 		'columnAnchorPoint', "LEFT",
 		'groupBy', 'ASSIGNEDROLE',
 		'groupingOrder', 'DAMAGER,HEALER,TANK',
@@ -1859,16 +1880,17 @@ oUF:Factory(function(self)
 	local raid = self:SpawnHeader(nil, nil, "raid",
 		'showParty', false,
 		'showRaid', true,
-		'xoffset', 5,
-		'yOffset', 6,
-		'point', "BOTTOM",
+		'xoffset', 4,
+		'yOffset', -4,
+		'point', "LEFT",
 		'groupFilter', '1,2,3,4,5,6,7,8',
 		'groupingOrder', '1,2,3,4,5,6,7,8',
-		'groupBy', 'GROUP',
+		'groupBy', 'ASSIGNEDROLE',
 		'maxColumns', 8,
 		'unitsPerColumn', 5,
-		'columnSpacing', 6,
-		'columnAnchorPoint', "RIGHT",
+		'columnSpacing', 3,
+		'columnAnchorPoint', "TOP",
+		"sortMethod", "INDEX",
 		'oUF-initialConfigFunction', ([[
 			self:SetHeight(%d)
 			self:SetWidth(%d)
@@ -1876,6 +1898,18 @@ oUF:Factory(function(self)
 	)
 
 	raid:SetPoint(unpack(raidPos))
+
+	-- 限制团队框体只显示4个队伍20名成员
+	if C.unitframes.limitRaidSize then
+		raid:SetAttribute("groupFilter", "1,2,3,4")
+	end
+	F.AddOptionsCallback("unitframes", "limitRaidSize", function()
+		if C.unitframes.limitRaidSize then
+			raid:SetAttribute("groupFilter", "1,2,3,4")
+		else
+			raid:SetAttribute("groupFilter", "1,2,3,4,5,6,7,8")
+		end
+	end)
 
 	local raidToParty = CreateFrame("Frame")
 

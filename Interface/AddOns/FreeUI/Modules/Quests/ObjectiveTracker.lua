@@ -278,7 +278,7 @@ hooksecurefunc("ObjectiveTracker_AddBlock", function(block)
 					if C.appearance.fontUseChinesePixelFont then
 						line.Text:SetFont(unpack(otFont))
 					else
-						line.Text:SetFont(C.media.font.normal, 13, "OUTLINE")
+						line.Text:SetFont(C.media.font.normal, 12, "OUTLINE")
 					end
 				else
 					F.SetFS(line.Text)

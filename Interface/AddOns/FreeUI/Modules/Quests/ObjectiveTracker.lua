@@ -8,13 +8,8 @@ local r, g, b = C.classcolours[class].r, C.classcolours[class].g, C.classcolours
 local ot = ObjectiveTrackerFrame
 local BlocksFrame = ot.BlocksFrame
 
+local otFont = C.fontCN.pixel
 
-local otFont
-if (GetLocale() == "zhCN" or GetLocale() == "zhTW") and C.appearance.fontUseChinesePixelFont then
-	otFont = C.fontCN.pixel
-else
-	otFont = C.fontCN.standard
-end
 
 -- [[ Positioning ]]
 

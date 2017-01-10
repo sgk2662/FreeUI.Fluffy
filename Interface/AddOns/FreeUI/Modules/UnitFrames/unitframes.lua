@@ -619,9 +619,8 @@ local Shared = function(self, unit, isSingle)
 
 	if C.unitframes.portrait then
 		local Portrait = CreateFrame('PlayerModel', nil, self)
-		-- Portrait:SetFrameLevel(1)
-		Portrait:SetPoint("TOPLEFT", 1, 0)
-		Portrait:SetPoint("BOTTOMRIGHT", -1, 1)
+		Portrait:SetAllPoints(Health)
+		Portrait:SetFrameLevel(Health:GetFrameLevel() - 1)
 		Portrait:SetAlpha(.1)
 		Portrait.PostUpdate = PostUpdatePortrait
 		self.Portrait = Portrait

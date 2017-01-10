@@ -110,6 +110,7 @@ C["actionbars"] = {
 	["enableStyle"] = true,
 	["hotKey"] = true, 				-- show hot keys on buttons
 	["macroName"] = true,					-- show macro name on buttons
+	["leaveVehicleButton"] = { "BOTTOM", UIParent, "BOTTOM", 113, 195 },
 }
 
 C["minimap"] = {

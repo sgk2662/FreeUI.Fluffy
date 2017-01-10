@@ -826,7 +826,7 @@ local UnitSpecific = {
 		Auras["growth-x"] = "RIGHT"
 		Auras["growth-y"] = "DOWN"
 		Auras['spacing-x'] = 3
-		Auras['spacing-y'] = -5
+		Auras['spacing-y'] = -3
 
 		Auras.numDebuffs = 4
 		Auras.numBuffs = 4

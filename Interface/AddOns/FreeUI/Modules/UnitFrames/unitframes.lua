@@ -1629,7 +1629,6 @@ do
 
 		local Text = F.CreateFS(Health, C.FONT_SIZE_NORMAL, "CENTER")
 		Text:SetPoint("CENTER", 1, 0)
-		Text:SetFont(unpack(unitframeFont))
 
 		self.Text = Text
 
@@ -1637,6 +1636,7 @@ do
 
 		Health:SetHeight(partyHeight - powerHeight - 1)
 		if C.unitframes.partyNameAlways then
+			Text:SetFont(unpack(unitframeFont))
 			self:Tag(Text, '[free:name]')
 		elseif C.unitframes.partyMissingHealth then
 			self:Tag(Text, '[free:missinghealth]')

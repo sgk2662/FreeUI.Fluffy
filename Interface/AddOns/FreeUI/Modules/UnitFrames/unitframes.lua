@@ -146,7 +146,7 @@ local updateNameColour = function(self, unit)
 	if UnitIsUnit(unit, "target") then
 		self.Text:SetTextColor(.1, .7, 1)
 	elseif UnitIsDead(unit) then
-		self.Text:SetTextColor(.6, .6, .6)
+		self.Text:SetTextColor(.7, .2, .1)
 	else
 		self.Text:SetTextColor(1, 1, 1)
 	end
@@ -159,7 +159,7 @@ local updateNameColourAlt = function(self)
 		if UnitIsUnit(frame.unit, "target") then
 			frame.Text:SetTextColor(.1, .7, 1)
 		elseif UnitIsDead(frame.unit) then
-			frame.Text:SetTextColor(.6, .6, .6)
+			frame.Text:SetTextColor(.7, .2, .1)
 		else
 			frame.Text:SetTextColor(1, 1, 1)
 		end

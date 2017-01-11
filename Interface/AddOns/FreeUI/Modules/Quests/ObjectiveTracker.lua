@@ -68,8 +68,15 @@ end)
 
 -- Header
 
---ot.HeaderMenu.Title:SetFont(C.media.font.header, 16, "OUTLINE")
-ot.HeaderMenu.Title:SetFont(unpack(otFont))
+if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+	if C.appearance.fontUseChinesePixelFont then
+		ot.HeaderMenu.Title:SetFont(unpack(otFont))
+	else
+		ot.HeaderMenu.Title:SetFont(C.media.font.header, 16, "OUTLINE")
+	end
+else
+	F.SetFS(ot.HeaderMenu.Title)
+end
 
 -- Minimize button
 

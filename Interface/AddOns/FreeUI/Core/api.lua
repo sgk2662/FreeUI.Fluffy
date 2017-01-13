@@ -546,6 +546,7 @@ F.ReskinRadio = function(f)
 end
 
 F.ReskinSlider = function(f)
+	if f == nil then return end
 	f:SetBackdrop(nil)
 	f.SetBackdrop = F.dummy
 

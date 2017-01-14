@@ -71,8 +71,8 @@ local bar1 = {
 	framePoint      = { "BOTTOM", UIParent, "BOTTOM", 0, 6 },
 	frameScale      = 1,
 	framePadding    = 0,
-	buttonWidth     = 24,
-	buttonHeight    = 24,
+	buttonWidth     = 30,
+	buttonHeight    = 30,
 	buttonMargin    = 4,
 	numCols         = 12,
 	startPoint      = "BOTTOMLEFT",
@@ -88,8 +88,8 @@ local bar2 = {
 	framePoint      = { "BOTTOM", A.."Bar1", "TOP", 0, 0 },
 	frameScale      = 1,
 	framePadding    = 4,
-	buttonWidth     = 24,
-	buttonHeight    = 24,
+	buttonWidth     = 30,
+	buttonHeight    = 30,
 	buttonMargin    = 4,
 	numCols         = 12,
 	startPoint      = "BOTTOMLEFT",
@@ -105,8 +105,8 @@ local bar3 = {
 	framePoint      = { "BOTTOM", A.."Bar2", "TOP", 0, 0 },
 	frameScale      = 1,
 	framePadding    = 0,
-	buttonWidth     = 24,
-	buttonHeight    = 24,
+	buttonWidth     = 30,
+	buttonHeight    = 30,
 	buttonMargin    = 4,
 	numCols         = 12,
 	startPoint      = "BOTTOMLEFT",
@@ -119,16 +119,23 @@ rActionBar:CreateActionBar3(A, bar3)
 -----------------------------
 
 local bar4 = {
-	framePoint      = { "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 160 },
+	framePoint      = { "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 200 },
 	frameScale      = 1,
 	framePadding    = 4,
 	buttonWidth     = 26,
 	buttonHeight    = 26,
 	buttonMargin    = 4,
 	numCols         = 2,
-	startPoint      = "TOPRIGHT",
-	fader = nil,
-	frameVisibility = "hide"
+	startPoint      = "BOTTOMRIGHT",
+	fader = {
+		fadeInAlpha = 1,
+		fadeInDuration = 0.3,
+		fadeInSmooth = "OUT",
+		fadeOutAlpha = .1,
+		fadeOutDuration = 0.3,
+		fadeOutSmooth = "OUT",
+		fadeOutDelay = 0,
+	},
 }
 --create
 rActionBar:CreateActionBar4(A, bar4)
@@ -147,7 +154,7 @@ local bar5 = {
 	numCols         = 1,
 	startPoint      = "TOPRIGHT",
 	fader           = nil,
-	frameVisibility = "hide"
+	frameVisibility = "hide",
 }
 --create
 rActionBar:CreateActionBar5(A, bar5)
@@ -206,8 +213,8 @@ local extrabar = {
 	framePoint      = { "BOTTOM", UIParent, "BOTTOM", 0, 240 },
 	frameScale      = 1,
 	framePadding    = 4,
-	buttonWidth     = 34,
-	buttonHeight    = 34,
+	buttonWidth     = 36,
+	buttonHeight    = 36,
 	buttonMargin    = 4,
 	numCols         = 1,
 	startPoint      = "BOTTOMLEFT",

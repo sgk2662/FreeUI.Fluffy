@@ -416,13 +416,13 @@ local function PostUpdateClassIcon(element, cur, max, diff, powerType, event)
 			local ClassIcon = element[index]
 			local maxWidth, gap = playerWidth, 1
 
-			if(max == 5 or max == 8) then
+			if(max == 5 or max == 10) then
 				ClassIcon:SetWidth(((maxWidth / 5) - ((4 * gap) / 5)))
 			else
 				ClassIcon:SetWidth(((maxWidth / max) - (((max-1) * gap) / max)))
 			end
 
-			if(max == 8) then
+			if(max == 10) then
 				-- Rogue anticipation
 				if(index == 6) then
 					ClassIcon:ClearAllPoints()
@@ -1003,7 +1003,7 @@ local UnitSpecific = {
 			ClassIcons.UpdateTexture = UpdateClassIconTexture
 			ClassIcons.PostUpdate = PostUpdateClassIcon
 
-			for index = 1, 8 do
+			for index = 1, 10 do
 				local ClassIcon = CreateFrame('Frame', nil, self)
 				ClassIcon:SetHeight(C.unitframes.classPower_height)
 

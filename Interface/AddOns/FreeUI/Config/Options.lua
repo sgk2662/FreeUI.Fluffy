@@ -215,7 +215,7 @@ C["unitframes"] = {
 	["target"] = {"LEFT", 'oUF_FreePlayer', "RIGHT", 50, 120},					-- target unitframe position
 	["target_width"] = 262,
 	["target_height"] = 12,
-	["target_castbar"] = {"TOP", 'oUF_FreeTarget', "BOTTOM", 0, -24},			-- target castbar position
+	["target_castbar"] = {"TOP", 'oUF_FreeTarget', "BOTTOM", 0, -6},			-- target castbar position
 	["target_castbar_width"] = 262,
 
 	["targettarget"] = {"LEFT", "oUF_FreeTarget", "RIGHT", 5, 0},							-- target target unitframe position
@@ -232,11 +232,11 @@ C["unitframes"] = {
 	["focustarget_width"] = 80,
 	["focustarget_height"] = 12,
 
-	["party"] = {"TOPLEFT", 'oUF_FreeTarget', "BOTTOMLEFT", 0, -50},			-- party unitframe position
+	["party"] = {"TOPLEFT", 'oUF_FreeTarget', "BOTTOMLEFT", 0, -30},			-- party unitframe position
 	["party_width"] = 50,
 	["party_height"] = 34,
 
-	["raid"] = {"TOPLEFT", 'oUF_FreeTarget', "BOTTOMLEFT", 0, -50},			-- raid unitframe position
+	["raid"] = {"TOPLEFT", 'oUF_FreeTarget', "BOTTOMLEFT", 0, -30},			-- raid unitframe position
 	["raid_width"] = 50,
 	["raid_height"] = 30,
 

@@ -1120,12 +1120,15 @@ local UnitSpecific = {
 			Castbar.Text:SetDrawLayer("ARTWORK")
 
 			local IconFrame = CreateFrame("Frame", nil, Castbar)
+			IconFrame:SetPoint("RIGHT", self, "LEFT", -4, 0)
+			IconFrame:SetHeight(22)
+			IconFrame:SetWidth(22)
+
+			F.CreateSD(IconFrame)
 
 			local Icon = IconFrame:CreateTexture(nil, "OVERLAY")
 			Icon:SetAllPoints(IconFrame)
 			Icon:SetTexCoord(.08, .92, .08, .92)
-
-			F.CreateSD(IconFrame)
 
 			Castbar.Icon = Icon
 
@@ -1135,11 +1138,10 @@ local UnitSpecific = {
 			self.Iconbg:SetTexture(C.media.backdrop)
 
 			Castbar:SetStatusBarTexture(C.media.texture)
-			--Castbar:SetStatusBarColor(219/255, 0, 11/255)
 			Castbar:SetWidth(C.unitframes.target_castbar_width)
 			Castbar:SetHeight(C.unitframes.castbarHeight)
 			Castbar:SetPoint(unpack(C.unitframes.target_castbar))
-			Castbar.Text:SetPoint("BOTTOM", Castbar, "TOP", 0, 4)
+			Castbar.Text:SetPoint("TOP", Castbar, "BOTTOM", 0, -4)
 
 			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
 				Castbar.Text:SetFont(unpack(unitframeFont))
@@ -1148,8 +1150,6 @@ local UnitSpecific = {
 			local sf = Castbar:CreateTexture(nil, "OVERLAY")
 			sf:SetVertexColor(.5, .5, .5, .5)
 			Castbar.SafeZone = sf
-			IconFrame:SetPoint("RIGHT", Castbar, "LEFT", -4, 0)
-			IconFrame:SetSize(14, 14)
 
 			local bg = CreateFrame("Frame", nil, Castbar)
 			bg:SetPoint("TOPLEFT", -1, 1)

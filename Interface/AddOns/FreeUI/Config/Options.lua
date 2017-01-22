@@ -57,6 +57,9 @@ C["general"] = {
 	["undressButton"] = true, 		-- undress button on dressup frame
 	["cooldownpulse"] = true,
 	["flashCursor"] = true,
+	["bossBanner"] = false,
+	["talkingHead"] = false,
+	["alreadyKnown"] = true,
 }
 
 C["appearance"] = {
@@ -178,6 +181,8 @@ C["quests"] = {
 
 C["unitframes"] = {
 	["enable"] = true, 						-- enable the unit frames and their included modules
+	
+	["pixelFontCN"] = true,
 
 	["transMode"] = true,
 		["transModeAlpha"] = .3,

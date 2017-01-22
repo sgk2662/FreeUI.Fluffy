@@ -102,6 +102,7 @@
 	<Script file="Miscellaneous\tekkrush.lua"/>
 	<Script file="Miscellaneous\ThreatMeter.lua"/>
 	<Script file="Miscellaneous\UIFader.lua"/>
+	<Script file="Miscellaneous\Misc.lua"/>
 
 	<!-- Skins -->
 	<Script file="Skins\Bugger.lua"/>

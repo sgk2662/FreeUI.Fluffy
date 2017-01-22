@@ -10,7 +10,7 @@ local realm = GetRealmName()
 local class = select(2, UnitClass("player"))
 
 local unitframeFont
-if C.appearance.fontUseChinesePixelFont then
+if C.unitframes.pixelFontCN then
 	unitframeFont = C.fontCN.pixel
 else
 	unitframeFont = C.fontCN.standard
@@ -1120,9 +1120,9 @@ local UnitSpecific = {
 			Castbar.Text:SetDrawLayer("ARTWORK")
 
 			local IconFrame = CreateFrame("Frame", nil, Castbar)
-			IconFrame:SetPoint("RIGHT", self, "LEFT", -4, 0)
-			IconFrame:SetHeight(22)
-			IconFrame:SetWidth(22)
+			IconFrame:SetPoint("TOPRIGHT", self, "TOPLEFT", -4, 0)
+			IconFrame:SetHeight(24)
+			IconFrame:SetWidth(24)
 
 			F.CreateSD(IconFrame)
 
@@ -1162,7 +1162,11 @@ local UnitSpecific = {
 		local Name = F.CreateFS(self)
 		Name:SetPoint("BOTTOMLEFT", PowerText, "BOTTOMRIGHT")
 		Name:SetPoint("RIGHT", self)
-		Name:SetFont(unpack(unitframeFont))
+
+		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+			Name:SetFont(unpack(unitframeFont))
+		end
+
 		Name:SetWidth(C.unitframes.targettarget_width)
 		Name:SetJustifyH("RIGHT")
 		Name:SetTextColor(1, 1, 1)
@@ -1259,7 +1263,11 @@ local UnitSpecific = {
 
 		local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "RIGHT")
 		ttt:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 3)
-		ttt:SetFont(unpack(unitframeFont))
+
+		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+			ttt:SetFont(unpack(unitframeFont))
+		end
+
 		ttt:SetWordWrap(false)
 		ttt:SetWidth(C.unitframes.targettarget_width)
 
@@ -1340,7 +1348,11 @@ local UnitSpecific = {
 
 		local Name = F.CreateFS(self)
 		Name:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 3)
-		Name:SetFont(unpack(unitframeFont))
+
+		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+			Name:SetFont(unpack(unitframeFont))
+		end
+
 		Name:SetWidth(C.unitframes.focus_width)
 		Name:SetJustifyH"RIGHT"
 		Name:SetWordWrap(false)
@@ -1389,7 +1401,11 @@ local UnitSpecific = {
 
 		local ttt = F.CreateFS(tt, C.FONT_SIZE_NORMAL, "LEFT")
 		ttt:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 3)
-		ttt:SetFont(unpack(unitframeFont))
+
+		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+			ttt:SetFont(unpack(unitframeFont))
+		end
+
 		ttt:SetWordWrap(false)
 		ttt:SetWidth(C.unitframes.focustarget_width)
 
@@ -1427,10 +1443,15 @@ local UnitSpecific = {
 		Health.value = HealthPoints
 
 		local Name = F.CreateFS(self, C.FONT_SIZE_NORMAL, "LEFT")
-		Name:SetFont(unpack(unitframeFont))
-		Name:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 4)
+		
+		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+			Name:SetFont(unpack(unitframeFont))
+		end
+
+		Name:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 3)
 		Name:SetWidth((bossWidth / 2) + 10)
-		Name:SetHeight(12)
+		Name:SetWordWrap(false)
+
 		self:Tag(Name, '[name]')
 		self.Name = Name
 
@@ -1447,7 +1468,7 @@ local UnitSpecific = {
 		F.CreateBD(abd)
 
 		AltPowerBar.Text = F.CreateFS(AltPowerBar, C.FONT_SIZE_NORMAL, "CENTER")
-		AltPowerBar.Text:SetPoint("CENTER", self, "TOP", 0, 6)
+		AltPowerBar.Text:SetPoint("BOTTOM", Health, "TOP", 0, 3)
 
 		AltPowerBar:SetScript("OnValueChanged", function(_, value)
 			local min, max = AltPowerBar:GetMinMaxValues()
@@ -1469,7 +1490,11 @@ local UnitSpecific = {
 		Spark:SetHeight(self.Health:GetHeight())
 
 		Castbar.Text = F.CreateFS(self)
-		Castbar.Text:SetFont(unpack(unitframeFont))
+
+		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+			Castbar.Text:SetFont(unpack(unitframeFont))
+		end
+
 		Castbar.Text:SetDrawLayer("ARTWORK")
 		Castbar.Text:SetAllPoints(Health)
 
@@ -1559,7 +1584,10 @@ local UnitSpecific = {
 		Name:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
 		Name:SetWidth(110)
 		Name:SetHeight(12)
-		Name:SetFont(unpack(unitframeFont))
+
+		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+			Name:SetFont(unpack(unitframeFont))
+		end
 
 		self:Tag(Name, '[name]')
 		self.Name = Name
@@ -1635,7 +1663,11 @@ do
 
 		Health:SetHeight(partyHeight - powerHeight - 1)
 		if C.unitframes.partyNameAlways then
-			Text:SetFont(unpack(unitframeFont))
+			
+			if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+				Text:SetFont(unpack(unitframeFont))
+			end
+
 			self:Tag(Text, '[free:name]')
 		elseif C.unitframes.partyMissingHealth then
 			self:Tag(Text, '[free:missinghealth]')
@@ -1859,8 +1891,8 @@ oUF:Factory(function(self)
 		'showParty', true,
 		'showPlayer', true,
 		'showSolo', false,
-		'xoffset', 4,
-		'yoffset', 4,
+		'xoffset', 3,
+		'yoffset', 3,
 		'maxColumns', 5,
 		'unitsperColumn', 1,
 		'columnSpacing', 3,
@@ -1879,8 +1911,8 @@ oUF:Factory(function(self)
 	local raid = self:SpawnHeader(nil, nil, "raid",
 		'showParty', false,
 		'showRaid', true,
-		'xoffset', 4,
-		'yOffset', -4,
+		'xoffset', 3,
+		'yOffset', -3,
 		'point', "LEFT",
 		'groupFilter', '1,2,3,4,5,6,7,8',
 		'groupingOrder', '1,2,3,4,5,6,7,8',

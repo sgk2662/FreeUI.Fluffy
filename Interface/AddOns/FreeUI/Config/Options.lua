@@ -154,18 +154,16 @@ C["notifications"] = {
 
 C["tooltip"] = {
 	["enable"] = true,		-- enable tooltip and modules
-	["cursor"] = false,		-- tooltip at mouse
+	["anchorCursor"] = false,		-- tooltip at mouse
 	["position"] = {"BOTTOMRIGHT", -25, 30},	-- tooltip position
-	["ilvlspec"] = true,		-- show gear info and specialization on tooltip
 	["sbHeight"] = 2,
-	["scale"] = 1,
-	["pBar"] = false,
+	["guildRank"] = false,
+	["realm"] = true,
+	["title"] = false,
 	["fadeOnUnit"] = false,
 	["combathide"] = false,
 	["combathideALL"] = false,
-	["showGRank"] = false,
-	["showRealm"] = true,
-	["playerTitle"] = true,
+	["ilvlspec"] = true,		-- show gear info and specialization on tooltip
 	["idtip"] = true,
 }
 

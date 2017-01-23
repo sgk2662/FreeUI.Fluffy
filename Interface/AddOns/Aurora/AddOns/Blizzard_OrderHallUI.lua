@@ -202,7 +202,7 @@ C.themes["Blizzard_OrderHallUI"] = function()
 	F.ReskinGarrisonPortrait(allyPortrait)
 	OrderHallMissionFrame:HookScript("OnShow", function(self)
 		if allyPortrait:IsShown() then
-			--allyPortrait.squareBG:SetBackdropBorderColor(allyPortrait.PortraitRingQuality:GetVertexColor())
+			allyPortrait.squareBG:SetBackdropBorderColor(allyPortrait.PortraitRingQuality:GetVertexColor())
 		end
 		
 		OrderHallMissionFrameMissions.CombatAllyUI.Available.AddFollowerButton.EmptyPortrait:SetAlpha(0)
@@ -244,6 +244,7 @@ C.themes["Blizzard_OrderHallUI"] = function()
 	OrderHallTalentFrameTitleText:Show()
 	OrderHallTalentFrameBg:Hide()
 	F.CreateBD(OrderHallTalentFrame)
+	F.CreateSD(OrderHallTalentFrame)
 	ClassHallTalentInset:Hide()
 	OrderHallTalentFramePortrait:Hide()
 	OrderHallTalentFramePortraitFrame:Hide()
@@ -255,21 +256,21 @@ C.themes["Blizzard_OrderHallUI"] = function()
 
 		for i = 5, 15 do
 			local bu = select(i, OrderHallTalentFrame:GetChildren())
-			-- if not bu.styled then
-			-- 	bu.Icon:SetTexCoord(.08, .92, .08, .92)
-			-- 	bu.Border:SetAlpha(0)
-			-- 	bu.Highlight:SetColorTexture(1, 1, 1, .25)
-			-- 	bu.bg = F.CreateBDFrame(bu.Border)
-			-- 	bu.bg:SetPoint("TOPLEFT", -1.2, 1.2)
-			-- 	bu.bg:SetPoint("BOTTOMRIGHT", 1.2, -1.2)
-			-- 	bu.styled = true
-			-- end
+			if not bu.styled then
+				bu.Icon:SetTexCoord(.08, .92, .08, .92)
+				bu.Border:SetAlpha(0)
+				bu.Highlight:SetColorTexture(1, 1, 1, .25)
+				bu.bg = F.CreateBDFrame(bu.Border)
+				bu.bg:SetPoint("TOPLEFT", -1.2, 1.2)
+				bu.bg:SetPoint("BOTTOMRIGHT", 1.2, -1.2)
+				bu.styled = true
+			end
 
-			-- if bu.talent.selected then
-			-- 	bu.bg:SetBackdropBorderColor(1, 1, 0)
-			-- else
-			-- 	bu.bg:SetBackdropBorderColor(0, 0, 0)
-			-- end
+			if bu.talent.selected then
+				bu.bg:SetBackdropBorderColor(1, 1, 0)
+			else
+				bu.bg:SetBackdropBorderColor(0, 0, 0)
+			end
 		end
 	end)
 end

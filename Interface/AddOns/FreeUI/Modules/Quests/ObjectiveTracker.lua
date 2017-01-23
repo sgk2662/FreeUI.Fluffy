@@ -10,26 +10,32 @@ local BlocksFrame = ot.BlocksFrame
 
 local otFont = C.fontCN.pixel
 
+local parent = CreateFrame("Frame", nil, UIParent)
+parent:SetFrameStrata("HIGH")
+RegisterStateDriver(parent, "visibility", "[petbattle] hide; show")
+local Mover = CreateFrame("Button", "ObjectiveTrackerAnchor", parent)
+Mover:SetPoint(unpack(C.quests.position))
+Mover:SetSize(22, 22)
+Mover.Icon = Mover:CreateTexture(nil, "ARTWORK")
+Mover.Icon:SetAllPoints()
+Mover.Icon:SetTexture("Interface\\WorldMap\\Gear_64")
+Mover.Icon:SetTexCoord(0, .5, 0, .5)
+Mover.Icon:SetAlpha(.4)
+Mover:SetHighlightTexture("Interface\\WorldMap\\Gear_64")
+Mover:GetHighlightTexture():SetTexCoord(0, .5, 0, .5)
+F.CreateGT(Mover, "Drag to move", "system")
+F.CreateMF(Mover)
 
--- [[ Positioning ]]
 
-local frame = CreateFrame("Frame", "ObjectiveTrackerAnchor", UIParent)
-frame:SetPoint(unpack(C.quests.position))
-frame:SetHeight(150)
-frame:SetWidth(260)
-
-ObjectiveTrackerFrame:ClearAllPoints()
-ObjectiveTrackerFrame:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, 0)
-ObjectiveTrackerFrame:SetHeight(C.quests.height)
-
-hooksecurefunc(ObjectiveTrackerFrame, "SetPoint", function(_, _, parent)
-	if parent ~= frame then
-		ObjectiveTrackerFrame:ClearAllPoints()
-		ObjectiveTrackerFrame:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, 0)
+hooksecurefunc(ot, "SetPoint", function(_, _, parent)
+	if parent ~= Mover then
+		ot:ClearAllPoints()
+		ot:SetPoint("TOPRIGHT", Mover, "TOPLEFT", -5, 0)
+		ot:SetHeight(GetScreenHeight() - 400)
 	end
 end)
+hooksecurefunc("ObjectiveTracker_CheckAndHideHeader", function() Mover:SetShown(ot.HeaderMenu:IsShown()) end)
 
-OBJECTIVE_TRACKER_DOUBLE_LINE_HEIGHT = 30
 
 -- [[ Difficulty color for ObjectiveTrackerFrame lines ]]
 

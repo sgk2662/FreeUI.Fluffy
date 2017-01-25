@@ -68,14 +68,23 @@ rActionBar:CreateMicroMenuBar(A, micromenubar)
 -----------------------------
 
 local bar1 = {
-	framePoint      = { "BOTTOM", UIParent, "BOTTOM", 0, 6 },
+	framePoint      = { "BOTTOM", UIParent, "BOTTOM", 0, 4 },
 	frameScale      = 1,
 	framePadding    = 0,
-	buttonWidth     = 30,
-	buttonHeight    = 30,
+	buttonWidth     = 24,
+	buttonHeight    = 24,
 	buttonMargin    = 4,
 	numCols         = 12,
 	startPoint      = "BOTTOMLEFT",
+	fader = {
+		fadeInAlpha = 1,
+		fadeInDuration = 0,
+		fadeInSmooth = "OUT",
+		fadeOutAlpha = 1,
+		fadeOutDuration = 0,
+		fadeOutSmooth = "OUT",
+		fadeOutDelay = 0,
+	},
 }
 --create
 rActionBar:CreateActionBar1(A, bar1)
@@ -85,14 +94,23 @@ rActionBar:CreateActionBar1(A, bar1)
 -----------------------------
 
 local bar2 = {
-	framePoint      = { "BOTTOM", A.."Bar1", "TOP", 0, 0 },
+	framePoint      = { "BOTTOM", A.."Bar1", "TOP", 0, 4 },
 	frameScale      = 1,
-	framePadding    = 4,
-	buttonWidth     = 30,
-	buttonHeight    = 30,
+	framePadding    = 0,
+	buttonWidth     = 24,
+	buttonHeight    = 24,
 	buttonMargin    = 4,
 	numCols         = 12,
 	startPoint      = "BOTTOMLEFT",
+	fader = {
+		fadeInAlpha = 1,
+		fadeInDuration = 0,
+		fadeInSmooth = "OUT",
+		fadeOutAlpha = 1,
+		fadeOutDuration = 0,
+		fadeOutSmooth = "OUT",
+		fadeOutDelay = 0,
+	},
 }
 --create
 rActionBar:CreateActionBar2(A, bar2)
@@ -102,14 +120,23 @@ rActionBar:CreateActionBar2(A, bar2)
 -----------------------------
 
 local bar3 = {
-	framePoint      = { "BOTTOM", A.."Bar2", "TOP", 0, 0 },
+	framePoint      = { "BOTTOMLEFT", A.."Bar1", "BOTTOMRIGHT", 4, 0 },
 	frameScale      = 1,
 	framePadding    = 0,
-	buttonWidth     = 30,
-	buttonHeight    = 30,
+	buttonWidth     = 24,
+	buttonHeight    = 24,
 	buttonMargin    = 4,
-	numCols         = 12,
+	numCols         = 6,
 	startPoint      = "BOTTOMLEFT",
+	fader = {
+		fadeInAlpha = 1,
+		fadeInDuration = 0,
+		fadeInSmooth = "OUT",
+		fadeOutAlpha = 1,
+		fadeOutDuration = 0,
+		fadeOutSmooth = "OUT",
+		fadeOutDelay = 0,
+	},
 }
 --create
 rActionBar:CreateActionBar3(A, bar3)

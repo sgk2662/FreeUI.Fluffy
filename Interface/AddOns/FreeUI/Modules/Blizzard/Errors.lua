@@ -6,6 +6,8 @@ local holdtime = 0.52 -- hold time (seconds)
 local fadeintime = 0.08 -- fadein time (seconds)
 local fadeouttime = 0.16 -- fade out time (seconds)
 
+local locale = GetLocale()
+
 UIErrorsFrame:UnregisterEvent("UI_ERROR_MESSAGE")
 
 local firstErrorFrame = CreateFrame("Frame", "FreeUIErrors1", UIParent)
@@ -31,20 +33,21 @@ firstErrorFrame.text:SetPoint("TOP", UIParent, 0, -76)
 secondErrorFrame.text = F.CreateFS(secondErrorFrame)
 secondErrorFrame.text:SetPoint("TOP", UIParent, 0, -85)
 
-if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+if locale == "zhCN" or locale == "zhTW" then
 	local errorsFont
-	if C.appearance.fontUseChinesePixelFont then
+
+	if C.appearance.errorUsePixelFont then
 		errorsFont = C.fontCN.pixel
 	else
 		errorsFont = C.fontCN.standard
 	end
+
 	firstErrorFrame.text:SetFont(unpack(errorsFont))
 	secondErrorFrame.text:SetFont(unpack(errorsFont))
 	secondErrorFrame.text:SetPoint("TOP", UIParent, 0, -95)
 
 	UIErrorsFrame:SetFont(unpack(errorsFont))
-else
-	F.SetFS(UIErrorsFrame)
+
 end
 
 local state = 0

@@ -66,7 +66,6 @@ C["appearance"] = {
 	["colourScheme"] = 1,			-- 1 = class coloured, 2 = custom
 		["customColour"] = {r = 1, g = 1, b = 1},
 	["fontUseAlternativeFont"] = false,
-	["fontUseChinesePixelFont"] = false,
 	["fontSizeNormal"] = 8,
 	["fontSizeLarge"] = 16,
 	["fontOutline"] = true,
@@ -76,6 +75,9 @@ C["appearance"] = {
 	["fontColorFontRGB"] = {r = 247/255, g = 225/255, b =171/255},
 	["uiFader"] = false,
 	["ncShadow"] = true,
+
+	["errorUsePixelFont"] = false,
+	["objectiveTrackerUsePixelFont"] = false,
 }
 
 C["auras"] = {

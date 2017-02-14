@@ -288,11 +288,8 @@ do
 	local fontUseAlternativeFont = ns.CreateCheckBox(appearance, "fontUseAlternativeFont", true, true)
 	fontUseAlternativeFont:SetPoint("TOPLEFT", fonts, "BOTTOMLEFT", 0, -20)
 
-	local fontUseChinesePixelFont = ns.CreateCheckBox(appearance, "fontUseChinesePixelFont", true, true)
-	fontUseChinesePixelFont:SetPoint("TOPLEFT", fontUseAlternativeFont, "BOTTOMLEFT", 0, -8)
-
 	local fontSizeNormal = ns.CreateNumberSlider(appearance, "fontSizeNormal", 5, 32, 5, 32, 1, true)
-	fontSizeNormal:SetPoint("TOPLEFT", fontUseChinesePixelFont, "BOTTOMLEFT", 16, -26)
+	fontSizeNormal:SetPoint("TOPLEFT", fontUseAlternativeFont, "BOTTOMLEFT", 16, -26)
 
 	appearance.normalSample = appearance:CreateFontString()
 	appearance.normalSample:SetPoint("TOPLEFT", fontSizeNormal, "BOTTOMLEFT", 0, -16)

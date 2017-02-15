@@ -79,21 +79,9 @@ end)
 local UIFrame = WorldMapFrame.UIElementsFrame
 
 local coords = F.CreateFS(UIFrame, C.FONT_SIZE_NORMAL, "LEFT")
-coords:SetPoint("BOTTOMLEFT", UIFrame, 5, 5)
+coords:SetPoint("TOPLEFT", UIFrame, 5, -5)
 local cursorcoords = F.CreateFS(UIFrame, C.FONT_SIZE_NORMAL, "LEFT")
-cursorcoords:SetPoint("BOTTOMLEFT", coords, "TOPLEFT", 0, 4)
-
-if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-	local coordsFont
-	if C.appearance.fontUseChinesePixelFont then
-		coordsFont = C.fontCN.pixel
-	else
-		coordsFont = C.fontCN.standard
-	end
-
-	coords:SetFont(unpack(coordsFont))
-	cursorcoords:SetFont(unpack(coordsFont))
-end
+cursorcoords:SetPoint("TOPLEFT", coords, "BOTTOMLEFT", 0, -4)
 
 local freq = C.performance.mapcoords
 local last = 0
@@ -106,11 +94,11 @@ WorldMapDetailFrame:HookScript("OnUpdate", function(self, elapsed)
 			x = math.floor(100 * x)
 			y = math.floor(100 * y)
 
-			coords:SetText(PLAYER..": "..x..", "..y)
-			cursorcoords:SetPoint("BOTTOMLEFT", coords, "TOPLEFT", 0, 4)
+			coords:SetText("PLAYER"..": "..x..", "..y)
+			cursorcoords:SetPoint("TOPLEFT", coords, "BOTTOMLEFT", 0, -4)
 		else
 			coords:SetText("")
-			cursorcoords:SetPoint("BOTTOMLEFT", UIFrame, 5, 5)
+			cursorcoords:SetPoint("TOPLEFT", UIFrame, 5, -5)
 		end
 
 		local scale = WorldMapDetailFrame:GetEffectiveScale()
@@ -124,7 +112,7 @@ WorldMapDetailFrame:HookScript("OnUpdate", function(self, elapsed)
 		if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
 			adjustedX = math.floor(100 * adjustedX)
 			adjustedY = math.floor(100 * adjustedY)
-			cursorcoords:SetText(MOUSE_LABEL..": "..adjustedX..", "..adjustedY)
+			cursorcoords:SetText("CURSOR"..": "..adjustedX..", "..adjustedY)
 		else
 			cursorcoords:SetText(" ")
 		end

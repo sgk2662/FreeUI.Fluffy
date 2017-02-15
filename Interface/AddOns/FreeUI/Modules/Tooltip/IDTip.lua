@@ -4,7 +4,7 @@ if C.tooltip.enable ~= true or C.tooltip.idtip ~= true then return end
 
 --	Spell/Item IDs(idTip by Silverwind)
 
-local debuginfo = false
+local debuginfo = true
 local hooksecurefunc, select, UnitBuff, UnitDebuff, UnitAura, UnitGUID, GetGlyphSocketInfo, tonumber, strfind = hooksecurefunc, select, UnitBuff, UnitDebuff, UnitAura, UnitGUID, GetGlyphSocketInfo, tonumber, strfind
 local types = {
 	spell = "SpellID:",
@@ -109,14 +109,14 @@ ItemRefShoppingTooltip2:HookScript("OnTooltipSetItem", attachItemTooltip)
 ShoppingTooltip1:HookScript("OnTooltipSetItem", attachItemTooltip)
 ShoppingTooltip2:HookScript("OnTooltipSetItem", attachItemTooltip)
 
-SlashCmdList.SHOWSPELLID = function()
-	if not debuginfo then
-		debuginfo = true
-	else
-		debuginfo = false
-	end
-end
+-- SlashCmdList.SHOWSPELLID = function()
+-- 	if not debuginfo then
+-- 		debuginfo = true
+-- 	else
+-- 		debuginfo = false
+-- 	end
+-- end
 
-SLASH_SHOWSPELLID1 = "/showid"
+-- SLASH_SHOWSPELLID1 = "/showid"
 
 

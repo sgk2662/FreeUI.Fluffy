@@ -79,7 +79,7 @@ end)
 local UIFrame = WorldMapFrame.UIElementsFrame
 
 local coords = F.CreateFS(UIFrame, C.FONT_SIZE_NORMAL, "LEFT")
-coords:SetPoint("TOPLEFT", UIFrame, 5, -5)
+coords:SetPoint("TOPLEFT", UIFrame, 5, -40)
 local cursorcoords = F.CreateFS(UIFrame, C.FONT_SIZE_NORMAL, "LEFT")
 cursorcoords:SetPoint("TOPLEFT", coords, "BOTTOMLEFT", 0, -4)
 
@@ -98,7 +98,7 @@ WorldMapDetailFrame:HookScript("OnUpdate", function(self, elapsed)
 			cursorcoords:SetPoint("TOPLEFT", coords, "BOTTOMLEFT", 0, -4)
 		else
 			coords:SetText("")
-			cursorcoords:SetPoint("TOPLEFT", UIFrame, 5, -5)
+			cursorcoords:SetPoint("TOPLEFT", UIFrame, 5, -40)
 		end
 
 		local scale = WorldMapDetailFrame:GetEffectiveScale()

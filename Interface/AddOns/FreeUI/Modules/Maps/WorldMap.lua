@@ -1,6 +1,6 @@
 local F, C, L = unpack(select(2, ...))
-local _G = _G
 
+local _G = _G
 
 local function skin()
 	--print("Map:Skin")
@@ -24,22 +24,35 @@ local function SetLargeWorldMap()
 
 	-- reparent
 	_G.WorldMapFrame:SetParent(_G.UIParent)
+	_G.WorldMapFrame:SetScale(1)
+	_G.WorldMapFrame:EnableMouse(true)
 	_G.WorldMapFrame:SetFrameStrata("HIGH")
-	_G.WorldMapFrame:EnableKeyboard(true)
 	_G.WorldMapTooltip:SetFrameStrata("TOOLTIP");
 	_G.WorldMapCompareTooltip1:SetFrameStrata("TOOLTIP");
 	_G.WorldMapCompareTooltip2:SetFrameStrata("TOOLTIP");
 
 	--reposition
-	_G.WorldMapFrame:ClearAllPoints()
-	_G.WorldMapFrame:SetPoint("CENTER", 0, 0)
-	_G.SetUIPanelAttribute(_G.WorldMapFrame, "area", "center")
-	_G.SetUIPanelAttribute(_G.WorldMapFrame, "allowOtherPanels", true)
-	_G.WorldMapFrame:SetSize(1022, 766)
+	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
+		SetUIPanelAttribute(WorldMapFrame, "area", "center");
+	end
+
+	if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
+		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
+	end
+
+	WorldMapFrameSizeUpButton:Hide()
+	WorldMapFrameSizeDownButton:Show()
+
+	WorldMapFrame:ClearAllPoints()
+	WorldMapFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+	WorldMapFrame:SetSize(1002, 668)
 end
 
 local function SetQuestWorldMap()
 	if _G.InCombatLockdown() or not _G.IsAddOnLoaded("Aurora") then return end
+	
+	WorldMapFrameSizeUpButton:Show()
+	WorldMapFrameSizeDownButton:Hide()
 
 	_G.WorldMapFrameNavBar:SetPoint("TOPLEFT", _G.WorldMapFrame.BorderFrame, 3, -33)
 	_G.WorldMapFrameNavBar:SetWidth(700)
@@ -69,19 +82,13 @@ _G.DropDownList1:HookScript("OnShow", function(self)
 	end
 end)
 
--- keep it centered
-hooksecurefunc("WorldMap_ToggleSizeDown", function()
-	WorldMapFrame:ClearAllPoints()
-	WorldMapFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-end)
-
 -- coordinates
 local UIFrame = WorldMapFrame.UIElementsFrame
 
 local coords = F.CreateFS(UIFrame, C.FONT_SIZE_NORMAL, "LEFT")
-coords:SetPoint("TOPLEFT", UIFrame, 5, -40)
+coords:SetPoint("BOTTOMLEFT", UIFrame, 5, 5)
 local cursorcoords = F.CreateFS(UIFrame, C.FONT_SIZE_NORMAL, "LEFT")
-cursorcoords:SetPoint("TOPLEFT", coords, "BOTTOMLEFT", 0, -4)
+cursorcoords:SetPoint("BOTTOMLEFT", coords, "BOTTOMRIGHT", 5, 0)
 
 local freq = C.performance.mapcoords
 local last = 0
@@ -95,10 +102,10 @@ WorldMapDetailFrame:HookScript("OnUpdate", function(self, elapsed)
 			y = math.floor(100 * y)
 
 			coords:SetText("PLAYER"..": "..x..", "..y)
-			cursorcoords:SetPoint("TOPLEFT", coords, "BOTTOMLEFT", 0, -4)
+			cursorcoords:SetPoint("BOTTOMLEFT", coords, "BOTTOMRIGHT", 5, 0)
 		else
 			coords:SetText("")
-			cursorcoords:SetPoint("TOPLEFT", UIFrame, 5, -40)
+			cursorcoords:SetPoint("BOTTOMLEFT", UIFrame, 5, 5)
 		end
 
 		local scale = WorldMapDetailFrame:GetEffectiveScale()

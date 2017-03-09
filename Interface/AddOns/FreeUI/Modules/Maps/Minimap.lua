@@ -39,16 +39,9 @@ BorderFrame:SetFrameLevel(6)
 F.CreateSD(BorderFrame)
 
 -- on click mechanic
-function dropdownOnClick(self)
-	GameTooltip:Hide()
-	DropDownList1:ClearAllPoints()
-	DropDownList1:SetPoint('TOPLEFT', Minimap.background, 'TOPRIGHT', 2, 0)
-end
-
-Minimap:SetScript('OnMouseUp', function (self, button)
-	if button == 'RightButton' then
-		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self, - (Minimap:GetWidth() * .7), 30)
-		GameTooltip:Hide()
+Minimap:SetScript("OnMouseUp", function(self, button)
+	if button == "RightButton" then
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor", -162, 190)
 	elseif button == 'MiddleButton' then
 		if not IsAddOnLoaded("Blizzard_Calendar") then
 			LoadAddOn('Blizzard_Calendar')

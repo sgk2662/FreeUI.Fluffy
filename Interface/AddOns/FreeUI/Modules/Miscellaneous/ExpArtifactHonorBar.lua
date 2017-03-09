@@ -184,10 +184,12 @@ local showReputationTooltip = function(self)
 end
 
 local artifact_update = function(self, event)
-	if HasArtifactEquipped() then
-		local id, altid, name, icon, total, spent, q = C_ArtifactUI.GetEquippedArtifactInfo()	
-		local num, xp, next = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(spent, total)
-		local percent = math.ceil(xp/next*100)
+
+	local id, altid, name, icon, total, spent, q = C_ArtifactUI.GetEquippedArtifactInfo()	
+	local num, xp, next = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(spent, total)
+	local percent = math.ceil(xp/next*100)
+
+	if HasArtifactEquipped() and spent ~= 54 then
 
 		Artifact:ClearAllPoints()
 		-- Artifact:SetMinMaxValues(0, next)

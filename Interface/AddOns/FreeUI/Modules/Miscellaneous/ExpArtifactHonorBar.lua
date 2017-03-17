@@ -184,6 +184,7 @@ local showReputationTooltip = function(self)
 end
 
 local artifact_update = function(self, event)
+
 	if HasArtifactEquipped() then
 		local id, altid, name, icon, total, spent, q = C_ArtifactUI.GetEquippedArtifactInfo()	
 		local num, xp, next = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(spent, total)
@@ -194,16 +195,18 @@ local artifact_update = function(self, event)
 		-- Artifact:SetValue(xp)
 		Artifact:SetAnimatedValues(xp, 0, next, num + spent)
 
-		if spent < 54 then
-			local y = POSITION[5]
-			if Experience:IsShown() then
-				y = y + OFFSET
-			end
-			if Reputation:IsShown() then
-				y = y + OFFSET
-			end
-			Artifact:SetPoint(POSITION[1], POSITION[2], POSITION[3], POSITION[4], y)
-			Artifact:Show()
+		local y = POSITION[5]
+		if Experience:IsShown() then
+			y = y + OFFSET
+		end
+		if Reputation:IsShown() then
+			y = y + OFFSET
+		end
+		Artifact:SetPoint(POSITION[1], POSITION[2], POSITION[3], POSITION[4], y)
+		Artifact:Show()
+
+		if spent == 54 then
+			Artifact:Hide()
 		end
 	else
 		Artifact:Hide()

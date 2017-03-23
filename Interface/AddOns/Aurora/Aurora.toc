@@ -49,11 +49,13 @@ FrameXML\BankFrame.lua
 FrameXML\ChannelFrame.lua
 FrameXML\CharacterFrame.lua
 FrameXML\ChatConfigFrame.lua
+FrameXML\ColorPickerFrame.lua
 FrameXML\Constants.lua
 FrameXML\ContainerFrame.lua
 FrameXML\DressUpFrames.lua
 FrameXML\EquipmentFlyout.lua
 FrameXML\FriendsFrame.lua
+FrameXML\GameMenuFrame.lua
 FrameXML\GarrisonFollowerTooltip.lua
 FrameXML\InterfaceOptionsFrame.lua
 FrameXML\LFDFrame.lua
@@ -91,3 +93,4 @@ SharedXML\AddonList.lua
 
 Other\LossOfControl.lua
 Other\TalkingHeadUI.lua
+Other\Misc.lua

@@ -18,7 +18,7 @@ _G.tinsert(C.themes["Aurora"], function()
 		local name = "FriendsFrameTab"..i
 		local tab = _G[name]
 		F.ReskinTab(tab)
-		--_G[name.."Text"]:SetPoint("CENTER", tab, "CENTER", 0, 2)
+		_G[name.."Text"]:SetPoint("CENTER", tab)
 	end
 
 	-- Friends header
@@ -56,11 +56,8 @@ _G.tinsert(C.themes["Aurora"], function()
 	F.ReskinDropDown(_G.FriendsFrameStatusDropDown)
 	_G.FriendsFrameBroadcastInput:SetWidth(250)
 	F.ReskinInput(_G.FriendsFrameBroadcastInput)
+	F.ReskinTab("FriendsTabHeaderTab", 3)
 	for i = 1, 6 do
-		for j = 1, 3 do
-			select(i, _G["FriendsTabHeaderTab"..j]:GetRegions()):Hide()
-			select(i, _G["FriendsTabHeaderTab"..j]:GetRegions()).Show = F.dummy
-		end
 		select(i, _G.ScrollOfResurrectionFrameNoteFrame:GetRegions()):Hide()
 	end
 

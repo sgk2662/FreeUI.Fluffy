@@ -1,8 +1,8 @@
 local ADDON_NAME, private = ...
 
 -- [[ Lua Globals ]]
-local _G = _G
-local select, tostring, pairs = _G.select, _G.tostring, _G.pairs
+local select, tostring = _G.select, _G.tostring
+local pairs = _G.pairs
 
 -- [[ WoW API ]]
 local CreateFrame = _G.CreateFrame
@@ -111,6 +111,7 @@ C.defaults = {
 C.frames = {}
 
 C.TOC = select(4, _G.GetBuildInfo())
+C.is72 = C.TOC > 70100 or _G.GetBuildInfo() == "7.2.0"
 
 -- [[ Cached variables ]]
 
@@ -311,20 +312,29 @@ end
 -- 	end
 -- end
 
-F.ReskinTab = function(f)
-	f:DisableDrawLayer("BACKGROUND")
+F.ReskinTab = function(f, numTabs)
+	if numTabs then
+		for i = 1, numTabs do
+			for j = 1, 6 do
+				select(j, _G[f..i]:GetRegions()):Hide()
+				select(j, _G[f..i]:GetRegions()).Show = F.dummy
+			end
+		end
+	else
+		f:DisableDrawLayer("BACKGROUND")
 
-	local bg = CreateFrame("Frame", nil, f)
-	bg:SetPoint("TOPLEFT", 8, -3)
-	bg:SetPoint("BOTTOMRIGHT", -8, 0)
-	bg:SetFrameLevel(f:GetFrameLevel()-1)
-	F.CreateBD(bg)
+		local bg = CreateFrame("Frame", nil, f)
+		bg:SetPoint("TOPLEFT", 8, -3)
+		bg:SetPoint("BOTTOMRIGHT", -8, 0)
+		bg:SetFrameLevel(f:GetFrameLevel()-1)
+		F.CreateBD(bg)
 
-	f:SetHighlightTexture(C.media.backdrop)
-	local hl = f:GetHighlightTexture()
-	hl:SetPoint("TOPLEFT", 9, -4)
-	hl:SetPoint("BOTTOMRIGHT", -9, 1)
-	hl:SetVertexColor(red, green, blue, .25)
+		f:SetHighlightTexture(C.media.backdrop)
+		local hl = f:GetHighlightTexture()
+		hl:SetPoint("TOPLEFT", 9, -4)
+		hl:SetPoint("BOTTOMRIGHT", -9, 1)
+		hl:SetVertexColor(red, green, blue, .25)
+	end
 end
 
 local function colourScroll(f)
@@ -638,7 +648,7 @@ F.ReskinRadio = function(f)
 	f:HookScript("OnLeave", clearRadio)
 end
 
-F.ReskinSlider = function(f)
+F.ReskinSlider = function(f, isVert)
 	f:SetBackdrop(nil)
 	f.SetBackdrop = F.dummy
 
@@ -653,6 +663,9 @@ F.ReskinSlider = function(f)
 
 	local slider = select(4, f:GetRegions())
 	slider:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
+	if isVert then
+		slider:SetTexCoord(1,0, 0,0, 1,1, 0,1)
+	end
 	slider:SetBlendMode("ADD")
 end
 
@@ -776,7 +789,7 @@ F.ReskinColourSwatch = function(f)
 	bg:SetPoint("BOTTOMRIGHT", -2, 2)
 end
 
-F.ReskinFilterButton = function(f)
+F.ReskinFilterButton = function(f, direction)
 	f.TopLeft:Hide()
 	f.TopRight:Hide()
 	f.BottomLeft:Hide()
@@ -788,9 +801,9 @@ F.ReskinFilterButton = function(f)
 	f.MiddleMiddle:Hide()
 
 	F.Reskin(f)
-	f.Icon:SetTexture(C.media.arrowRight)
+	direction = direction or "Right"
+	f.Icon:SetTexture(C.media["arrow"..direction])
 
-	f.Text:SetPoint("CENTER")
 	f.Icon:SetPoint("RIGHT", f, "RIGHT", -5, 0)
 	f.Icon:SetSize(8, 8)
 end
@@ -849,7 +862,7 @@ end
 
 F.ReskinIcon = function(icon)
 	icon:SetTexCoord(.08, .92, .08, .92)
-	return F.CreateBG(icon)
+	return F.CreateBDFrame(icon)
 end
 
 -- [[ Variable and module handling ]]
@@ -988,25 +1001,9 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 	-- all this should be moved out of the main file when I have time
 	if addon == "Aurora" then
 
-		-- [[ Headers ]]
-
-		local header = {"GameMenuFrame", "AudioOptionsFrame", "ColorPickerFrame"}
-		for i = 1, #header do
-			local title = _G[header[i].."Header"]
-			if title then
-				title:SetTexture("")
-				title:ClearAllPoints()
-				if title == _G["GameMenuFrameHeader"] then
-					title:SetPoint("TOP", _G.GameMenuFrame, 0, 7)
-				else
-					title:SetPoint("TOP", header[i], 0, 0)
-				end
-			end
-		end
-
 		-- [[ Simple backdrops ]]
 
-		local bds = {"AutoCompleteBox", "TicketStatusFrameButton", "GearManagerDialogPopup", "ScrollOfResurrectionSelectionFrame", "ScrollOfResurrectionFrame", "VoiceChatTalkers", "ReportPlayerNameDialog", "ReportCheatingDialog"}
+		local bds = {"ScrollOfResurrectionSelectionFrame", "ScrollOfResurrectionFrame", "VoiceChatTalkers", "ReportPlayerNameDialog", "ReportCheatingDialog"}
 
 		for i = 1, #bds do
 			local bd = _G[bds[i]]
@@ -1077,7 +1074,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.SetBD(_G.HelpFrame)
 		F.SetBD(_G.RaidParentFrame)
 
-		local FrameBDs = {"GameMenuFrame", "AudioOptionsFrame", "StackSplitFrame", "ColorPickerFrame", "ReadyCheckFrame", "GuildInviteFrame"}
+		local FrameBDs = {"StackSplitFrame", "ReadyCheckFrame", "GuildInviteFrame"}
 		for i = 1, #FrameBDs do
 			local FrameBD = _G[FrameBDs[i]]
 			F.CreateBD(FrameBD)
@@ -2092,7 +2089,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- [[ Buttons ]]
 
-		local buttons = {"AudioOptionsFrameOkay", "AudioOptionsFrameCancel", "AudioOptionsFrameDefaults", "StackSplitOkayButton", "StackSplitCancelButton", "GameMenuButtonHelp", "GameMenuButtonWhatsNew", "GameMenuButtonStore", "GameMenuButtonOptions", "GameMenuButtonUIOptions", "GameMenuButtonKeybindings", "GameMenuButtonMacros", "GameMenuButtonAddons", "GameMenuButtonLogout", "GameMenuButtonQuit", "GameMenuButtonContinue", "LFDQueueFrameFindGroupButton", "ColorPickerOkayButton", "ColorPickerCancelButton", "GuildInviteFrameJoinButton", "GuildInviteFrameDeclineButton", "HelpFrameAccountSecurityOpenTicket", "HelpFrameCharacterStuckStuck", "HelpFrameOpenTicketHelpOpenTicket", "ReadyCheckFrameYesButton", "ReadyCheckFrameNoButton", "HelpFrameKnowledgebaseSearchButton", "GhostFrame", "HelpFrameGM_ResponseNeedMoreHelp", "HelpFrameGM_ResponseCancel", "LFDQueueFramePartyBackfillBackfillButton", "LFDQueueFramePartyBackfillNoBackfillButton", "LFDQueueFrameNoLFDWhileLFRLeaveQueueButton", "RaidFinderFrameFindRaidButton", "RaidFinderQueueFrameIneligibleFrameLeaveQueueButton", "RaidFinderQueueFramePartyBackfillBackfillButton", "RaidFinderQueueFramePartyBackfillNoBackfillButton", "ScrollOfResurrectionSelectionFrameAcceptButton", "ScrollOfResurrectionSelectionFrameCancelButton", "ScrollOfResurrectionFrameAcceptButton", "ScrollOfResurrectionFrameCancelButton", "HelpFrameReportBugSubmit", "HelpFrameSubmitSuggestionSubmit", "ReportPlayerNameDialogReportButton", "ReportPlayerNameDialogCancelButton", "ReportCheatingDialogReportButton", "ReportCheatingDialogCancelButton"}
+		local buttons = {"StackSplitOkayButton", "StackSplitCancelButton", "LFDQueueFrameFindGroupButton", "GuildInviteFrameJoinButton", "GuildInviteFrameDeclineButton", "HelpFrameAccountSecurityOpenTicket", "HelpFrameCharacterStuckStuck", "HelpFrameOpenTicketHelpOpenTicket", "ReadyCheckFrameYesButton", "ReadyCheckFrameNoButton", "HelpFrameKnowledgebaseSearchButton", "GhostFrame", "HelpFrameGM_ResponseNeedMoreHelp", "HelpFrameGM_ResponseCancel", "LFDQueueFramePartyBackfillBackfillButton", "LFDQueueFramePartyBackfillNoBackfillButton", "LFDQueueFrameNoLFDWhileLFRLeaveQueueButton", "RaidFinderFrameFindRaidButton", "RaidFinderQueueFrameIneligibleFrameLeaveQueueButton", "RaidFinderQueueFramePartyBackfillBackfillButton", "RaidFinderQueueFramePartyBackfillNoBackfillButton", "ScrollOfResurrectionSelectionFrameAcceptButton", "ScrollOfResurrectionSelectionFrameCancelButton", "ScrollOfResurrectionFrameAcceptButton", "ScrollOfResurrectionFrameCancelButton", "HelpFrameReportBugSubmit", "HelpFrameSubmitSuggestionSubmit", "ReportPlayerNameDialogReportButton", "ReportPlayerNameDialogCancelButton", "ReportCheatingDialogReportButton", "ReportCheatingDialogCancelButton"}
 		for i = 1, #buttons do
 		local reskinbutton = _G[buttons[i]]
 			if reskinbutton then
@@ -2107,22 +2104,4 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			F.ReskinClose(_G[closebuttons[i]])
 		end
 	end
-end)
-
-
--- [[Misc]]
-
--- UIParent.lua
-function private.SkinIconArray(baseName, rowSize, numRows)
-	for i = 1, rowSize * numRows do
-		local bu = _G[baseName..i]
-		bu:SetCheckedTexture(C.media.checked)
-		select(2, bu:GetRegions()):Hide()
-
-		F.ReskinIcon(_G[baseName..i.."Icon"])
-	end
-end
-_G.hooksecurefunc("BuildIconArray", function(parent, baseName, template, rowSize, numRows, onButtonCreated)
-	-- This is used to create icons for the GuildBankPopupFrame, MacroPopupFrame, and GearManagerDialogPopup
-	private.SkinIconArray(baseName, rowSize, numRows)
 end)

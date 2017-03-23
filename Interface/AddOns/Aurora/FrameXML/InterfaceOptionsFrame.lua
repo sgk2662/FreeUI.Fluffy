@@ -1,8 +1,5 @@
 local _, private = ...
 
--- [[ Lua Globals ]]
-local _G = _G
-
 -- [[ Core ]]
 local F, C = _G.unpack(private.Aurora)
 
@@ -110,6 +107,9 @@ _G.tinsert(C.themes["Aurora"], function()
 			"InterfaceOptionsSocialPanelShowToastWindow",
 			"InterfaceOptionsSocialPanelEnableTwitter"
 		}
+		if C.is72 then
+			_G.tinsert(checkboxes, "InterfaceOptionsSocialPanelAutoAcceptQuickJoinRequests")
+		end
 		for i = 1, #checkboxes do
 			F.ReskinCheck(_G[checkboxes[i]])
 		end

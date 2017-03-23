@@ -175,7 +175,7 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.GearManagerDialogPopupScrollFrameBottom:Hide()
 	F.ReskinScroll(_G.GearManagerDialogPopupScrollFrameScrollBar)
 	_G.GearManagerDialogPopupScrollFrame:SetHeight(400)
-	private.SkinIconArray("GearManagerDialogPopupButton", _G.NUM_GEARSET_ICONS_PER_ROW, _G.NUM_GEARSET_ICON_ROWS)
+	--private.SkinIconArray("GearManagerDialogPopupButton", _G.NUM_GEARSET_ICONS_PER_ROW, _G.NUM_GEARSET_ICON_ROWS)
 
 	local sets = false
 	_G.PaperDollSidebarTab3:HookScript("OnClick", function()

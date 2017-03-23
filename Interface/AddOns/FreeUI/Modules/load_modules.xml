@@ -8,7 +8,6 @@
 	<Script file="Blizzard\Loot.lua"/>
 	<Script file="Blizzard\LootRoll.lua"/>
 	<Script file="Blizzard\Bags.lua"/>
-	<Script file="Blizzard\ColorPicker.lua"/>
 	<Script file="Blizzard\ArchaeologyBar.lua"/>
 	<Script file="Blizzard\Mail.lua"/>
 	<Script file="Blizzard\Marking.lua"/>

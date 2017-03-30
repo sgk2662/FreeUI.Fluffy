@@ -71,6 +71,7 @@ AddOns\Blizzard_BlackMarketUI.lua
 AddOns\Blizzard_Calendar.lua
 AddOns\Blizzard_ChallengesUI.lua
 AddOns\Blizzard_Collections.lua
+AddOns\Blizzard_Contribution.lua
 AddOns\Blizzard_DeathRecap.lua
 AddOns\Blizzard_DebugTools.lua
 AddOns\Blizzard_EncounterJournal.lua

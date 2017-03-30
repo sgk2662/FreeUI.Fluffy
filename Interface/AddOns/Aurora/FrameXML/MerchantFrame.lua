@@ -59,6 +59,7 @@ _G.tinsert(C.themes["Aurora"], function()
 		local ic = bu.icon
 
 		bu:SetHighlightTexture("")
+		bu.IconBorder:SetAlpha(0)
 
 		_G["MerchantItem"..i.."SlotTexture"]:Hide()
 		_G["MerchantItem"..i.."NameFrame"]:Hide()
@@ -122,6 +123,7 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.MerchantBuyBackItemNameFrame:Hide()
 	_G.MerchantBuyBackItemItemButton:SetNormalTexture("")
 	_G.MerchantBuyBackItemItemButton:SetPushedTexture("")
+	MerchantBuyBackItemItemButton.IconBorder:SetAlpha(0)
 
 	F.CreateBD(_G.MerchantBuyBackItemItemButton, 0)
 	F.CreateBD(_G.MerchantBuyBackItem, .25)

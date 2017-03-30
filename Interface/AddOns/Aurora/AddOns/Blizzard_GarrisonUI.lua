@@ -1,7 +1,6 @@
 local _, private = ...
 
 -- [[ Lua Globals ]]
-local _G = _G
 local select, pairs = _G.select, _G.pairs
 
 -- [[ WoW API ]]
@@ -267,7 +266,10 @@ C.themes["Blizzard_GarrisonUI"] = function()
 		for _, reward in pairs(button.Rewards) do
 			reward:GetRegions():Hide()
 			reward.Icon:SetTexCoord(.08, .92, .08, .92)
+			reward.IconBorder:SetAlpha(0)
 			F.CreateBG(reward.Icon)
+			reward:ClearAllPoints()
+			reward:SetPoint("TOPRIGHT", -4, -4)
 		end
 
 		F.CreateBD(bg, .25)
@@ -350,9 +352,6 @@ C.themes["Blizzard_GarrisonUI"] = function()
 		select(4, xpBar:GetRegions()):Hide()
 
 		xpBar:SetStatusBarTexture(C.media.backdrop)
-		xpBar:ClearAllPoints()
-		xpBar:SetPoint("BOTTOMLEFT", FollowerTab.PortraitFrame, "BOTTOMRIGHT", 5, -10)
-		xpBar:SetPoint("TOPRIGHT", FollowerTab.Class, "BOTTOMRIGHT", 0, -5)
 
 		F.CreateBDFrame(xpBar)
 	end
@@ -490,10 +489,12 @@ C.themes["Blizzard_GarrisonUI"] = function()
 			self.numRewardsStyled = self.numRewardsStyled + 1
 
 			local reward = self.Rewards[self.numRewardsStyled]
+			local icon = reward.Icon
+
 			reward:GetRegions():Hide()
 
-			local icon = reward.Icon
 			icon:SetTexCoord(.08, .92, .08, .92)
+			reward.IconBorder:SetAlpha(0)
 			F.CreateBG(icon)
 		end
 	end)

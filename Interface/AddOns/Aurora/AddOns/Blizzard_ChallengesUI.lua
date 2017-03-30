@@ -9,51 +9,59 @@ local F, C = _G.unpack(private.Aurora)
 local skinned = {}
 
 C.themes["Blizzard_ChallengesUI"] = function()
-    --[[ ChallengesKeystoneFrame ]]--
-    local KeystoneFrame = _G.ChallengesKeystoneFrame
-    F.CreateBD(KeystoneFrame)
-    F.ReskinClose(KeystoneFrame.CloseButton)
-    F.Reskin(KeystoneFrame.StartButton)
+	ChallengesFrameInset:DisableDrawLayer("BORDER")
+	ChallengesFrameInsetBg:Hide()
+	for i = 1, 2 do
+		select(i, ChallengesFrame:GetRegions()):Hide()
+	end
 
-    _G.hooksecurefunc(KeystoneFrame, "Reset", function(self)
-        self:GetRegions():Hide()
-        KeystoneFrame.InstructionBackground:SetAlpha(0.5)
-    end)
-    _G.hooksecurefunc(KeystoneFrame, "OnKeystoneSlotted", function(self)
-        for i, affix in ipairs(self.Affixes) do
-            affix.Border:Hide()
+	select(1, ChallengesFrame.GuildBest:GetRegions()):Hide()
+	select(3, ChallengesFrame.GuildBest:GetRegions()):Hide()
+	F.CreateBD(ChallengesFrame.GuildBest, .3)
 
-            affix.Portrait:SetTexture(nil)
-            F.ReskinIcon(affix.Portrait)
-            if affix.info then
-                affix.Portrait:SetTexture(_G.CHALLENGE_MODE_EXTRA_AFFIX_INFO[affix.info.key].texture)
-            elseif affix.affixID then
-                local _, _, filedataid = _G.C_ChallengeMode.GetAffixInfo(affix.affixID)
-                affix.Portrait:SetTexture(filedataid)
-            end
-        end
-    end)
+	local angryStyle
+	ChallengesFrame:HookScript("OnShow", function()
+		for i = 1, 12 do
+			local bu = ChallengesFrame.DungeonIcons[i]
+			if bu and not bu.styled then
+				bu:GetRegions():Hide()
+				bu.Icon:SetTexCoord(.08, .92, .08, .92)
+				F.CreateBD(bu, .3)
+				bu.styled = true
+			end
+		end
 
-    --[[ ChallengesFrame ]]--
-    local ChallengesFrame = _G.ChallengesFrame
-    ChallengesFrame:DisableDrawLayer("BACKGROUND")
-	_G.ChallengesFrameInset:DisableDrawLayer("BORDER")
-	_G.ChallengesFrameInsetBg:Hide()
+		if IsAddOnLoaded("AngryKeystones") and not angryStyle then
+			local scheduel = select(6, ChallengesFrame:GetChildren())
+			select(1, scheduel:GetRegions()):Hide()
+			select(3, scheduel:GetRegions()):Hide()
+			F.CreateBD(scheduel, .3)
+			angryStyle = true
+		end
+	end)
 
-    ChallengesFrame.WeeklyBest:SetPoint("TOPLEFT")
-    ChallengesFrame.WeeklyBest:SetPoint("BOTTOMRIGHT")
-    ChallengesFrame.WeeklyBest.Child.Star:SetPoint("TOPLEFT", 54, -41)
+	local keystone = ChallengesKeystoneFrame
+	F.SetBD(keystone)
+	F.ReskinClose(keystone.CloseButton)
+	F.Reskin(keystone.StartButton)
 
-    ChallengesFrame.GuildBest.Line:SetColorTexture(0.7, 0.7, 0.7)
-    ChallengesFrame.GuildBest.Line:SetPoint("TOP", 0, -24)
-    ChallengesFrame.GuildBest.Line:SetHeight(1)
+	hooksecurefunc(keystone, "Reset", function(self)
+		select(1, self:GetRegions()):SetAlpha(0)
+		self.InstructionBackground:SetAlpha(0)
+	end)
 
-    _G.hooksecurefunc("ChallengesFrame_Update", function(self)
-        for i, icon in ipairs(self.DungeonIcons) do
-            if not skinned[icon] then
-                icon:GetRegions():Hide()
-                skinned[icon] = true
-            end
-        end
-    end)
+	hooksecurefunc(keystone, "OnKeystoneSlotted", function(self)
+		for i, frame in ipairs(self.Affixes) do
+			frame.Border:Hide()
+			frame.Portrait:SetTexture(nil)
+			F.ReskinIcon(frame.Portrait)
+
+			if frame.info then
+				frame.Portrait:SetTexture(CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
+			elseif frame.affixID then
+				local _, _, filedataid = C_ChallengeMode.GetAffixInfo(frame.affixID)
+				frame.Portrait:SetTexture(filedataid)
+			end
+		end
+	end)
 end

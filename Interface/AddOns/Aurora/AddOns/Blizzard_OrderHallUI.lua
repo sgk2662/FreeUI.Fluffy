@@ -18,14 +18,11 @@ C.themes["Blizzard_OrderHallUI"] = function()
 	F.Reskin(OrderHallMissionFrame.MissionTab.MissionPage.StartMissionButton)
 	F.ReskinClose(OrderHallMissionFrame.CloseButton)
 	F.ReskinClose(OrderHallMissionFrame.MissionTab.MissionPage.CloseButton)
-	
 	F.ReskinTab(OrderHallMissionFrameTab1)
 	F.ReskinTab(OrderHallMissionFrameTab2)
 	F.ReskinTab(OrderHallMissionFrameTab3)
-	
 	F.ReskinScroll(OrderHallMissionFrameMissionsListScrollFrameScrollBar)
 	F.ReskinScroll(OrderHallMissionFrameFollowersListScrollFrameScrollBar)
-	
 	select(11, OrderHallMissionFrame.MissionComplete.BonusRewards:GetRegions()):SetTextColor(1, .8, 0)
 
 	for i = 1, 18 do
@@ -147,15 +144,13 @@ C.themes["Blizzard_OrderHallUI"] = function()
 		local follower = MissionPage.Followers[i]
 		follower:GetRegions():Hide()
 		F.CreateBD(follower, .25)
-		
+
 		follower.PortraitFrame.Highlight:Hide()
 		follower.PortraitFrame.PortraitFeedbackGlow:Hide()
-		
 		follower.PortraitFrame.PortraitRing:SetAlpha(0)
 		follower.PortraitFrame.PortraitRingQuality:SetAlpha(0)
 		follower.PortraitFrame.LevelBorder:SetAlpha(0)
 		follower.PortraitFrame.Level:SetText("")
-		
 		follower.PortraitFrame.Empty:SetColorTexture(0,0,0)
 		follower.PortraitFrame.Empty:SetAllPoints(follower.PortraitFrame.Portrait)
 	end
@@ -197,7 +192,7 @@ C.themes["Blizzard_OrderHallUI"] = function()
 	local item = rewardFrame.OvermaxItem
 	item.Icon:SetDrawLayer("BORDER", 1)
 	F.ReskinIcon(item.Icon)
-		
+
 	for i = 1, 2 do
 		local reward = MissionPage.RewardsFrame.Rewards[i]
 		local icon = reward.Icon
@@ -267,7 +262,7 @@ C.themes["Blizzard_OrderHallUI"] = function()
 	zonesupport.Follower1.PortraitFrame.Level:SetText("")
 	zonesupport.Follower1.PortraitFrame.Empty:SetColorTexture(0,0,0)
 	zonesupport.Follower1.PortraitFrame.Empty:SetAllPoints(zonesupport.Follower1.PortraitFrame.Portrait)
-	
+
 	-- Talent Frame
 
 	F.ReskinClose(OrderHallTalentFrameCloseButton)

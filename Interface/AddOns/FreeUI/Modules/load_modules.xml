@@ -86,7 +86,7 @@
 	<Script file="Miscellaneous\BgSpamFix.lua"/>
 	<Script file="Miscellaneous\BgSpecIcon.lua"/>
 	<Script file="Miscellaneous\CDPulse.lua"/>
-	<Script file="Miscellaneous\ExpArtifactHonorBar.lua"/>
+	<!-- <Script file="Miscellaneous\ExpArtifactHonorBar.lua"/> -->
 	<Script file="Miscellaneous\FasterCamera.lua"/>
 	<Script file="Miscellaneous\FlashCursor.lua"/>
 	<Script file="Miscellaneous\MerchantItemlevel.lua"/>

@@ -33,6 +33,9 @@ _G.tinsert(C.themes["Aurora"], function()
 	F.Reskin(_G.OpenMailDeleteButton)
 	F.Reskin(_G.OpenMailCancelButton)
 	F.Reskin(_G.OpenMailReportSpamButton)
+	if C.is72 then
+		F.Reskin(_G.OpenAllMail)
+	end
 	F.ReskinInput(_G.SendMailNameEditBox, 20)
 	F.ReskinInput(_G.SendMailSubjectEditBox)
 	F.ReskinInput(_G.SendMailMoneyGold)

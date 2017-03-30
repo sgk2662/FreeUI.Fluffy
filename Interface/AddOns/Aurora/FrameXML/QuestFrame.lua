@@ -1,9 +1,5 @@
 local _, private = ...
 
--- [[ Lua Globals ]]
-local _G = _G
---local select, pairs = _G.select, _G.pairs
-
 -- [[ WoW API ]]
 local hooksecurefunc = _G.hooksecurefunc
 
@@ -34,15 +30,17 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.QuestRewardScrollFrameBottom:Hide()
 	_G.QuestRewardScrollFrameMiddle:Hide()
 	F.ReskinScroll(_G.QuestRewardScrollFrame.ScrollBar)
-	
+
 
 	--[[ Progress Panel ]]
 	_G.QuestFrameProgressPanel:DisableDrawLayer("BACKGROUND")
 	_G.QuestFrameProgressPanel:DisableDrawLayer("BORDER")
 
 	F.Reskin(_G.QuestFrameGoodbyeButton)
-	F.Reskin(_G.QuestFrameProgressPanel.IgnoreButton)
-	F.Reskin(_G.QuestFrameProgressPanel.UnignoreButton)
+	if not C.is72 then
+		F.Reskin(_G.QuestFrameProgressPanel.IgnoreButton)
+		F.Reskin(_G.QuestFrameProgressPanel.UnignoreButton)
+	end
 	F.Reskin(_G.QuestFrameCompleteButton)
 
 	_G.QuestProgressScrollFrameTop:Hide()
@@ -76,15 +74,17 @@ _G.tinsert(C.themes["Aurora"], function()
 		bu.NameFrame:Hide()
 		bu.Count:SetDrawLayer("OVERLAY")
 	end
-	
+
 
 	--[[ Detail Panel ]]
 	_G.QuestFrameDetailPanel:DisableDrawLayer("BACKGROUND")
 	_G.QuestFrameDetailPanel:DisableDrawLayer("BORDER")
 
 	F.Reskin(_G.QuestFrameDeclineButton)
-	F.Reskin(_G.QuestFrameDetailPanel.IgnoreButton)
-	F.Reskin(_G.QuestFrameDetailPanel.UnignoreButton)
+	if not C.is72 then
+		F.Reskin(_G.QuestFrameDetailPanel.IgnoreButton)
+		F.Reskin(_G.QuestFrameDetailPanel.UnignoreButton)
+	end
 	F.Reskin(_G.QuestFrameAcceptButton)
 
 	_G.QuestDetailScrollFrame:SetWidth(302) -- else these buttons get cut off
@@ -92,7 +92,7 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.QuestDetailScrollFrameBottom:Hide()
 	_G.QuestDetailScrollFrameMiddle:Hide()
 	F.ReskinScroll(_G.QuestDetailScrollFrame.ScrollBar)
-	
+
 
 	--[[ Greeting Panel ]]
 	_G.QuestFrameGreetingPanel:DisableDrawLayer("BACKGROUND")

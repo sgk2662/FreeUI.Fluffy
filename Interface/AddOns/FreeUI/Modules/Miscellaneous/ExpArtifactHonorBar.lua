@@ -205,9 +205,9 @@ local artifact_update = function(self, event)
 		Artifact:SetPoint(POSITION[1], POSITION[2], POSITION[3], POSITION[4], y)
 		Artifact:Show()
 
-		if spent == 54 then
-			Artifact:Hide()
-		end
+		-- if spent == 54 then
+		-- 	Artifact:Hide()
+		-- end
 	else
 		Artifact:Hide()
 	end

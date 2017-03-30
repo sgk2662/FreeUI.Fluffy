@@ -186,14 +186,14 @@ end
 local artifact_update = function(self, event)
 
 	if HasArtifactEquipped() then
-		local id, altid, name, icon, total, spent, q = C_ArtifactUI.GetEquippedArtifactInfo()	
-		local num, xp, next = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(spent, total)
-		local percent = math.ceil(xp/next*100)
+		local _, _, name, _, totalXP, pointsSpent, _, _, _, _, _, _, artifactTier = C_ArtifactUI.GetEquippedArtifactInfo()
+		local num, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, artifactTier)
+		local percent = math.ceil(xp/xpForNextPoint*100)
 
 		Artifact:ClearAllPoints()
-		-- Artifact:SetMinMaxValues(0, next)
-		-- Artifact:SetValue(xp)
-		Artifact:SetAnimatedValues(xp, 0, next, num + spent)
+		Artifact:SetMinMaxValues(0, xpForNextPoint)
+		Artifact:SetValue(xp)
+		-- Artifact:SetAnimatedValues(xp, 0, next, num + spent)
 
 		local y = POSITION[5]
 		if Experience:IsShown() then
@@ -215,18 +215,17 @@ end
 
 local showArtifactTooltip = function(self) 
 	if HasArtifactEquipped() then
-		local id, altid, name, icon, total, spent, q = C_ArtifactUI.GetEquippedArtifactInfo()
-		local num, xp, next = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(spent, total)
-		local percent = math.ceil(xp/next*100)
+		local _, _, name, _, totalXP, pointsSpent, _, _, _, _, _, _, artifactTier = C_ArtifactUI.GetEquippedArtifactInfo()
+		local num, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, artifactTier)
+		local percent = math.ceil(xp/xpForNextPoint*100)
 
 		GameTooltip:SetOwner(self, "ANCHOR_NONE")
 		GameTooltip:SetPoint(TIP[1], TIP[2], TIP[3], TIP[4], TIP[5])
 
 		GameTooltip:AddLine(name, COLOR.r, COLOR.g, COLOR.b)
-		GameTooltip:AddLine("Spended Points: " .. spent, 1, 1, 1)
-		GameTooltip:AddLine("Points to spend: " .. num, 1, 1, 1)
-		GameTooltip:AddLine("Artifact Power: "..percent.."%", 1, 1, 1)
-		GameTooltip:AddLine("Next trait: " .. xp .. "/" .. next, 1, 1, 1)
+		GameTooltip:AddLine(name.." ("..format(SPELLBOOK_AVAILABLE_AT, pointsSpent)..")", 0,.6,1)
+		GameTooltip:AddDoubleLine(ARTIFACT_POWER, totalXP.." ("..num..")", .6,.8,1, 1,1,1)
+		GameTooltip:AddDoubleLine("Next Trait", xp.."/"..xpForNextPoint.." ("..floor(xp/xpForNextPoint*100).."%)", .6,.8,1, 1,1,1)
 
 		GameTooltip:Show()
 	end

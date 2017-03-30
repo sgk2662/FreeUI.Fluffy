@@ -1,4 +1,13 @@
-local F, C = unpack(select(2, ...))
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local select, pairs = _G.select, _G.pairs
+
+-- [[ WoW API ]]
+local hooksecurefunc, CreateFrame = _G.hooksecurefunc, _G.CreateFrame
+
+-- [[ Core ]]
+local F, C = _G.unpack(private.Aurora)
 
 C.themes["Blizzard_Contribution"] = function()
 	local r, g, b = C.r, C.g, C.b

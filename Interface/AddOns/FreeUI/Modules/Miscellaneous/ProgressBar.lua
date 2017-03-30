@@ -193,7 +193,7 @@ local artifact_update = function(self, event)
 		Artifact:ClearAllPoints()
 		Artifact:SetMinMaxValues(0, xpForNextPoint)
 		Artifact:SetValue(xp)
-		-- Artifact:SetAnimatedValues(xp, 0, next, num + spent)
+		-- Artifact:SetAnimatedValues(xp, 0, xpForNextPoint, num + pointsSpent)
 
 		local y = POSITION[5]
 		if Experience:IsShown() then
@@ -224,8 +224,8 @@ local showArtifactTooltip = function(self)
 
 		GameTooltip:AddLine(name, COLOR.r, COLOR.g, COLOR.b)
 		GameTooltip:AddLine(name.." ("..format(SPELLBOOK_AVAILABLE_AT, pointsSpent)..")", 0,.6,1)
-		GameTooltip:AddDoubleLine(ARTIFACT_POWER, totalXP.." ("..num..")", .6,.8,1, 1,1,1)
-		GameTooltip:AddDoubleLine("Next Trait", xp.."/"..xpForNextPoint.." ("..floor(xp/xpForNextPoint*100).."%)", .6,.8,1, 1,1,1)
+		-- GameTooltip:AddDoubleLine(ARTIFACT_POWER, totalXP.." ("..num..")", .6,.8,1, 1,1,1)
+		GameTooltip:AddDoubleLine(ARTIFACT_POWER, xp.."/"..xpForNextPoint.." ("..floor(xp/xpForNextPoint*100).."%)", .6,.8,1, 1,1,1)
 
 		GameTooltip:Show()
 	end
@@ -273,29 +273,30 @@ end
 
 local showHonorTooltip = function(self) 
 	if UnitLevel("player") == MAX_PLAYER_LEVEL then
-		local current = UnitHonor("player");
-		local max = UnitHonorMax("player");
-		local level = UnitHonorLevel("player")
-		local levelmax = GetMaxPlayerHonorLevel()
+		local current, max = UnitHonor("player"), UnitHonorMax("player")
+		local level, levelmax = UnitHonorLevel("player"), GetMaxPlayerHonorLevel()
+		local text
 
 		GameTooltip:SetOwner(self, "ANCHOR_NONE")
 		GameTooltip:SetPoint(TIP[1], TIP[2], TIP[3], TIP[4], TIP[5])
 
 		GameTooltip:AddLine(HONOR)
 
-		if (CanPrestige()) then
-			GameTooltip:AddLine(PVP_HONOR_PRESTIGE_AVAILABLE)
-			GameTooltip:AddDivider()
-		end
-		GameTooltip:AddDoubleLine(HONOR_LEVEL_LABEL:gsub("%%d",""), level, 1, 1, 1)
-
-		if (CanPrestige()) then
-			GameTooltip:AddLine(PVP_HONOR_PRESTIGE_AVAILABLE);
-		elseif (level == levelmax) then
-			GameTooltip:AddLine(MAX_HONOR_LEVEL);
+		if CanPrestige() then
+			text = PVP_HONOR_PRESTIGE_AVAILABLE
+		elseif level == levelmax then
+			text = MAX_HONOR_LEVEL
 		else
-			GameTooltip:AddDoubleLine(HONOR_BAR:gsub("%%d/%%d",""), format('%d / %d (%d%%)', current, max, current/max * 100), 1, 1, 1)
+			text = current.."/"..max
 		end
+
+		if UnitPrestige("player") > 0 then
+			GameTooltip:AddLine(select(2, GetPrestigeInfo(UnitPrestige("player"))), .0,.6,1)
+		else
+			GameTooltip:AddLine(PVP_PRESTIGE_RANK_UP_TITLE..LEVEL.."0", .0,.6,1)
+		end
+		GameTooltip:AddDoubleLine(HONOR_POINTS..LEVEL..level, text, .6,.8,1, 1,1,1)
+
 		GameTooltip:Show()
 	end
 end

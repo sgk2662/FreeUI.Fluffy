@@ -18,3 +18,7 @@ if C.general.talkingHead == false then
 		end
 	end)
 end
+
+-- Remove Open All Mail Button
+OpenAllMail:Hide()
+OpenAllMail:UnregisterAllEvents()

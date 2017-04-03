@@ -74,13 +74,13 @@ GameTooltip:HookScript("OnTooltipSetSpell", function(self)
 end)
 
 -- Artifact Powers
-hooksecurefunc(GameTooltip, "SetArtifactPowerByID", function(self, id)
-	local spellid = C_ArtifactUI.GetPowerInfo(id)
-	if debuginfo == true and id and IsModifierKeyDown() then
-		-- addLine(self, id, types.artifactpower)
-		addLine(self, spellid, types.spell)
-	end
-end)
+-- hooksecurefunc(GameTooltip, "SetArtifactPowerByID", function(self, id)
+-- 	local spellid = C_ArtifactUI.GetPowerInfo(id)
+-- 	if debuginfo == true and id and IsModifierKeyDown() then
+-- 		-- addLine(self, id, types.artifactpower)
+-- 		addLine(self, spellid, types.spell)
+-- 	end
+-- end)
 
 -- Items
 local function attachItemTooltip(self)

@@ -9,6 +9,8 @@ local F, C = _G.unpack(private.Aurora)
 local skinned = {}
 
 C.themes["Blizzard_ChallengesUI"] = function()
+	local ChallengesFrame = ChallengesFrame
+
 	ChallengesFrameInset:DisableDrawLayer("BORDER")
 	ChallengesFrameInsetBg:Hide()
 	for i = 1, 2 do
@@ -50,11 +52,13 @@ C.themes["Blizzard_ChallengesUI"] = function()
 		self.InstructionBackground:SetAlpha(0)
 	end)
 
-	hooksecurefunc(keystone, "OnKeystoneSlotted", function(self)
-		for i, frame in ipairs(self.Affixes) do
+	local function AffixesSetup(parent)
+		for i, frame in ipairs(parent) do
 			frame.Border:Hide()
 			frame.Portrait:SetTexture(nil)
-			F.ReskinIcon(frame.Portrait)
+			if not frame.bg then
+				frame.bg = F.ReskinIcon(frame.Portrait)
+			end
 
 			if frame.info then
 				frame.Portrait:SetTexture(CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
@@ -63,5 +67,11 @@ C.themes["Blizzard_ChallengesUI"] = function()
 				frame.Portrait:SetTexture(filedataid)
 			end
 		end
-	end)
+	end
+	hooksecurefunc(keystone, "OnKeystoneSlotted", function(self) AffixesSetup(self.Affixes) end)
+	hooksecurefunc(ChallengesFrame.WeeklyBest, "SetUp", function(self) AffixesSetup(self.Child.Affixes) end)
+
+	ChallengesFrame.WeeklyBest:ClearAllPoints()
+	ChallengesFrame.WeeklyBest:SetPoint("TOP", 0, -5)
+	ChallengesFrame.GuildBest:SetPoint("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "BOTTOMRIGHT", -16, 30)
 end

@@ -36,6 +36,7 @@ _G.tinsert(C.themes["Aurora"], function()
 		bu:SetHighlightTexture("")
 		bu:SetPushedTexture("")
 		F.CreateBG(bu)
+		bu.IconBorder:SetAlpha(0)
 
 		silver:SetPoint("LEFT", gold, "RIGHT", 1, 0)
 		copper:SetPoint("LEFT", silver, "RIGHT", 1, 0)

@@ -149,12 +149,29 @@ end
 
 local reputation_update = function()
 	if GetWatchedFactionInfo() then
-		local name, rank, minRep, maxRep, value = GetWatchedFactionInfo()
+		local _, standing, min, max, value, factionID = GetWatchedFactionInfo()
+		local friendID, friendRep, _, _, _, _, _, friendThreshold, nextFriendThreshold = GetFriendshipReputation(factionID)
+
+		if friendID then
+			if nextFriendThreshold then
+				min, max, value = friendThreshold, nextFriendThreshold, friendRep
+			else
+				min, max, value = 0, 1, 1
+			end
+			standing = 5
+		elseif C_Reputation.IsFactionParagon(factionID) then
+			local currentValue, threshold = C_Reputation.GetFactionParagonInfo(factionID)
+			min, max, value = 0, threshold, currentValue
+		else
+			if standing == MAX_REPUTATION_REACTION then
+				min, max, value = 0, 1, 1
+			end
+		end
 
 		Reputation:ClearAllPoints()
-		Reputation:SetMinMaxValues(minRep, maxRep)
+		Reputation:SetMinMaxValues(min, max)
 		Reputation:SetValue(value)
-		Reputation:SetStatusBarColor(FactionInfo[rank][1], FactionInfo[rank][2], FactionInfo[rank][3])
+		Reputation:SetStatusBarColor(FACTION_BAR_COLORS[standing].r, FACTION_BAR_COLORS[standing].g, FACTION_BAR_COLORS[standing].b)
 
 		local y = POSITION[5]
 		if Experience:IsShown() then
@@ -169,15 +186,41 @@ end
 
 local showReputationTooltip = function(self)
 	if GetWatchedFactionInfo() then
-		local name, rank, start, cap, value = GetWatchedFactionInfo()
+		local name, standing, min, max, value, factionID = GetWatchedFactionInfo()
+		local friendID, _, _, _, _, _, friendTextLevel, _, nextFriendThreshold = GetFriendshipReputation(factionID)
+		local currentRank, maxRank = GetFriendshipReputationRanks(friendID)
+		local standingtext
+		if friendID then
+			if maxRank > 0 then
+				name = name.." ("..currentRank.." / "..maxRank..")"
+			end
+			if not nextFriendThreshold then
+				value = max - 1
+			end
+			standingtext = friendTextLevel
+		else
+			if standing == MAX_REPUTATION_REACTION then
+				max = min + 1e3
+				value = max - 1
+			end
+			standingtext = GetText("FACTION_STANDING_LABEL"..standing, UnitSex("player"))
+		end
 
 		GameTooltip:SetOwner(self, "ANCHOR_NONE")
 		GameTooltip:SetPoint(TIP[1], TIP[2], TIP[3], TIP[4], TIP[5])
 
-		GameTooltip:AddDoubleLine("Reputation:", name, r, g, b, 1, 1, 1)
-		GameTooltip:AddDoubleLine("Standing:", string.format("|c"..FactionInfo[rank][5].."%s|r", FactionInfo[rank][4]), r, g, b)
-		GameTooltip:AddDoubleLine("Rep:", string.format("%s/%s (%d%%)", BreakUpLargeNumbers(value-start), BreakUpLargeNumbers(cap-start), (value-start)/(cap-start)*100), r, g, b, 1, 1, 1)
-		GameTooltip:AddDoubleLine("Remaining:", string.format("%s", BreakUpLargeNumbers(cap-value)), r, g, b, 1, 1, 1)
+		GameTooltip:AddLine(name, 0,.6,1)
+		GameTooltip:AddDoubleLine(standingtext, value - min.."/"..max - min.." ("..floor((value - min)/(max - min)*100).."%)", .6,.8,1, 1,1,1)
+
+		-- GameTooltip:AddDoubleLine("Reputation:", name, r, g, b, 1, 1, 1)
+		-- GameTooltip:AddDoubleLine("Standing:", string.format("|c"..FactionInfo[rank][5].."%s|r", FactionInfo[rank][4]), r, g, b)
+		-- GameTooltip:AddDoubleLine("Rep:", string.format("%s/%s (%d%%)", BreakUpLargeNumbers(value-start), BreakUpLargeNumbers(cap-start), (value-start)/(cap-start)*100), r, g, b, 1, 1, 1)
+		-- GameTooltip:AddDoubleLine("Remaining:", string.format("%s", BreakUpLargeNumbers(cap-value)), r, g, b, 1, 1, 1)
+
+		if C_Reputation.IsFactionParagon(factionID) then
+			local currentValue, threshold = C_Reputation.GetFactionParagonInfo(factionID)
+			GameTooltip:AddDoubleLine("ParagonRep", currentValue.."/"..threshold.." ("..floor(currentValue/threshold*100).."%)", .6,.8,1, 1,1,1)
+		end
 
 		GameTooltip:Show()
 	end
@@ -223,8 +266,12 @@ local showArtifactTooltip = function(self)
 		GameTooltip:SetPoint(TIP[1], TIP[2], TIP[3], TIP[4], TIP[5])
 
 		GameTooltip:AddLine(name, COLOR.r, COLOR.g, COLOR.b)
-		GameTooltip:AddLine(name.." ("..format(SPELLBOOK_AVAILABLE_AT, pointsSpent)..")", 0,.6,1)
-		-- GameTooltip:AddDoubleLine(ARTIFACT_POWER, totalXP.." ("..num..")", .6,.8,1, 1,1,1)
+		-- GameTooltip:AddLine(name.." ("..format(SPELLBOOK_AVAILABLE_AT, pointsSpent)..")", 0,.6,1)
+		if pointsSpent > 51 then
+			GameTooltip:AddLine(name.." ("..format(SPELLBOOK_AVAILABLE_AT, pointsSpent).." ".."Paragon"..(pointsSpent - 34)..")", 0,.6,1)
+		else
+			GameTooltip:AddLine(name.." ("..format(SPELLBOOK_AVAILABLE_AT, pointsSpent)..")", 0,.6,1)
+		end
 		GameTooltip:AddDoubleLine(ARTIFACT_POWER, xp.."/"..xpForNextPoint.." ("..floor(xp/xpForNextPoint*100).."%)", .6,.8,1, 1,1,1)
 
 		GameTooltip:Show()

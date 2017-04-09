@@ -1,7 +1,7 @@
 ## Interface: 70200
 ## Title: |cffF5FFFAFreeUI|r.|cffFF34B3Fluffy|r |cffAFFF87cargBags_Nivaya|r
 ## Author: Luzzifus, Nibelheim, humfras (Modified by Dostoyevsky@烈焰峰)
-## Version: 70200.01
+## Version: 70200.02
 ## RequiredDeps: FreeUI
 ## OptionalDeps: ItemRack, Outfitter
 ## SavedVariables: cBnivCfg, cB_CustomBags, cBniv_CatInfo

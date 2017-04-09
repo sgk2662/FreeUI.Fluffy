@@ -2,7 +2,7 @@
 ## Title: |cffF5FFFAFreeUI|r.|cffFF34B3Fluffy|r |cffFFFACDOptions|r
 ## Notes: Options GUI for FreeUI.
 ## Author: Haleth/Lightsword (Modified by Dostoyevsky@烈焰峰)
-## Version: 70200.01
+## Version: 70200.02
 ## SavedVariables: FreeUIOptionsGlobal, FreeUIOptions
 ## SavedVariablesPerCharacter: FreeUIOptionsPerChar
 

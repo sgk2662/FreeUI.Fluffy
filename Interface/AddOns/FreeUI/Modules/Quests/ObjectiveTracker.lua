@@ -343,8 +343,8 @@ hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, 
 		progressBar.styled = true
 	end
 
-	bar.IconBG:Hide()
-	bar.newIconBg:SetShown(icon:IsShown())
+	-- bar.IconBG:Hide()
+	-- bar.newIconBg:SetShown(icon:IsShown())
 end)
 
 -- [[ World quest objective progress bar ]]
@@ -379,8 +379,8 @@ hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(self, bloc
 		progressBar.styled = true
 	end
 
-	bar.IconBG:Hide()
-	bar.newIconBg:SetShown(icon:IsShown())
+	-- bar.IconBG:Hide()
+	-- bar.newIconBg:SetShown(icon:IsShown())
 end)
 
 -- [[ scenario progress bar ]]
@@ -398,6 +398,30 @@ hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddProgressBar", function(self, block, 
 		bar.BarFrame:Hide()
 		bar:SetStatusBarTexture(C.media.backdrop)
 		bar:SetStatusBarColor(207/255, 0/255, 31/255)
+		bar:SetHeight(14)
+
+		bar.Label:ClearAllPoints()
+		bar.Label:SetPoint("CENTER")
+		F.SetFS(bar.Label)
+
+		progressBar.styled = true
+	end
+end)
+
+hooksecurefunc(QUEST_TRACKER_MODULE, "AddProgressBar", function(self, block, line)
+	local progressBar = line.ProgressBar
+	local bar = progressBar.Bar
+
+	if not progressBar.styled then
+		local bg = F.CreateBDFrame(bar)
+		bg:SetPoint("TOPLEFT", -1, 1)
+		bg:SetPoint("BOTTOMRIGHT", 0, -2)
+		F.CreateSD(bg)
+
+		bar.BarBG:Hide()
+		bar.BarFrame:Hide()
+		bar:SetStatusBarTexture(C.media.backdrop)
+		bar:SetStatusBarColor(50/255, 205/255, 50/255)
 		bar:SetHeight(14)
 
 		bar.Label:ClearAllPoints()

@@ -71,31 +71,6 @@ end
 ------------------------------------------
 -- New Items filter and related functions
 ------------------------------------------
-function cbNivaya:getItemCount(itemName)
-	local tItemCount = 0
-	for i = 0,4 do
-		local tNumSlots = GetContainerNumSlots(i)
-		if tNumSlots > 0 then
-			for j = 1,tNumSlots do
-				local tLink = GetContainerItemLink(i,j)
-				local _, tName
-				if tLink then
-					if tLink:find("battlepet") then
-						_, tName = strmatch(tLink, "|H(.-)|h(.-)|h")
-					else
-						tName = GetItemInfo(tLink)
-					end
-				end
-				if tName == itemName then
-					local _,tStackCount = GetContainerItemInfo(i,j)
-					tItemCount = tItemCount + tStackCount
-				end
-			end
-		end
-	end
-	return tItemCount
-end
-
 cB_Filters.fNewItems = function(item)
 	if not cBnivCfg.NewItems then return false end
 	if not ((item.bagID >= 0) and (item.bagID <= 4)) then return false end

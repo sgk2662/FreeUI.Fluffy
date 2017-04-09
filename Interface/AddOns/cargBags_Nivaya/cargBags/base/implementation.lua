@@ -320,7 +320,8 @@ function Implementation:GetItemInfo(bagID, slotID, i)
 	local clink = GetContainerItemLink(bagID, slotID)
 
 	if(clink) then
-		i.texture, i.count, i.locked, i.quality, i.readable = GetContainerItemInfo(bagID, slotID)
+		local _
+		i.texture, i.count, i.locked, i.quality, i.readable, _, _, _, _, i.id = GetContainerItemInfo(bagID, slotID)
 		i.cdStart, i.cdFinish, i.cdEnable = GetContainerItemCooldown(bagID, slotID)
 		i.isQuestItem, i.questID, i.questActive = GetContainerItemQuestInfo(bagID, slotID)
 		i.isInSet, i.setName = GetContainerItemEquipmentSetInfo(bagID, slotID)
@@ -357,7 +358,9 @@ function Implementation:GetItemInfo(bagID, slotID, i)
 			i.id = tonumber(id) or 0
 			i.name = name
 			i.minLevel = level
-			i.link = clink
+		elseif (clink:find("keystone")) then
+			local data, name = strsplit("[", clink)
+			i.name = strsplit("]", name)
 		end
 		--print("GetItemInfo:", i.isInSet, i.setName, i.name)
 	end

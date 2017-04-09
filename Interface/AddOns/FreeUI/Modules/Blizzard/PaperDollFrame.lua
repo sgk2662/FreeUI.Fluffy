@@ -21,8 +21,8 @@ local function PaperDollItemInfo(self, unit)
     if (unit and self.hasItem) then
 		local itemLevel, Unknow, itemRarity = LIL:GetUnitItemInfo(unit, id)
 		if (itemLevel and Unknow == 0 and itemLevel > 0) then
-			local itemColor = _G.ITEM_QUALITY_COLORS[itemRarity]
-			self.ilvl:SetTextColor(itemColor.r, itemColor.g, itemColor.b)
+			-- local itemColor = _G.ITEM_QUALITY_COLORS[itemRarity]
+			-- self.ilvl:SetTextColor(itemColor.r, itemColor.g, itemColor.b)
 			self.ilvl:SetText(itemLevel)
 		end
 	end

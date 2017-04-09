@@ -34,7 +34,7 @@
 	<Script file="ActionBars\style.lua"/>
 	<Script file="ActionBars\rangecolor.lua"/>
 	<Script file="ActionBars\HoverBind.lua"/>
-	<Script file="ActionBars\clickcast.lua"/>
+	<!-- <Script file="ActionBars\clickcast.lua"/> -->
 
 	<!-- Announcements -->
 	<Script file="Announcements\interrupt.lua"/>

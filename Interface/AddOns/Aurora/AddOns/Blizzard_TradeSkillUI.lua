@@ -32,7 +32,7 @@ C.themes["Blizzard_TradeSkillUI"] = function()
 	F.ReskinFilterButton(TradeSkillFrame.FilterButton)
 	TradeSkillFrame.FilterButton:SetPoint("TOPRIGHT", -7, -55)
 
-	F.ReskinArrow(TradeSkillFrame.LinkToButton, "right")
+	F.ReskinArrow(TradeSkillFrame.LinkToButton, "Right")
 	TradeSkillFrame.LinkToButton:SetPoint("BOTTOMRIGHT", TradeSkillFrame.FilterButton, "TOPRIGHT", 0, 6)
 
 	--[[ Recipe List ]]--
@@ -112,16 +112,12 @@ C.themes["Blizzard_TradeSkillUI"] = function()
 	F.Reskin(detailsFrame.CreateButton)
 	F.ReskinInput(detailsFrame.CreateMultipleInputBox)
 	detailsFrame.CreateMultipleInputBox:DisableDrawLayer("BACKGROUND")
-	F.ReskinArrow(detailsFrame.CreateMultipleInputBox.IncrementButton, "right")
-	F.ReskinArrow(detailsFrame.CreateMultipleInputBox.DecrementButton, "left")
+	F.ReskinArrow(detailsFrame.CreateMultipleInputBox.IncrementButton, "Right")
+	F.ReskinArrow(detailsFrame.CreateMultipleInputBox.DecrementButton, "Left")
 
 	local contents = detailsFrame.Contents
-	if C.is72 then
-		contents.ResultIcon.bg = F.CreateBG(contents.ResultIcon)
-		contents.ResultIcon.ResultBorder:Hide()
-	else
-		contents.ResultIcon.Background:Hide()
-	end
+	contents.ResultIcon.bg = F.CreateBG(contents.ResultIcon)
+	contents.ResultIcon.ResultBorder:Hide()
 	hooksecurefunc(contents.ResultIcon, "SetNormalTexture", function(self)
 		if not self._auroraSkinned then
 			self._auroraBG = F.ReskinIcon(self:GetNormalTexture())

@@ -73,20 +73,11 @@ _G.tinsert(C.themes["Aurora"], function()
 			-- arrow button
 
 			local arrowButton = navButton.MenuArrowButton
-
 			arrowButton.Art:Hide()
-
+			arrowButton.NormalTexture:Hide()
+			arrowButton.PushedTexture:Hide()
 			arrowButton:SetHighlightTexture("")
-
-			local tex = arrowButton:CreateTexture(nil, "ARTWORK")
-			tex:SetTexture(C.media.arrowDown)
-			tex:SetSize(8, 8)
-			tex:SetPoint("CENTER")
-			arrowButton.tex = tex
-
-			local colourArrow, clearArrow = F.colourArrow, F.clearArrow
-			arrowButton:SetScript("OnEnter", colourArrow)
-			arrowButton:SetScript("OnLeave", clearArrow)
+			F.CreateArrow(arrowButton, "Down")
 
 			navButton.restyled = true
 		end

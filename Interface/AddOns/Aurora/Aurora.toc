@@ -14,6 +14,7 @@ FrameXML\Constants.lua
 
 FrameXML\GameTooltip.lua
 FrameXML\DressUpFrames.lua
+FrameXML\ItemButtonTemplate.lua
 FrameXML\NavigationBar.lua
 FrameXML\GameMenuFrame.lua
 FrameXML\StaticPopup.lua

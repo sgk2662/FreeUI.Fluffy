@@ -37,10 +37,6 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.QuestFrameProgressPanel:DisableDrawLayer("BORDER")
 
 	F.Reskin(_G.QuestFrameGoodbyeButton)
-	if not C.is72 then
-		F.Reskin(_G.QuestFrameProgressPanel.IgnoreButton)
-		F.Reskin(_G.QuestFrameProgressPanel.UnignoreButton)
-	end
 	F.Reskin(_G.QuestFrameCompleteButton)
 
 	_G.QuestProgressScrollFrameTop:Hide()
@@ -81,10 +77,6 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.QuestFrameDetailPanel:DisableDrawLayer("BORDER")
 
 	F.Reskin(_G.QuestFrameDeclineButton)
-	if not C.is72 then
-		F.Reskin(_G.QuestFrameDetailPanel.IgnoreButton)
-		F.Reskin(_G.QuestFrameDetailPanel.UnignoreButton)
-	end
 	F.Reskin(_G.QuestFrameAcceptButton)
 
 	_G.QuestDetailScrollFrame:SetWidth(302) -- else these buttons get cut off
@@ -118,9 +110,37 @@ _G.tinsert(C.themes["Aurora"], function()
 	hRule:SetPoint("CENTER", _G.QuestGreetingFrameHorizontalBreak)
 
 	_G.QuestGreetingFrameHorizontalBreak:SetTexture("")
-	_G.QuestFrameGreetingPanel:HookScript("OnShow", function()
+
+	local function UpdateGreetingPanel()
 		hRule:SetShown(_G.QuestGreetingFrameHorizontalBreak:IsShown())
-	end)
+		local numActiveQuests = _G.GetNumActiveQuests()
+		if numActiveQuests > 0 then
+			for i = 1, numActiveQuests do
+				local questTitleButton = _G["QuestTitleButton"..i]
+				local title = _G.GetActiveTitle(i)
+				if ( _G.IsActiveQuestTrivial(i) ) then
+					questTitleButton:SetFormattedText(_G.AURORA_TRIVIAL_QUEST_DISPLAY, title)
+				else
+					questTitleButton:SetFormattedText(_G.AURORA_NORMAL_QUEST_DISPLAY, title)
+				end
+			end
+		end
+
+		local numAvailableQuests = _G.GetNumAvailableQuests()
+		if numAvailableQuests > 0 then
+			for i = numActiveQuests + 1, numActiveQuests + numAvailableQuests do
+				local questTitleButton = _G["QuestTitleButton"..i]
+				local title = _G.GetAvailableTitle(i - numActiveQuests)
+				if _G.GetAvailableQuestInfo(i - numActiveQuests) then
+					questTitleButton:SetFormattedText(_G.AURORA_TRIVIAL_QUEST_DISPLAY, title);
+				else
+					questTitleButton:SetFormattedText(_G.AURORA_NORMAL_QUEST_DISPLAY, title);
+				end
+			end
+		end
+	end
+	_G.QuestFrameGreetingPanel:HookScript("OnShow", UpdateGreetingPanel)
+	hooksecurefunc("QuestFrameGreetingPanel_OnShow", UpdateGreetingPanel)
 
 	-- [[ Quest NPC model ]]
 	_G.QuestNPCModelBg:Hide()

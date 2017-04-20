@@ -108,10 +108,16 @@ C.defaults = {
 	["tooltips"] = false,
 }
 
+C.backdrop = {
+	bgFile = C.media.backdrop,
+	edgeFile = C.media.backdrop,
+	edgeSize = 1,
+}
+
 C.frames = {}
 
 C.TOC = select(4, _G.GetBuildInfo())
-C.is72 = C.TOC > 70100 or _G.GetBuildInfo() == "7.2.0"
+C.is725 = _G.GetBuildInfo() == "7.2.5"
 
 -- [[ Cached variables ]]
 
@@ -130,11 +136,7 @@ local red, green, blue = C.classcolours[class].r, C.classcolours[class].g, C.cla
 F.dummy = function() end
 
 F.CreateBD = function(f, a)
-	f:SetBackdrop({
-		bgFile = C.media.backdrop,
-		edgeFile = C.media.backdrop,
-		edgeSize = 1,
-	})
+	f:SetBackdrop(C.backdrop)
 	f:SetBackdropColor(0, 0, 0, a or .65)
 	f:SetBackdropBorderColor(0, 0, 0)
 --	if not a then _G.tinsert(C.frames, f) end
@@ -337,16 +339,6 @@ F.ReskinTab = function(f, numTabs)
 	end
 end
 
-local function colourScroll(f)
-	if f:IsEnabled() then
-		f.tex:SetVertexColor(red, green, blue)
-	end
-end
-
-local function clearScroll(f)
-	f.tex:SetVertexColor(1, 1, 1)
-end
-
 F.ReskinScroll = function(f, parent)
 	local frame = f:GetName()
 
@@ -375,69 +367,21 @@ F.ReskinScroll = function(f, parent)
 	local up = (f.ScrollUpButton or f.UpButton) or _G[(frame or parent).."ScrollUpButton"]
 	local down = (f.ScrollDownButton or f.DownButton) or _G[(frame or parent).."ScrollDownButton"]
 
-	up:SetWidth(17)
-	down:SetWidth(17)
-
-	F.Reskin(up, true)
-	F.Reskin(down, true)
-
-	up:SetDisabledTexture(C.media.backdrop)
-	local dis1 = up:GetDisabledTexture()
-	dis1:SetVertexColor(0, 0, 0, .4)
-	dis1:SetDrawLayer("OVERLAY")
-
-	down:SetDisabledTexture(C.media.backdrop)
-	local dis2 = down:GetDisabledTexture()
-	dis2:SetVertexColor(0, 0, 0, .4)
-	dis2:SetDrawLayer("OVERLAY")
-
-	local uptex = up:CreateTexture(nil, "ARTWORK")
-	uptex:SetTexture(C.media.arrowUp)
-	uptex:SetSize(8, 8)
-	uptex:SetPoint("CENTER")
-	uptex:SetVertexColor(1, 1, 1)
-	up.tex = uptex
-
-	local downtex = down:CreateTexture(nil, "ARTWORK")
-	downtex:SetTexture(C.media.arrowDown)
-	downtex:SetSize(8, 8)
-	downtex:SetPoint("CENTER")
-	downtex:SetVertexColor(1, 1, 1)
-	down.tex = downtex
-
-	up:HookScript("OnEnter", colourScroll)
-	up:HookScript("OnLeave", clearScroll)
-	down:HookScript("OnEnter", colourScroll)
-	down:HookScript("OnLeave", clearScroll)
+	F.ReskinArrow(up, "Up")
+	F.ReskinArrow(down, "Down")
+	up:SetSize(17, 17)
+	down:SetSize(17, 17)
 end
 
-local function colourArrow(f)
-	if f:IsEnabled() then
-		f.tex:SetVertexColor(red, green, blue)
-	end
-end
-
-local function clearArrow(f)
-	f.tex:SetVertexColor(1, 1, 1)
-end
-
-F.colourArrow = colourArrow
-F.clearArrow = clearArrow
-
-F.ReskinDropDown = function(f)
+F.ReskinDropDown = function(f, borderless)
 	local frame = f:GetName()
 
-	local left = _G[frame.."Left"]
-	local middle = _G[frame.."Middle"]
-	local right = _G[frame.."Right"]
-
-	if left then left:SetAlpha(0) end
-	if middle then middle:SetAlpha(0) end
-	if right then right:SetAlpha(0) end
+	local button = f.Button or _G[frame.."Button"]
+	F.ReskinArrow(button, "Down")
+	button:ClearAllPoints()
 
 	local bg = CreateFrame("Frame", nil, f)
-	bg:SetPoint("TOPLEFT", 20, -4)
-	bg:SetPoint("BOTTOMRIGHT", -14, 8)
+	bg:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", 1, 0)
 	bg:SetFrameLevel(f:GetFrameLevel()-1)
 	F.CreateBD(bg, 0)
 
@@ -445,27 +389,21 @@ F.ReskinDropDown = function(f)
 	gradient:SetPoint("TOPLEFT", bg, 1, -1)
 	gradient:SetPoint("BOTTOMRIGHT", bg, -1, 1)
 
-	local down = _G[frame.."Button"]
-	down:SetSize(20, 20)
-	down:ClearAllPoints()
-	down:SetPoint("TOPRIGHT", bg)
-	F.Reskin(down, true)
+	if borderless then
+		button:SetPoint("TOPRIGHT", 0, -6)
+		bg:SetPoint("TOPLEFT", 0, -6)
+	else
+		local left = _G[frame.."Left"]
+		local middle = _G[frame.."Middle"]
+		local right = _G[frame.."Right"]
 
-	down:SetDisabledTexture(C.media.backdrop)
-	local dis = down:GetDisabledTexture()
-	dis:SetVertexColor(0, 0, 0, .4)
-	dis:SetDrawLayer("OVERLAY")
-	dis:SetAllPoints()
+		left:SetAlpha(0)
+		middle:SetAlpha(0)
+		right:SetAlpha(0)
 
-	local tex = down:CreateTexture(nil, "ARTWORK")
-	tex:SetTexture(C.media.arrowDown)
-	tex:SetSize(8, 8)
-	tex:SetPoint("CENTER")
-	tex:SetVertexColor(1, 1, 1)
-	down.tex = tex
-
-	down:HookScript("OnEnter", colourArrow)
-	down:HookScript("OnLeave", clearArrow)
+		button:SetPoint("TOPRIGHT", right, -19, -21)
+		bg:SetPoint("TOPLEFT", 20, -4)
+	end
 end
 
 local function colourClose(f)
@@ -553,6 +491,30 @@ F.ReskinInput = function(f, height, width)
 	if width then f:SetWidth(width) end
 end
 
+local function colourArrow(f)
+	if f:IsEnabled() then
+		f._auroraArrow:SetVertexColor(red, green, blue)
+	end
+end
+
+local function clearArrow(f)
+	f._auroraArrow:SetVertexColor(1, 1, 1)
+end
+
+F.colourArrow = colourArrow
+F.clearArrow = clearArrow
+
+F.CreateArrow = function(f, direction)
+	local tex = f:CreateTexture(nil, "ARTWORK", nil, 7)
+	tex:SetTexture(C.media["arrow"..direction])
+	tex:SetSize(8, 8)
+	tex:SetPoint("CENTER")
+	f._auroraArrow = tex
+
+	f:HookScript("OnEnter", colourArrow)
+	f:HookScript("OnLeave", clearArrow)
+end
+
 F.ReskinArrow = function(f, direction)
 	f:SetSize(18, 18)
 	F.Reskin(f, true)
@@ -562,14 +524,7 @@ F.ReskinArrow = function(f, direction)
 	dis:SetVertexColor(0, 0, 0, .3)
 	dis:SetDrawLayer("OVERLAY")
 
-	local tex = f:CreateTexture(nil, "ARTWORK")
-	tex:SetTexture("Interface\\AddOns\\Aurora\\media\\arrow-"..direction.."-active")
-	tex:SetSize(8, 8)
-	tex:SetPoint("CENTER")
-	f.tex = tex
-
-	f:HookScript("OnEnter", colourArrow)
-	f:HookScript("OnLeave", clearArrow)
+	F.CreateArrow(f, direction)
 end
 
 F.ReskinCheck = function(f, isTriState)
@@ -819,14 +774,7 @@ F.ReskinNavBar = function(f)
 	F.Reskin(f.homeButton)
 	F.Reskin(overflowButton, true)
 
-	local tex = overflowButton:CreateTexture(nil, "ARTWORK")
-	tex:SetTexture(C.media.arrowLeft)
-	tex:SetSize(8, 8)
-	tex:SetPoint("CENTER")
-	overflowButton.tex = tex
-
-	overflowButton:HookScript("OnEnter", colourArrow)
-	overflowButton:HookScript("OnLeave", clearArrow)
+	F.CreateArrow(overflowButton, "Left")
 end
 
 F.ReskinGarrisonPortrait = function(portrait, isTroop)
@@ -863,6 +811,36 @@ end
 F.ReskinIcon = function(icon)
 	icon:SetTexCoord(.08, .92, .08, .92)
 	return F.CreateBDFrame(icon)
+end
+
+local getBackdrop = function()
+	return C.backdrop
+end
+
+local getBackdropColor = function()
+	return 0, 0, 0, .6
+end
+
+local getBackdropBorderColor = function()
+	return 0, 0, 0
+end
+F.ReskinTooltip = function(f)
+	f:SetBackdrop(nil)
+
+	local bg
+	if f.BackdropFrame then
+		bg = f.BackdropFrame
+	else
+		bg = _G.CreateFrame("Frame", nil, f)
+		bg:SetFrameLevel(f:GetFrameLevel()-1)
+	end
+	bg:SetPoint("TOPLEFT")
+	bg:SetPoint("BOTTOMRIGHT")
+	F.CreateBD(bg, .6)
+
+	f.GetBackdrop = getBackdrop
+	f.GetBackdropColor = getBackdropColor
+	f.GetBackdropBorderColor = getBackdropBorderColor
 end
 
 -- [[ Variable and module handling ]]
@@ -1050,12 +1028,12 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- [[ Arrows ]]
 
-		F.ReskinArrow(_G.SpellBookPrevPageButton, "left")
-		F.ReskinArrow(_G.SpellBookNextPageButton, "right")
-		F.ReskinArrow(_G.InboxPrevPageButton, "left")
-		F.ReskinArrow(_G.InboxNextPageButton, "right")
-		F.ReskinArrow(_G.TabardCharacterModelRotateLeftButton, "left")
-		F.ReskinArrow(_G.TabardCharacterModelRotateRightButton, "right")
+		F.ReskinArrow(_G.SpellBookPrevPageButton, "Left")
+		F.ReskinArrow(_G.SpellBookNextPageButton, "Right")
+		F.ReskinArrow(_G.InboxPrevPageButton, "Left")
+		F.ReskinArrow(_G.InboxNextPageButton, "Right")
+		F.ReskinArrow(_G.TabardCharacterModelRotateLeftButton, "Left")
+		F.ReskinArrow(_G.TabardCharacterModelRotateRightButton, "Right")
 
 		-- [[ Radio buttons ]]
 
@@ -1285,8 +1263,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 				_G.PetStableNextPageButtonIcon:SetTexture("")
 
 				F.ReskinPortraitFrame(PetStableFrame, true)
-				F.ReskinArrow(_G.PetStablePrevPageButton, "left")
-				F.ReskinArrow(_G.PetStableNextPageButton, "right")
+				F.ReskinArrow(_G.PetStablePrevPageButton, "Left")
+				F.ReskinArrow(_G.PetStableNextPageButton, "Right")
 
 				_G.PetStableSelectedPetIcon:SetTexCoord(.08, .92, .08, .92)
 				F.CreateBG(_G.PetStableSelectedPetIcon)
@@ -1580,6 +1558,35 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.Reskin(_G.GossipFrameGreetingGoodbyeButton)
 		F.ReskinScroll(_G.GossipGreetingScrollFrameScrollBar)
 
+		hooksecurefunc("GossipFrameAvailableQuestsUpdate", function(...)
+			local numAvailQuestsData = select("#", ...)
+			local buttonIndex = (_G.GossipFrame.buttonIndex - 1) - (numAvailQuestsData / 7)
+			for i = 1, numAvailQuestsData, 7 do
+				local titleText, _, isTrivial = select(i, ...)
+				local titleButton = _G["GossipTitleButton" .. buttonIndex]
+				if isTrivial then
+					titleButton:SetFormattedText(_G.AURORA_TRIVIAL_QUEST_DISPLAY, titleText);
+				else
+					titleButton:SetFormattedText(_G.AURORA_NORMAL_QUEST_DISPLAY, titleText);
+				end
+				buttonIndex = buttonIndex + 1
+			end
+		end)
+		hooksecurefunc("GossipFrameActiveQuestsUpdate", function(...)
+			local numActiveQuestsData = select("#", ...)
+			local buttonIndex = (_G.GossipFrame.buttonIndex - 1) - (numActiveQuestsData / 6)
+			for i = 1, numActiveQuestsData, 6 do
+				local titleText, _, isTrivial = select(i, ...)
+				local titleButton = _G["GossipTitleButton" .. buttonIndex]
+				if isTrivial then
+					titleButton:SetFormattedText(_G.AURORA_TRIVIAL_QUEST_DISPLAY, titleText);
+				else
+					titleButton:SetFormattedText(_G.AURORA_NORMAL_QUEST_DISPLAY, titleText);
+				end
+				buttonIndex = buttonIndex + 1
+			end
+		end)
+
 		-- Help frame
 
 		for i = 1, 15 do
@@ -1623,8 +1630,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.Reskin(_G.HelpBrowserNavReload)
 		F.Reskin(_G.HelpBrowserNavStop)
 		F.Reskin(_G.HelpBrowserBrowserSettings)
-		F.ReskinArrow(_G.HelpBrowserNavBack, "left")
-		F.ReskinArrow(_G.HelpBrowserNavForward, "right")
+		F.ReskinArrow(_G.HelpBrowserNavBack, "Left")
+		F.ReskinArrow(_G.HelpBrowserNavForward, "Right")
 
 		_G.HelpBrowserNavHome:SetSize(18, 18)
 		_G.HelpBrowserNavReload:SetSize(18, 18)
@@ -1724,8 +1731,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		local tutNext = _G.TutorialFrameNextButton
 		F.Reskin(tutOkay, true)
 		F.ReskinClose(_G.TutorialFrameCloseButton)
-		F.ReskinArrow(tutPrev, "left")
-		F.ReskinArrow(tutNext, "right")
+		F.ReskinArrow(tutPrev, "Left")
+		F.ReskinArrow(tutNext, "Right")
 
 		tutOkay:ClearAllPoints()
 		tutOkay:SetPoint("BOTTOMLEFT", tutNext, "BOTTOMRIGHT", 10, 0)
@@ -1744,59 +1751,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		tutPrev:SetBackdropColor(0, 0, 0, .25)
 		tutNext:SetBackdropColor(0, 0, 0, .25)
 
-		-- Master looter frame
-
-		local MasterLooterFrame = _G.MasterLooterFrame
-		for i = 1, 9 do
-			select(i, MasterLooterFrame:GetRegions()):Hide()
-		end
-
-		MasterLooterFrame.Item.NameBorderLeft:Hide()
-		MasterLooterFrame.Item.NameBorderRight:Hide()
-		MasterLooterFrame.Item.NameBorderMid:Hide()
-		MasterLooterFrame.Item.IconBorder:Hide()
-
-		MasterLooterFrame.Item.Icon:SetTexCoord(.08, .92, .08, .92)
-		MasterLooterFrame.Item.Icon:SetDrawLayer("ARTWORK")
-		MasterLooterFrame.Item.bg = F.CreateBG(MasterLooterFrame.Item.Icon)
-
-		MasterLooterFrame:HookScript("OnShow", function(MLFrame)
-			MLFrame.Item.bg:SetVertexColor(MLFrame.Item.IconBorder:GetVertexColor())
-			_G.LootFrame:SetAlpha(.4)
-		end)
-
-		MasterLooterFrame:HookScript("OnHide", function(MLFrame)
-			_G.LootFrame:SetAlpha(1)
-		end)
-
-		F.CreateBD(MasterLooterFrame)
-		F.ReskinClose(select(3, MasterLooterFrame:GetChildren()))
-
-		hooksecurefunc("MasterLooterFrame_UpdatePlayers", function()
-			for i = 1, _G.MAX_RAID_MEMBERS do
-				local playerFrame = MasterLooterFrame["player"..i]
-				if playerFrame then
-					if not playerFrame.styled then
-						playerFrame.Bg:SetPoint("TOPLEFT", 1, -1)
-						playerFrame.Bg:SetPoint("BOTTOMRIGHT", -1, 1)
-						playerFrame.Highlight:SetPoint("TOPLEFT", 1, -1)
-						playerFrame.Highlight:SetPoint("BOTTOMRIGHT", -1, 1)
-
-						playerFrame.Highlight:SetTexture(C.media.backdrop)
-
-						F.CreateBD(playerFrame, 0)
-
-						playerFrame.styled = true
-					end
-					local colour = C.classcolours[select(2, _G.UnitClass(playerFrame.Name:GetText()))]
-					playerFrame.Name:SetTextColor(colour.r, colour.g, colour.b)
-					playerFrame.Highlight:SetVertexColor(colour.r, colour.g, colour.b, .2)
-				else
-					break
-				end
-			end
-		end)
-
 		-- Tabard frame
 
 		_G.TabardFrameMoneyInset:DisableDrawLayer("BORDER")
@@ -1812,8 +1766,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			_G["TabardFrameCustomization"..i.."Left"]:Hide()
 			_G["TabardFrameCustomization"..i.."Middle"]:Hide()
 			_G["TabardFrameCustomization"..i.."Right"]:Hide()
-			F.ReskinArrow(_G["TabardFrameCustomization"..i.."LeftButton"], "left")
-			F.ReskinArrow(_G["TabardFrameCustomization"..i.."RightButton"], "right")
+			F.ReskinArrow(_G["TabardFrameCustomization"..i.."LeftButton"], "Left")
+			F.ReskinArrow(_G["TabardFrameCustomization"..i.."RightButton"], "Right")
 		end
 
 		F.ReskinPortraitFrame(_G.TabardFrame, true)
@@ -1849,8 +1803,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		F.ReskinPortraitFrame(_G.ItemTextFrame, true)
 		F.ReskinScroll(_G.ItemTextScrollFrameScrollBar)
-		F.ReskinArrow(_G.ItemTextPrevPageButton, "left")
-		F.ReskinArrow(_G.ItemTextNextPageButton, "right")
+		F.ReskinArrow(_G.ItemTextPrevPageButton, "Left")
+		F.ReskinArrow(_G.ItemTextNextPageButton, "Right")
 
 		-- Petition frame
 

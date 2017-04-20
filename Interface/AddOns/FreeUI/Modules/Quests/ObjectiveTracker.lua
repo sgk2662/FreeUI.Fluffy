@@ -418,12 +418,14 @@ hooksecurefunc(QUEST_TRACKER_MODULE, "AddProgressBar", function(self, block, lin
 		bg:SetPoint("BOTTOMRIGHT", 0, -2)
 		F.CreateSD(bg)
 
-		bar.BarBG:Hide()
-		bar.BarFrame:Hide()
+		for i = 1, 6 do
+			select(i, bar:GetRegions()):Hide()
+		end
 		bar:SetStatusBarTexture(C.media.backdrop)
 		bar:SetStatusBarColor(50/255, 205/255, 50/255)
 		bar:SetHeight(14)
 
+		bar.Label:Show()
 		bar.Label:ClearAllPoints()
 		bar.Label:SetPoint("CENTER")
 		F.SetFS(bar.Label)

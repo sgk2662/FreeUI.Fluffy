@@ -29,7 +29,7 @@ local cfg = {
 		edgeFile = C.media.backdrop,
 		edgeSize = 1,
 	},
-	bgcolor = { r=0, g=0, b=0, t=.75 }, -- background
+	bgcolor = { r=0, g=0, b=0, t=.65 }, -- background
 	bdrcolor = { r=0, g=0, b=0 }, -- border
 	statusbar = C.media.texture,
 	sbHeight = C.tooltip.sbHeight,
@@ -393,16 +393,21 @@ end
 
 -- Style
 
-local shopping = {
-	"ShoppingTooltip1",
-	"ShoppingTooltip2",
-	"ShoppingTooltip3",
-	"ItemRefShoppingTooltip1",
-	"ItemRefShoppingTooltip2",
-	"ItemRefShoppingTooltip3",
-	"WorldMapCompareTooltip1",
-	"WorldMapCompareTooltip2",
-	"WorldMapCompareTooltip3"
+local extra = {
+	"QueueStatusFrame",
+	"FloatingGarrisonFollowerTooltip",
+	"FloatingGarrisonFollowerAbilityTooltip",
+	"FloatingGarrisonMissionTooltip",
+	"GarrisonFollowerAbilityTooltip",
+	"GarrisonFollowerTooltip",
+	"FloatingGarrisonShipyardFollowerTooltip",
+	"GarrisonShipyardFollowerTooltip",
+	"BattlePetTooltip",
+	"PetBattlePrimaryAbilityTooltip",
+	"PetBattlePrimaryUnitTooltip",
+	"FloatingBattlePetTooltip",
+	"FloatingPetBattleAbilityTooltip",
+	"IMECandidatesFrame"
 }
 
 local tooltips = {
@@ -412,14 +417,19 @@ local tooltips = {
 	"VoiceMacroMenu",
 	"GameTooltip",
 	"ItemRefTooltip",
-	"WorldMapTooltip",
-	"DropDownList1MenuBackdrop",
-	"DropDownList2MenuBackdrop",
-	"DropDownList3MenuBackdrop",
+	"ItemRefShoppingTooltip1",
+	"ItemRefShoppingTooltip2",
 	"AutoCompleteBox",
+	"WorldMapTooltip",
+	"WorldMapCompareTooltip1",
+	"WorldMapCompareTooltip2",
+	"WorldMapCompareTooltip3",
+	"QuestScrollFrame.StoryTooltip",
+	"GeneralDockManagerOverflowButtonList",
+	"ReputationParagonTooltip",
 	"FriendsTooltip",
-	"FloatingBattlePetTooltip",
-	"FloatingGarrisonFollowerTooltip"
+	"ShoppingTooltip1",
+	"ShoppingTooltip2",
 }
 
 local itemUpdate = {}
@@ -445,8 +455,10 @@ local function style(frame)
 			if(quality) then
 				local r, g, b = GetItemQualityColor(quality)
 				frame:SetBackdropBorderColor(r, g, b)
+
 				itemUpdate[frameName] = nil
 			else
+
 				itemUpdate[frameName] = true
 			end
 		end
@@ -547,11 +559,11 @@ frameload:SetScript("OnEvent", function(self, event, arg1)
 			end
 		end
 
-		for i, tip in ipairs(shopping) do
+		for i, tip in ipairs(extra) do
 			local frame = _G[tip]
 			if (frame) then
 				framehook(frame)
-				frame.shopping = true
+				frame.extra = true
 			end
 		end
 

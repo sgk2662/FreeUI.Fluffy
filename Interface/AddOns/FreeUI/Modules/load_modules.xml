@@ -106,4 +106,5 @@
 	<Script file="Skins\Bugger.lua"/>
 	<Script file="Skins\DBM_GUI.lua"/>
 	<Script file="Skins\DBM_Bars.lua"/>
+	<Script file="Skins\weakauras.lua"/>
 </Ui>

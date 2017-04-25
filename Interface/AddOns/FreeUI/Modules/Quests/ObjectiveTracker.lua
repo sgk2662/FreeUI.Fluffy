@@ -37,82 +37,249 @@ end)
 hooksecurefunc("ObjectiveTracker_CheckAndHideHeader", function() Mover:SetShown(ot.HeaderMenu:IsShown()) end)
 
 
--- [[ Difficulty color for ObjectiveTrackerFrame lines ]]
+-- Questblock click enhant
+local function QuestHook(id)
+	local questLogIndex = GetQuestLogIndexByID(id)
+	if IsControlKeyDown() and CanAbandonQuest(id) then
+		QuestMapQuestOptions_AbandonQuest(id)
+	elseif IsAltKeyDown() and GetQuestLogPushable(questLogIndex) then
+		QuestMapQuestOptions_ShareQuest(id)
+	end
+end
+hooksecurefunc(QUEST_TRACKER_MODULE, "OnBlockHeaderClick", function(self, block) QuestHook(block.id) end)
+hooksecurefunc("QuestMapLogTitleButton_OnClick", function(self) QuestHook(self.questID) end)
 
-hooksecurefunc(QUEST_TRACKER_MODULE, "Update", function()
-	for i = 1, GetNumQuestWatches() do
-		local questID, _, questIndex = GetQuestWatchInfo(i)
-		if not questID then
-			break
+
+-- Show quest color and level
+local function Showlevel()
+	if ENABLE_COLORBLIND_MODE == "1" then return end
+	local numEntries = GetNumQuestLogEntries()
+	local titleIndex = 1
+	for i = 1, numEntries do
+		local title, level, _, isHeader, _, isComplete, frequency, questID = GetQuestLogTitle(i)
+		local titleButton = QuestLogQuests_GetTitleButton(titleIndex)
+		if title and (not isHeader) and titleButton.questID == questID then
+			titleButton.Check:SetPoint("LEFT", titleButton.Text, titleButton.Text:GetWrappedWidth() + 2, 0)
+			titleIndex = titleIndex + 1
+			local text = "["..level.."] "..title
+			if isComplete then
+				text = "|cffff78ff"..text
+			elseif frequency == LE_QUEST_FREQUENCY_DAILY then
+				text = "|cff3399ff"..text
+			end
+			titleButton.Text:SetText(text)
+			titleButton.Text:SetPoint("TOPLEFT", 24, -5)
+			titleButton.Text:SetWidth(216)
 		end
-		local _, level = GetQuestLogTitle(questIndex)
-		local col = GetQuestDifficultyColor(level)
-		local block = QUEST_TRACKER_MODULE:GetExistingBlock(questID)
-		if block then
-			block.HeaderText:SetTextColor(col.r, col.g, col.b)
-			block.HeaderText.col = col
-		end
 	end
-end)
-
-hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddObjective", function(self, block)
-	if block.module == ACHIEVEMENT_TRACKER_MODULE then
-		block.HeaderText:SetTextColor(0.75, 0.61, 0)
-		block.HeaderText.col = nil
-	end
-end)
-
-hooksecurefunc("ObjectiveTrackerBlockHeader_OnLeave", function(self)
-	local block = self:GetParent()
-	if block.HeaderText.col then
-		block.HeaderText:SetTextColor(block.HeaderText.col.r, block.HeaderText.col.g, block.HeaderText.col.b)
-	end
-end)
+end
+hooksecurefunc("QuestLogQuests_Update", Showlevel)
 
 
--- [[ Header ]]
-
--- Header
-
-if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-	if C.appearance.fontUseChinesePixelFont then
-		ot.HeaderMenu.Title:SetFont(unpack(otFont))
-	else
-		ot.HeaderMenu.Title:SetFont(C.media.font.header, 16, "OUTLINE")
-	end
-else
-	F.SetFS(ot.HeaderMenu.Title)
+-- Headers
+local function reskinHeader(header)
+	header.Text:SetTextColor(r, g, b)
+	header.Background:Hide()
+	local bg = header:CreateTexture(nil, "ARTWORK")
+	bg:SetTexture("Interface\\LFGFrame\\UI-LFG-SEPARATOR")
+	bg:SetTexCoord(0, .66, 0, .31)
+	bg:SetVertexColor(r, g, b, .8)
+	bg:SetPoint("BOTTOMLEFT", -30, -4)
+	bg:SetSize(210, 30)
 end
 
--- Minimize button
+local headers = {
+	ObjectiveTrackerBlocksFrame.QuestHeader,
+	ObjectiveTrackerBlocksFrame.AchievementHeader,
+	ObjectiveTrackerBlocksFrame.ScenarioHeader,
+	BONUS_OBJECTIVE_TRACKER_MODULE.Header,
+	WORLD_QUEST_TRACKER_MODULE.Header,
+}
+for _, header in pairs(headers) do reskinHeader(header) end
 
+
+-- QuestIcons
+local function reskinQuestIcon(self, block)
+	local itemButton = block.itemButton
+	if itemButton and not itemButton.styled then
+		itemButton:SetNormalTexture("")
+		itemButton:SetPushedTexture("")
+		itemButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .3)
+		itemButton.icon:SetTexCoord(.08, .92, .08, .92)
+		F.CreateBG(itemButton)
+		F.CreateSD(itemButton)
+
+		itemButton.HotKey:ClearAllPoints()
+		itemButton.HotKey:SetPoint("CENTER", itemButton, 1, 0)
+		itemButton.HotKey:SetJustifyH("CENTER")
+		F.SetFS(itemButton.HotKey)
+
+		itemButton.Count:ClearAllPoints()
+		itemButton.Count:SetPoint("TOP", itemButton, 2, -1)
+		itemButton.Count:SetJustifyH("CENTER")
+		F.SetFS(itemButton.Count)
+
+		itemButton.styled = true
+	end
+
+	local rightButton = block.rightButton
+	if rightButton and not rightButton.styled then
+		rightButton:SetNormalTexture("")
+		rightButton:SetPushedTexture("")
+		rightButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .3)
+		local bg = F.CreateBDFrame(rightButton)
+		-- F.CreateBD(bg)
+		F.CreateSD(rightButton)
+		rightButton:SetSize(22, 22)
+		rightButton.Icon:SetParent(bg)
+		rightButton.Icon:SetSize(18, 18)
+
+		rightButton.styled = true
+	end
+end
+hooksecurefunc(QUEST_TRACKER_MODULE, "SetBlockHeader", reskinQuestIcon)
+hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddObjective", reskinQuestIcon)
+
+
+-- Progressbars
+local function reskinProgressbar(self, block, line)
+	local progressBar = line.ProgressBar
+	local bar = progressBar.Bar
+	local icon = bar.Icon
+
+	if not bar.styled then
+		bar.BarFrame:Hide()
+		bar.BarFrame2:Hide()
+		bar.BarFrame3:Hide()
+		bar.BarBG:Hide()
+		bar.IconBG:SetTexture("")
+
+		bar:SetPoint("LEFT", 22, 0)
+		bar:SetStatusBarTexture(C.media.texture)
+		bar:SetStatusBarColor(r, g, b)
+		bar:SetHeight(14)
+
+		local bg = F.CreateBDFrame(bar)
+		F.CreateSD(bg)
+		if bar.AnimIn then	-- Fix bg opacity
+			bar.AnimIn:HookScript("OnFinished", function() bg:SetBackdropColor(0, 0, 0, .5) end)
+		end
+
+		icon:SetMask(nil)
+		icon:SetTexCoord(.08, .92, .08, .92)
+		icon:SetSize(24, 24)
+		icon:ClearAllPoints()
+		icon:SetPoint("RIGHT", 30, 0)
+
+		bar.Label:ClearAllPoints()
+		bar.Label:SetPoint("CENTER")
+		F.SetFS(bar.Label)
+
+		bar.styled = true
+	end
+end
+hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", reskinProgressbar)
+hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", reskinProgressbar)
+hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddProgressBar", reskinProgressbar)
+
+hooksecurefunc(QUEST_TRACKER_MODULE, "AddProgressBar", function(self, block, line)
+	local progressBar = line.ProgressBar
+	local bar = progressBar.Bar
+
+	if not bar.styled then
+		bar:ClearAllPoints()
+		bar:SetPoint("LEFT")
+		for i = 1, 6 do
+			select(i, bar:GetRegions()):Hide()
+		end
+		bar:SetStatusBarTexture(C.media.texture)
+		bar.Label:Show()
+		F.SetFS(bar.Label)
+		local oldBg = select(5, bar:GetRegions())
+		local bg = F.CreateBDFrame(oldBg)
+		F.CreateBD(bg)
+		F.CreateSD(bg)
+
+		bar.styled = true
+	end
+end)
+
+
+-- Blocks
+hooksecurefunc("ScenarioStage_CustomizeBlock", function(block)
+	block.NormalBG:SetTexture("")
+	if not block.bg then
+		block.bg = F.CreateBDFrame(block.GlowTexture)
+		-- F.CreateBD(block.bg)
+		F.CreateSD(block.bg)
+
+	end
+end)
+
+hooksecurefunc("Scenario_ChallengeMode_ShowBlock", function()
+	local block = ScenarioChallengeModeBlock
+	if not block.bg then
+		block.TimerBG:Hide()
+		block.TimerBGBack:Hide()
+		block.timerbg = F.CreateBDFrame(block.TimerBGBack)
+		block.timerbg:SetPoint("TOPLEFT", block.TimerBGBack, 5, -1)
+		block.timerbg:SetPoint("BOTTOMRIGHT", block.TimerBGBack, -5, -6)
+		F.CreateBD(block.timerbg)
+
+		block.StatusBar:SetStatusBarTexture(C.media.texture)
+		block.StatusBar:SetStatusBarColor(r, g, b)
+		block.StatusBar:SetHeight(10)
+
+		select(3, block:GetRegions()):Hide()
+		block.bg = F.CreateBDFrame(block)
+		block.bg:SetPoint("TOPLEFT", 2, 0)
+		--F.CreateBD(block.bg, .3)
+		F.CreateSD(block.bg)
+	end
+end)
+
+hooksecurefunc("Scenario_ChallengeMode_SetUpAffixes", function(block)
+	for i, frame in ipairs(block.Affixes) do
+		frame.Border:Hide()
+		frame.Portrait:SetTexture(nil)
+		frame.Portrait:SetTexCoord(.08, .92, .08, .92)
+		F.CreateBDFrame(frame.Portrait)
+
+		if frame.info then
+			frame.Portrait:SetTexture(CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
+		elseif frame.affixID then
+			local _, _, filedataid = C_ChallengeMode.GetAffixInfo(frame.affixID)
+			frame.Portrait:SetTexture(filedataid)
+		end
+	end
+end)
+
+-- Minimize button
 local minimizeButton = ot.HeaderMenu.MinimizeButton
 
 F.ReskinExpandOrCollapse(minimizeButton)
 minimizeButton:SetSize(15, 15)
 minimizeButton.plus:Hide()
 
-hooksecurefunc("ObjectiveTracker_Collapse", function()
-	minimizeButton.plus:Show()
-	FreeUIConfig.objectiveTracker.collapsed = true
-end)
+hooksecurefunc("ObjectiveTracker_Collapse", function() minimizeButton.plus:Show() end)
+hooksecurefunc("ObjectiveTracker_Expand", function() minimizeButton.plus:Hide() end)
 
-hooksecurefunc("ObjectiveTracker_Expand", function()
-	minimizeButton.plus:Hide()
-	FreeUIConfig.objectiveTracker.collapsed = false
-end)
 
--- [[ Blocks and lines ]]
+
+
+
+-- font
+if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
+	ot.HeaderMenu.Title:SetFont(C.media.font.header, 16, "OUTLINE")
+else
+	F.SetFS(ot.HeaderMenu.Title)
+end
 
 for _, headerName in pairs({"QuestHeader", "AchievementHeader", "ScenarioHeader"}) do
 	local header = BlocksFrame[headerName]
 
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-		if C.appearance.fontUseChinesePixelFont then
-			header.Text:SetFont(unpack(otFont))
-		else
 			header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
-		end
 	else
 		F.SetFS(header.Text)
 	end
@@ -122,11 +289,7 @@ do
 	local header = BONUS_OBJECTIVE_TRACKER_MODULE.Header
 
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-		if C.appearance.fontUseChinesePixelFont then
-			header.Text:SetFont(unpack(otFont))
-		else
 			header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
-		end
 	else
 		F.SetFS(header.Text)
 	end
@@ -134,38 +297,17 @@ end
 
 do
 	local header = WORLD_QUEST_TRACKER_MODULE.Header
-	header.Background:Hide()
-	local bg = header:CreateTexture(nil, "ARTWORK")
-	bg:SetTexture([[Interface\LFGFrame\UI-LFG-SEPARATOR]])
-	bg:SetTexCoord(0, 0.6640625, 0, 0.3125)
-	bg:SetVertexColor(r * 0.7, g * 0.7, b * 0.7)
-	bg:SetPoint("BOTTOMLEFT", -30, -4)
-	bg:SetSize(210, 30)
+
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-		if C.appearance.fontUseChinesePixelFont then
-			header.Text:SetFont(unpack(otFont))
-		else
-			header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
-		end
+		header.Text:SetFont(C.media.font.header, 16, "OUTLINE")
 	else
 		F.SetFS(header.Text)
 	end
 
 	local header_bonus = BONUS_OBJECTIVE_TRACKER_MODULE.Header
-	header_bonus.Background:Hide()
-	local bg = header_bonus:CreateTexture(nil, "ARTWORK")
-	bg:SetTexture([[Interface\LFGFrame\UI-LFG-SEPARATOR]])
-	bg:SetTexCoord(0, 0.6640625, 0, 0.3125)
-	bg:SetVertexColor(r * 0.7, g * 0.7, b * 0.7)
-	bg:SetPoint("BOTTOMLEFT", -30, -4)
-	bg:SetSize(210, 30)
 
 	if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-		if C.appearance.fontUseChinesePixelFont then
-			header_bonus.Text:SetFont(unpack(otFont))
-		else
-			header_bonus.Text:SetFont(C.media.font.header, 16, "OUTLINE")
-		end
+		header_bonus.Text:SetFont(C.media.font.header, 16, "OUTLINE")
 	else
 		F.SetFS(header_bonus.Text)
 	end
@@ -174,11 +316,7 @@ end
 hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE, "SetBlockHeader", function(_, block)
 	if not block.headerStyled then
 		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-			if C.appearance.fontUseChinesePixelFont then
-				block.HeaderText:SetFont(unpack(otFont))
-			else
-				block.HeaderText:SetFont(C.media.font.normal, 13, "OUTLINE")
-			end
+			block.HeaderText:SetFont(C.media.font.normal, 13, "OUTLINE")
 		else
 			F.SetFS(block.HeaderText)
 		end
@@ -189,62 +327,15 @@ end)
 hooksecurefunc(QUEST_TRACKER_MODULE, "SetBlockHeader", function(_, block)
 	if not block.headerStyled then
 		if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-			if C.appearance.fontUseChinesePixelFont then
-				block.HeaderText:SetFont(unpack(otFont))
-			else
-				block.HeaderText:SetFont(C.media.font.normal, 13, "OUTLINE")
-			end
+			block.HeaderText:SetFont(C.media.font.normal, 13, "OUTLINE")
 		else
 			F.SetFS(block.HeaderText)
 		end
 		block.headerStyled = true
 	end
-
-	local itemButton = block.itemButton
-
-	if itemButton and not itemButton.styled then
-		itemButton:SetNormalTexture("")
-		itemButton:SetPushedTexture("")
-
-		itemButton.HotKey:ClearAllPoints()
-		itemButton.HotKey:SetPoint("CENTER", itemButton, 1, 0)
-		itemButton.HotKey:SetJustifyH("CENTER")
-		F.SetFS(itemButton.HotKey)
-
-		itemButton.Count:ClearAllPoints()
-		itemButton.Count:SetPoint("TOP", itemButton, 2, -1)
-		itemButton.Count:SetJustifyH("CENTER")
-		F.SetFS(itemButton.Count)
-
-		itemButton.icon:SetTexCoord(.08, .92, .08, .92)
-		F.CreateBG(itemButton)
-
-		itemButton.styled = true
-	end
 end)
 
 hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddObjective", function(_, block)
-	local itemButton = block.itemButton
-	if itemButton and not itemButton.styled then
-		itemButton:SetNormalTexture("")
-		itemButton:SetPushedTexture("")
-
-		itemButton.HotKey:ClearAllPoints()
-		itemButton.HotKey:SetPoint("CENTER", itemButton, 1, 0)
-		itemButton.HotKey:SetJustifyH("CENTER")
-		F.SetFS(itemButton.HotKey)
-
-		itemButton.Count:ClearAllPoints()
-		itemButton.Count:SetPoint("TOP", itemButton, 2, -1)
-		itemButton.Count:SetJustifyH("CENTER")
-		F.SetFS(itemButton.Count)
-
-		itemButton.icon:SetTexCoord(.08, .92, .08, .92)
-		F.CreateBG(itemButton)
-
-		itemButton.styled = true
-	end
-
 	local line = block.currentLine
 
 	local p1, a, p2, x, y = line:GetPoint()
@@ -283,11 +374,7 @@ hooksecurefunc("ObjectiveTracker_AddBlock", function(block)
 		for _, line in pairs(block.lines) do
 			if not line.styled then
 				if GetLocale() == "zhCN" or GetLocale() == "zhTW" then
-					if C.appearance.fontUseChinesePixelFont then
-						line.Text:SetFont(unpack(otFont))
-					else
-						line.Text:SetFont(C.media.font.normal, 12, "OUTLINE")
-					end
+					line.Text:SetFont(C.media.font.normal, 12, "OUTLINE")
 				else
 					F.SetFS(line.Text)
 				end
@@ -311,167 +398,9 @@ hooksecurefunc("ObjectiveTracker_AddBlock", function(block)
 	end
 end)
 
--- [[ Bonus objective progress bar ]]
-
-hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, block, line)
-	local progressBar = line.ProgressBar
-	local bar = progressBar.Bar
-	local icon = bar.Icon
-	if not progressBar.styled then
-		local bg = F.CreateBDFrame(bar)
-		bg:SetPoint("TOPLEFT", -1, 1)
-		bg:SetPoint("BOTTOMRIGHT", 0, -2)
-		F.CreateSD(bg)
-
-		bar.BarBG:Hide()
-		bar.BarFrame:Hide()
-		bar:SetStatusBarTexture(C.media.backdrop)
-		-- bar:SetStatusBarColor(237/255, 82/255, 46/255)
-		bar:SetHeight(14)
-
-		icon:SetMask(nil)
-		icon:SetSize(24, 24)
-		icon:SetDrawLayer("BACKGROUND", 1)
-		icon:ClearAllPoints()
-		icon:SetPoint("RIGHT", 30, 0)
-		bar.newIconBg = F.ReskinIcon(icon)
-
-		bar.Label:ClearAllPoints()
-		bar.Label:SetPoint("CENTER")
-		F.SetFS(bar.Label)
-
-		progressBar.styled = true
-	end
-
-	-- bar.IconBG:Hide()
-	-- bar.newIconBg:SetShown(icon:IsShown())
-end)
-
--- [[ World quest objective progress bar ]]
-
-hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(self, block, line)
-	local progressBar = line.ProgressBar
-	local bar = progressBar.Bar
-	local icon = bar.Icon
-	if not progressBar.styled then
-		local bg = F.CreateBDFrame(bar)
-		bg:SetPoint("TOPLEFT", -1, 1)
-		bg:SetPoint("BOTTOMRIGHT", 0, -2)
-		F.CreateSD(bg)
-
-		bar.BarBG:Hide()
-		bar.BarFrame:Hide()
-		bar:SetStatusBarTexture(C.media.backdrop)
-		bar:SetStatusBarColor(237/255, 82/255, 46/255)
-		bar:SetHeight(14)
-
-		icon:SetMask(nil)
-		icon:SetSize(24, 24)
-		icon:SetDrawLayer("BACKGROUND", 1)
-		icon:ClearAllPoints()
-		icon:SetPoint("RIGHT", 30, 0)
-		bar.newIconBg = F.ReskinIcon(icon)
-
-		bar.Label:ClearAllPoints()
-		bar.Label:SetPoint("CENTER")
-		F.SetFS(bar.Label)
-
-		progressBar.styled = true
-	end
-
-	-- bar.IconBG:Hide()
-	-- bar.newIconBg:SetShown(icon:IsShown())
-end)
-
--- [[ scenario progress bar ]]
-
-hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddProgressBar", function(self, block, line)
-	local progressBar = line.ProgressBar
-	local bar = progressBar.Bar
-	if not progressBar.styled then
-		local bg = F.CreateBDFrame(bar)
-		bg:SetPoint("TOPLEFT", -1, 1)
-		bg:SetPoint("BOTTOMRIGHT", 0, -2)
-		F.CreateSD(bg)
-
-		bar.BarBG:Hide()
-		bar.BarFrame:Hide()
-		bar:SetStatusBarTexture(C.media.backdrop)
-		bar:SetStatusBarColor(207/255, 0/255, 31/255)
-		bar:SetHeight(14)
-
-		bar.Label:ClearAllPoints()
-		bar.Label:SetPoint("CENTER")
-		F.SetFS(bar.Label)
-
-		progressBar.styled = true
-	end
-end)
-
-hooksecurefunc(QUEST_TRACKER_MODULE, "AddProgressBar", function(self, block, line)
-	local progressBar = line.ProgressBar
-	local bar = progressBar.Bar
-
-	if not progressBar.styled then
-		local bg = F.CreateBDFrame(bar)
-		bg:SetPoint("TOPLEFT", -1, 1)
-		bg:SetPoint("BOTTOMRIGHT", 0, -2)
-		F.CreateSD(bg)
-
-		for i = 1, 6 do
-			select(i, bar:GetRegions()):Hide()
-		end
-		bar:SetStatusBarTexture(C.media.backdrop)
-		bar:SetStatusBarColor(50/255, 205/255, 50/255)
-		bar:SetHeight(14)
-
-		bar.Label:Show()
-		bar.Label:ClearAllPoints()
-		bar.Label:SetPoint("CENTER")
-		F.SetFS(bar.Label)
-
-		progressBar.styled = true
-	end
-end)
 
 
--- [[ Header background ]]
-
-for _, headerName in next, {"QuestHeader", "AchievementHeader", "ScenarioHeader"} do
-	local header = _G.ObjectiveTrackerFrame.BlocksFrame[headerName]
-	header.Background:Hide()
-
-	local bg = header:CreateTexture(nil, "ARTWORK")
-	bg:SetTexture([[Interface\LFGFrame\UI-LFG-SEPARATOR]])
-	bg:SetTexCoord(0, 0.6640625, 0, 0.3125)
-	bg:SetVertexColor(r * 0.7, g * 0.7, b * 0.7)
-	bg:SetPoint("BOTTOMLEFT", -30, -4)
-	bg:SetSize(210, 30)
-end
-
-ScenarioStageBlock:HookScript("OnShow", function()
-	if not ScenarioStageBlock.skinned then
-		ScenarioStageBlock.NormalBG:SetAlpha(.4)
-		ScenarioStageBlock.NormalBG:SetTexture([[Interface\Addons\FreeUI\Media\HalBackgroundA]])
-		ScenarioStageBlock.NormalBG:SetVertexColor(0, 0, 0, .4)
-		ScenarioStageBlock.FinalBG:SetAlpha(.4)
-		ScenarioStageBlock.GlowTexture:SetTexture(nil)
-		ScenarioStageBlock.Stage:SetFont(C.media.font.normal, 15, "OUTLINE")
-		ScenarioStageBlock.Stage:SetTextColor(1, 1, 1)
-		ScenarioStageBlock.Name:SetFont(C.media.font.normal, 12, "OUTLINE")
-		ScenarioStageBlock.CompleteLabel:SetFont(C.media.font.normal, 15, "OUTLINE")
-		ScenarioStageBlock.CompleteLabel:SetTextColor(1, 1, 1)
-		ScenarioStageBlock.skinned = true
-	end
-end)
 
 
--- [[ Init ]]
 
-F.RegisterEvent("VARIABLES_LOADED", function()
-	if not FreeUIConfig.objectiveTracker then FreeUIConfig.objectiveTracker = {} end
 
-	if C.quests.rememberObjectiveTrackerState and (FreeUIConfig.objectiveTracker.collapsed or C.quests.alwaysCollapseObjectiveTracker) then
-		ObjectiveTracker_Collapse()
-	end
-end)

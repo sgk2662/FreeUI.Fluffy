@@ -61,7 +61,7 @@ local function InitStyleDBM()
 						frame.bg:SetAllPoints()
 					end
 					F.CreateSD(frame.bg)
-					F.CreateBD(frame.bg)
+					F.CreateBD(frame.bg, .4)
 					frame.styled = true
 				end
 

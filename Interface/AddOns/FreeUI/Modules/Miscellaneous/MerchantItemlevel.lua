@@ -1,9 +1,7 @@
 local F, C = unpack(select(2, ...))
--- if C.misc.merchant_itemlevel ~= true then return end
 
-----------------------------------------------------------------------------------------
 --	Show item level for weapons and armor in merchant
-----------------------------------------------------------------------------------------
+
 local function MerchantItemlevel()
 	local numItems = GetMerchantNumItems()
 
@@ -25,7 +23,7 @@ local function MerchantItemlevel()
 			local itemLink = GetMerchantItemLink(index)
 			if itemLink then
 				local _, _, quality, itemlevel, _, _, _, _, _, _, _, itemClassID = GetItemInfo(itemLink)
-				if (itemlevel and itemlevel > 1) and (quality and quality > 1) and (itemClassID == 2 or itemClassID == 4) then
+				if (itemlevel and itemlevel > 1) and (quality and quality > 1) and (itemClassID == LE_ITEM_CLASS_WEAPON or itemClassID == LE_ITEM_CLASS_ARMOR) then
 					button.text:SetText(itemlevel)
 				end
 			end

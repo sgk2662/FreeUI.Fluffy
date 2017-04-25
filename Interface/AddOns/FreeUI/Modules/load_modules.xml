@@ -34,7 +34,7 @@
 	<Script file="ActionBars\style.lua"/>
 	<Script file="ActionBars\rangecolor.lua"/>
 	<Script file="ActionBars\HoverBind.lua"/>
-	<!-- <Script file="ActionBars\clickcast.lua"/> -->
+	<Script file="ActionBars\clickcast.lua"/>
 
 	<!-- Announcements -->
 	<Script file="Announcements\interrupt.lua"/>
@@ -65,7 +65,6 @@
 
 	<!-- Quests -->
 	<Script file="Quests\ObjectiveTracker.lua"/>
-	<Script file="Quests\QuestLog.lua"/>
 
 	<!-- Tooltip -->
 	<Script file="Tooltip\Tip.lua"/>
